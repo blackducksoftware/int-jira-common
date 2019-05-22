@@ -20,25 +20,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.request;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
-
-public class SchemaComponent extends JiraComponent {
+public class IssueTypeRequestModel {
+    private String name;
+    private String description;
     private String type;
-    private String system;
 
-    public SchemaComponent(final String type, final String system) {
+    public IssueTypeRequestModel(final String name, final String description, final String type) {
+        this.name = name;
+        this.description = description;
         this.type = type;
-        this.system = system;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getType() {
         return type;
-    }
-
-    public String getSystem() {
-        return system;
     }
 
 }
