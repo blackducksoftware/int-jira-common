@@ -20,39 +20,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.model;
 
-import java.util.Map;
+public class EntityProperty extends JiraComponent {
+    private String key;
+    private Object value;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
-
-public class FieldUpdateOperation extends JiraComponent {
-    private Map<String, Object> add;
-    private Map<String, Object> set;
-    private Map<String, Object> remove;
-    private Map<String, Object> edit;
-
-    public FieldUpdateOperation(final Map<String, Object> add, final Map<String, Object> set, final Map<String, Object> remove, final Map<String, Object> edit) {
-        this.add = add;
-        this.set = set;
-        this.remove = remove;
-        this.edit = edit;
+    public EntityProperty() {
     }
 
-    public Map<String, Object> getAdd() {
-        return add;
+    public EntityProperty(final String key, final Object value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public Map<String, Object> getSet() {
-        return set;
+    public String getKey() {
+        return key;
     }
 
-    public Map<String, Object> getRemove() {
-        return remove;
-    }
-
-    public Map<String, Object> getEdit() {
-        return edit;
+    public Object getValue() {
+        return value;
     }
 
 }

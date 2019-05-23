@@ -26,25 +26,25 @@ import java.util.List;
 import java.util.Map;
 
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.EntityProperty;
-import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperation;
-import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
+import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.IdComponent;
+import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.JiraSerializable;
 
 public class IssueRequestModel extends JiraSerializable {
-    private final TransitionComponent transition;
+    private final IdComponent transition;
     private final Map<String, Object> fields;
-    private final List<FieldUpdateOperation> update;
+    private final List<FieldUpdateOperationComponent> update;
     private final List<EntityProperty> properties;
 
-    public IssueRequestModel(final TransitionComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<FieldUpdateOperation> update, final List<EntityProperty> properties) {
+    public IssueRequestModel(final IdComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<FieldUpdateOperationComponent> update, final List<EntityProperty> properties) {
         this.transition = transition;
         this.fields = fieldsBuilder.build();
         this.update = update;
         this.properties = properties;
     }
 
-    public TransitionComponent getTransition() {
+    public IdComponent getTransition() {
         return transition;
     }
 
@@ -52,7 +52,7 @@ public class IssueRequestModel extends JiraSerializable {
         return fields;
     }
 
-    public List<FieldUpdateOperation> getUpdate() {
+    public List<FieldUpdateOperationComponent> getUpdate() {
         return update;
     }
 
