@@ -24,20 +24,38 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraPagedResponseModel;
+import com.synopsys.integration.jira.common.model.JiraComponent;
 
-public class PageOfChangelogsComponent extends JiraPagedResponseModel {
-    private List<ChangelogComponent> histories;
+public class WatcherComponent extends JiraComponent {
+    private String self;
+    private Boolean isWatching;
+    private Integer watchCount;
+    private List<UserDetailsComponent> watchers;
 
-    public PageOfChangelogsComponent() {
+    public WatcherComponent() {
     }
 
-    public PageOfChangelogsComponent(final List<ChangelogComponent> histories) {
-        this.histories = histories;
+    public WatcherComponent(final String self, final Boolean isWatching, final Integer watchCount, final List<UserDetailsComponent> watchers) {
+        this.self = self;
+        this.isWatching = isWatching;
+        this.watchCount = watchCount;
+        this.watchers = watchers;
     }
 
-    public List<ChangelogComponent> getHistories() {
-        return histories;
+    public String getSelf() {
+        return self;
+    }
+
+    public Boolean getWatching() {
+        return isWatching;
+    }
+
+    public Integer getWatchCount() {
+        return watchCount;
+    }
+
+    public List<UserDetailsComponent> getWatchers() {
+        return watchers;
     }
 
 }

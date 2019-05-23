@@ -22,22 +22,32 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import java.util.List;
+import com.synopsys.integration.jira.common.model.JiraComponent;
 
-import com.synopsys.integration.jira.common.model.JiraPagedResponseModel;
+public class IssueLinksComponent extends JiraComponent {
+    private String id;
+    private Object type; // TODO
+    private Object outwardIssue; // TODO
 
-public class PageOfChangelogsComponent extends JiraPagedResponseModel {
-    private List<ChangelogComponent> histories;
-
-    public PageOfChangelogsComponent() {
+    public IssueLinksComponent() {
     }
 
-    public PageOfChangelogsComponent(final List<ChangelogComponent> histories) {
-        this.histories = histories;
+    public IssueLinksComponent(final String id, final Object type, final Object outwardIssue) {
+        this.id = id;
+        this.type = type;
+        this.outwardIssue = outwardIssue;
     }
 
-    public List<ChangelogComponent> getHistories() {
-        return histories;
+    public String getId() {
+        return id;
+    }
+
+    public Object getType() {
+        return type;
+    }
+
+    public Object getOutwardIssue() {
+        return outwardIssue;
     }
 
 }
