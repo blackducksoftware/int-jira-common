@@ -22,13 +22,13 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.jira.common.model.JiraSerializable;
 
-public class FieldRequestModel extends JiraComponent {
-    private String name;
-    private String description;
-    private String type;
-    private String searcherKey;
+public class FieldRequestModel extends JiraSerializable {
+    private final String name;
+    private final String description;
+    private final String type;
+    private final String searcherKey;
 
     public FieldRequestModel(final String name, final String description, final String type, final String searcherKey) {
         this.name = name;

@@ -24,14 +24,14 @@ package com.synopsys.integration.jira.common.cloud.model.request;
 
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.jira.common.model.JiraSerializable;
 
-public class WorkflowSchemeRequestModel extends JiraComponent {
-    private String name;
-    private String description;
-    private String defaultWorkflow;
-    private Map<String, String> issueTypeMappings;
-    private Boolean updateDraftIfNeeded;
+public class WorkflowSchemeRequestModel extends JiraSerializable {
+    private final String name;
+    private final String description;
+    private final String defaultWorkflow;
+    private final Map<String, String> issueTypeMappings;
+    private final Boolean updateDraftIfNeeded;
 
     public WorkflowSchemeRequestModel(final String name, final String description, final String defaultWorkflow, final Map<String, String> issueTypeMappings, final Boolean updateDraftIfNeeded) {
         this.name = name;

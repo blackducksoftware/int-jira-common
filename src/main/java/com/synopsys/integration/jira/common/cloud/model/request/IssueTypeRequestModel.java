@@ -22,10 +22,12 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
-public class IssueTypeRequestModel {
-    private String name;
-    private String description;
-    private String type;
+import com.synopsys.integration.jira.common.model.JiraSerializable;
+
+public class IssueTypeRequestModel extends JiraSerializable {
+    private final String name;
+    private final String description;
+    private final String type;
 
     public IssueTypeRequestModel(final String name, final String description, final String type) {
         this.name = name;
