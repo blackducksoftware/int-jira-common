@@ -26,34 +26,53 @@ import java.util.List;
 
 import com.synopsys.integration.jira.common.cloud.model.IssueSearchIssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.SchemaComponent;
-import com.synopsys.integration.jira.common.model.JiraPagedResponseModel;
+import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
-public class IssueSearchResponseModel extends JiraPagedResponseModel {
+public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
     private List<IssueSearchIssueComponent> issues;
     private List<String> warningMessages;
-    private Object names;
+    private Object names; // TODO create a bean for this object
     private SchemaComponent schema;
 
     public String getExpand() {
         return expand;
     }
 
+    public void setExpand(final String expand) {
+        this.expand = expand;
+    }
+
     public List<IssueSearchIssueComponent> getIssues() {
         return issues;
+    }
+
+    public void setIssues(final List<IssueSearchIssueComponent> issues) {
+        this.issues = issues;
     }
 
     public List<String> getWarningMessages() {
         return warningMessages;
     }
 
-    // TODO create a bean for this object
+    public void setWarningMessages(final List<String> warningMessages) {
+        this.warningMessages = warningMessages;
+    }
+
     public Object getNames() {
         return names;
     }
 
+    public void setNames(final Object names) {
+        this.names = names;
+    }
+
     public SchemaComponent getSchema() {
         return schema;
+    }
+
+    public void setSchema(final SchemaComponent schema) {
+        this.schema = schema;
     }
 
 }

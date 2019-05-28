@@ -20,8 +20,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest.service;
+package com.synopsys.integration.jira.common.model;
 
-public class JiraService {
+public class JiraPageResponseModel extends JiraResponse {
+    private Integer startAt;
+    private Integer maxResults;
+    private Integer total;
+
+    public Integer getStartAt() {
+        return startAt;
+    }
+
+    public Integer getMaxResults() {
+        return maxResults;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
 
 }

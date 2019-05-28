@@ -25,9 +25,9 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 import java.util.List;
 
 import com.synopsys.integration.jira.common.cloud.model.ChangelogComponent;
-import com.synopsys.integration.jira.common.model.JiraPagedResponseModel;
+import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
-public class PageOfChangelogsResponseModel extends JiraPagedResponseModel {
+public class PageOfChangelogsResponseModel extends JiraPageResponseModel {
     private List<ChangelogComponent> histories;
 
     public PageOfChangelogsResponseModel() {
