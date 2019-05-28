@@ -43,4 +43,44 @@ public class IssueSearchIssueFieldsComponent extends IntRestComponent {
     public IssueSearchIssueFieldsComponent() {
     }
 
+    public List<IssueAttachmentComponent> getAttachment() {
+        return attachment;
+    }
+
+    public List<CommentComponent> getComment() {
+        return comment;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<IssueLinksComponent> getIssuelinks() {
+        return issuelinks;
+    }
+
+    public ProjectComponent getProject() {
+        return project;
+    }
+
+    public List<IssueLinksComponent> getSubTasks() {
+        return subTasks;
+    }
+
+    public Object getTimetracking() {
+        return timetracking;
+    }
+
+    public Integer getUpdated() {
+        return updated;
+    }
+
+    public WatcherComponent getWatcher() {
+        return watcher;
+    }
+
+    public List<Object> getWorklog() {
+        return worklog;
+    }
+
 }
