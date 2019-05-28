@@ -22,7 +22,9 @@
  */
 package com.synopsys.integration.jira.common.model;
 
-public class EntityProperty extends JiraComponent {
+import com.synopsys.integration.rest.component.IntRestComponent;
+
+public class EntityProperty extends IntRestComponent {
     private String key;
     private Object value;
 

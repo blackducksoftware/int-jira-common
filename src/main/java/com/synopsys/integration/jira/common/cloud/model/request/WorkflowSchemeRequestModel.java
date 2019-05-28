@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model.request;
 
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.model.JiraSerializable;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class WorkflowSchemeRequestModel extends JiraSerializable {
+public class WorkflowSchemeRequestModel extends IntRestComponent {
     private final String name;
     private final String description;
     private final String defaultWorkflow;

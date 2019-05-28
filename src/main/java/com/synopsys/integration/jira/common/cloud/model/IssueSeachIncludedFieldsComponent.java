@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueSeachIncludedFieldsComponent extends JiraComponent {
+public class IssueSeachIncludedFieldsComponent extends IntRestComponent {
     private List<String> included;
     private List<String> excluded;
     private List<String> actuallyIncluded;

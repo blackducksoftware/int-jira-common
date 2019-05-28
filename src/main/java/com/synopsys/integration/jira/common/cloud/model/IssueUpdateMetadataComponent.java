@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueUpdateMetadataComponent extends JiraComponent {
+public class IssueUpdateMetadataComponent extends IntRestComponent {
     private Object fields;
 
     public IssueUpdateMetadataComponent() {

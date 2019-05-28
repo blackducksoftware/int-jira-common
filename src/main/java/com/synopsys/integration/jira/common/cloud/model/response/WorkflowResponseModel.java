@@ -23,7 +23,6 @@
 package com.synopsys.integration.jira.common.cloud.model.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.jira.common.model.JiraComponent;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 
 public class WorkflowResponseModel extends JiraResponse {

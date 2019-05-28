@@ -20,19 +20,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.response;
 
 import java.util.List;
 
+import com.synopsys.integration.jira.common.cloud.model.ChangelogComponent;
 import com.synopsys.integration.jira.common.model.JiraPagedResponseModel;
 
-public class PageOfChangelogsComponent extends JiraPagedResponseModel {
+public class PageOfChangelogsResponseModel extends JiraPagedResponseModel {
     private List<ChangelogComponent> histories;
 
-    public PageOfChangelogsComponent() {
+    public PageOfChangelogsResponseModel() {
     }
 
-    public PageOfChangelogsComponent(final List<ChangelogComponent> histories) {
+    public PageOfChangelogsResponseModel(final List<ChangelogComponent> histories) {
         this.histories = histories;
     }
 

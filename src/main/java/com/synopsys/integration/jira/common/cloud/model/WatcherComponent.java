@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class WatcherComponent extends JiraComponent {
+public class WatcherComponent extends IntRestComponent {
     private String self;
     private Boolean isWatching;
     private Integer watchCount;

@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class ChangelogComponent extends JiraComponent {
+public class ChangelogComponent extends IntRestComponent {
     private String id;
     private UserDetailsComponent author;
     private String created;

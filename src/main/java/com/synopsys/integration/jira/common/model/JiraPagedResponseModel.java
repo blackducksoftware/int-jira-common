@@ -22,7 +22,7 @@
  */
 package com.synopsys.integration.jira.common.model;
 
-// TODO a JsonTransformer (or custom TypeAdapter) will be required for these fields to be deserialized
+// TODO a JsonTransformer (or custom TypeAdapter) might be required for these fields to be deserialized
 public class JiraPagedResponseModel extends JiraResponse {
     private Integer startAt;
     private Integer maxResults;

@@ -22,5 +22,8 @@
  */
 package com.synopsys.integration.jira.common.model;
 
-public class JiraResponse extends JiraComponent {
+import com.synopsys.integration.rest.component.IntRestResponse;
+
+public class JiraResponse extends IntRestResponse {
+
 }

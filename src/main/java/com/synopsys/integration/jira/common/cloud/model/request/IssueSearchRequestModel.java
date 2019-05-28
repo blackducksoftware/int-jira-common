@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 
 import com.synopsys.integration.jira.common.cloud.enumeration.ExpandableTypes;
 import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStrategy;
-import com.synopsys.integration.jira.common.model.JiraSerializable;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueSearchRequestModel extends JiraSerializable {
+public class IssueSearchRequestModel extends IntRestComponent {
     public static final String ALL_FIELDS_OPTION = "*all";
     public static final String NAVIGABLE_FIELDS_OPTION = "*navigable";
     public static final String FIELD_EXCLUSION_PREFIX = "-";

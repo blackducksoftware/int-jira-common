@@ -29,9 +29,9 @@ import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelField
 import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.cloud.model.IdComponent;
 import com.synopsys.integration.jira.common.model.EntityProperty;
-import com.synopsys.integration.jira.common.model.JiraSerializable;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueRequestModel extends JiraSerializable {
+public class IssueRequestModel extends IntRestComponent {
     private final IdComponent transition;
     private final Map<String, Object> fields;
     private final List<FieldUpdateOperationComponent> update;

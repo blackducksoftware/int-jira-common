@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
-import com.synopsys.integration.jira.common.model.JiraSerializable;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueTypeRequestModel extends JiraSerializable {
+public class IssueTypeRequestModel extends IntRestComponent {
     private final String name;
     private final String description;
     private final String type;

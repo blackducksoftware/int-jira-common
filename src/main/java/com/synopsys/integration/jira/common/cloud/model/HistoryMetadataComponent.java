@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import com.synopsys.integration.jira.common.model.JiraComponent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class HistoryMetadataComponent extends JiraComponent {
+public class HistoryMetadataComponent extends IntRestComponent {
     private String type;
     private String description;
     private String descriptionKey;
