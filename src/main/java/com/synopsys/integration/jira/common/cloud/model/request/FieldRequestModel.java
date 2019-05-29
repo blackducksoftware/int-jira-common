@@ -22,17 +22,19 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
+import com.synopsys.integration.jira.common.cloud.enumeration.FieldType;
+
 public class FieldRequestModel extends JiraRequestModel {
     private final String name;
     private final String description;
     private final String type;
     private final String searcherKey;
 
-    public FieldRequestModel(final String name, final String description, final String type, final String searcherKey) {
+    public FieldRequestModel(final String name, final String description, final FieldType fieldType) {
         this.name = name;
         this.description = description;
-        this.type = type;
-        this.searcherKey = searcherKey;
+        this.type = fieldType.getTypeKey();
+        this.searcherKey = fieldType.getSearcherKey();
     }
 
     public String getName() {
