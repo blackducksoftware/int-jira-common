@@ -22,9 +22,7 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
-import com.synopsys.integration.rest.component.IntRestComponent;
-
-public class IssueTypeRequestModel extends IntRestComponent {
+public class IssueTypeRequestModel extends JiraRequestModel {
     private final String name;
     private final String description;
     private final String type;

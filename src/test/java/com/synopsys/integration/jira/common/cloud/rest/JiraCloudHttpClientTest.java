@@ -24,7 +24,6 @@ public class JiraCloudHttpClientTest {
 
     @Test
     public void authenticationTest() throws IntegrationException, IOException {
-        System.getenv(ENV_BASE_URL);
         final String baseUrl = System.getenv(ENV_BASE_URL);
         final String userEmail = System.getenv(ENV_USER_EMAIL);
         final String apiToken = System.getenv(ENV_API_TOKEN);
