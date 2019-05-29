@@ -22,7 +22,34 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import java.util.List;
+
+import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.model.request.FieldRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.cloud.model.response.FieldResponseModel;
+import com.synopsys.integration.rest.request.Request;
+
 public class FieldService {
     public static final String API_PATH = "/rest/api/2/field";
+
+    private final JiraCloudService jiraCloudService;
+
+    public FieldService(final JiraCloudService jiraCloudService) {
+        this.jiraCloudService = jiraCloudService;
+    }
+
+    public List<FieldResponseModel> getUserVisibleFields() throws IntegrationException {
+        final Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        return jiraCloudService.getList(request, FieldResponseModel.class);
+    }
+
+    public FieldResponseModel createCustomField(FieldRequestModel fieldModel) throws IntegrationException {
+        return jiraCloudService.post(fieldModel, createApiUri(), FieldResponseModel.class);
+    }
+
+    private String createApiUri() {
+        return jiraCloudService.getBaseUrl() + API_PATH;
+    }
 
 }
