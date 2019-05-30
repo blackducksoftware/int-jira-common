@@ -26,4 +26,18 @@ public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "/transitions";
 
+    private JiraCloudService jiraCloudService;
+
+    public IssueService(final JiraCloudService jiraCloudService) {
+        this.jiraCloudService = jiraCloudService;
+    }
+
+    private String createApiUri() {
+        return jiraCloudService.getBaseUrl() + API_PATH;
+    }
+
+    private String createApiTransitionsUri() {
+        return createApiUri() + API_PATH_TRANSITIONS_SUFFIX;
+    }
+
 }
