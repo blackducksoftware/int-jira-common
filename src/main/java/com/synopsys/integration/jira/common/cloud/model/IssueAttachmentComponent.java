@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import com.synopsys.integration.rest.component.IntRestComponent;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueAttachmentComponent extends IntRestComponent {
+public class IssueAttachmentComponent extends IntRestResponse {
     private Integer id;
     private String self;
     private String fileName;

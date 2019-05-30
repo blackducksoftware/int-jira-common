@@ -31,16 +31,22 @@ import com.synopsys.integration.jira.common.cloud.model.IdComponent;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueRequestModel extends JiraRequestModel {
+    private final String issueIdOrKey;
     private final IdComponent transition;
     private final Map<String, Object> fields;
     private final List<FieldUpdateOperationComponent> update;
     private final List<EntityProperty> properties;
 
-    public IssueRequestModel(final IdComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<FieldUpdateOperationComponent> update, final List<EntityProperty> properties) {
+    public IssueRequestModel(final String issueIdOrKey, final IdComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<FieldUpdateOperationComponent> update, final List<EntityProperty> properties) {
+        this.issueIdOrKey = issueIdOrKey;
         this.transition = transition;
         this.fields = fieldsBuilder.build();
         this.update = update;
         this.properties = properties;
+    }
+
+    public String getIssueIdOrKey() {
+        return issueIdOrKey;
     }
 
     public IdComponent getTransition() {

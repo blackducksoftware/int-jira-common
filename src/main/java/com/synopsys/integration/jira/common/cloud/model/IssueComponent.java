@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfChangelogsResponseModel;
-import com.synopsys.integration.rest.component.IntRestComponent;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueSearchIssueComponent extends IntRestComponent {
+public class IssueComponent extends IntRestResponse {
     private String expand;
     private String id;
     private String self;
@@ -45,7 +45,66 @@ public class IssueSearchIssueComponent extends IntRestComponent {
     private IssueSeachIncludedFieldsComponent fieldsToInclude;
     private IssueSearchIssueFieldsComponent fields;
 
-    public IssueSearchIssueComponent() {
+    public IssueComponent() {
     }
 
+    public String getExpand() {
+        return expand;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Map<String, Object> getRenderedFields() {
+        return renderedFields;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public Map<String, Object> getNames() {
+        return names;
+    }
+
+    public Map<String, Object> getSchema() {
+        return schema;
+    }
+
+    public List<IdComponent> getTransitions() {
+        return transitions;
+    }
+
+    public OperationsComponent getOperations() {
+        return operations;
+    }
+
+    public IssueUpdateMetadataComponent getEditmeta() {
+        return editmeta;
+    }
+
+    public PageOfChangelogsResponseModel getChangelog() {
+        return changelog;
+    }
+
+    public Object getVersionedRepresentations() {
+        return versionedRepresentations;
+    }
+
+    public IssueSeachIncludedFieldsComponent getFieldsToInclude() {
+        return fieldsToInclude;
+    }
+
+    public IssueSearchIssueFieldsComponent getFields() {
+        return fields;
+    }
 }

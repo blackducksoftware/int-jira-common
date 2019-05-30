@@ -22,9 +22,13 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
+
 public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
-    public static final String API_PATH_TRANSITIONS_SUFFIX = "/transitions";
+    public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
 
     private JiraCloudService jiraCloudService;
 
@@ -32,12 +36,30 @@ public class IssueService {
         this.jiraCloudService = jiraCloudService;
     }
 
+    public IssueComponent createIssue(final IssueRequestModel requestModel) throws IntegrationException {
+        return jiraCloudService.post(requestModel, createApiUri(), IssueComponent.class);
+    }
+
+    public void updateIssue(final IssueRequestModel requestModel) throws IntegrationException {
+        final String updateUri = createApiUpdateUri(requestModel.getIssueIdOrKey());
+        jiraCloudService.put(requestModel, updateUri);
+    }
+
+    public void transitionIssue(final IssueRequestModel requestModel) throws IntegrationException {
+        final String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
+        jiraCloudService.post(requestModel, transitionsUri);
+    }
+
     private String createApiUri() {
         return jiraCloudService.getBaseUrl() + API_PATH;
     }
 
-    private String createApiTransitionsUri() {
-        return createApiUri() + API_PATH_TRANSITIONS_SUFFIX;
+    private String createApiUpdateUri(final String issueIdOrKey) {
+        return String.format("%s/%s", jiraCloudService.getBaseUrl() + API_PATH, issueIdOrKey);
+    }
+
+    private String createApiTransitionsUri(final String issueIdOrKey) {
+        return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_TRANSITIONS_SUFFIX);
     }
 
 }

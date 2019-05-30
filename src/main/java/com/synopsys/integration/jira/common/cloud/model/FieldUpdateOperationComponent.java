@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.Map;
 
-import com.synopsys.integration.rest.component.IntRestComponent;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class FieldUpdateOperationComponent extends IntRestComponent {
+public class FieldUpdateOperationComponent extends IntRestResponse {
     private Map<String, Object> add;
     private Map<String, Object> set;
     private Map<String, Object> remove;

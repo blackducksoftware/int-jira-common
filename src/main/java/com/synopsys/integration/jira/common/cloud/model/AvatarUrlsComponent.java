@@ -23,9 +23,9 @@
 package com.synopsys.integration.jira.common.cloud.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.rest.component.IntRestComponent;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class AvatarUrlsComponent extends IntRestComponent {
+public class AvatarUrlsComponent extends IntRestResponse {
     @SerializedName("16x16")
     private String sixteen;
     @SerializedName("24x24")
