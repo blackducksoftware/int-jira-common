@@ -5,11 +5,11 @@ import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequest
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 
-public class JiraProjectService {
+public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
     private JiraCloudService jiraCloudService;
 
-    public JiraProjectService(final JiraCloudService jiraCloudService) {
+    public ProjectService(final JiraCloudService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 

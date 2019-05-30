@@ -56,11 +56,15 @@ public class JiraCloudServiceFactory {
     }
 
     public IssueService createIssueService() {
-        return new IssueService();
+        return new IssueService(createCloudService());
     }
 
     public WorkflowSchemeService createWorkflowSchemeService() {
         return new WorkflowSchemeService();
+    }
+
+    public ProjectService createProjectService() {
+        return new ProjectService(createCloudService());
     }
 
     public IntLogger getLogger() {

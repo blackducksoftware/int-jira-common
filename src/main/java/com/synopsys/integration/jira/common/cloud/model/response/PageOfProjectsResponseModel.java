@@ -6,16 +6,16 @@ import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
 public class PageOfProjectsResponseModel extends JiraPageResponseModel {
-    private List<ProjectComponent> projects;
+    private List<ProjectComponent> values;
 
     public PageOfProjectsResponseModel() {
     }
 
-    public PageOfProjectsResponseModel(final List<ProjectComponent> projects) {
-        this.projects = projects;
+    public PageOfProjectsResponseModel(final List<ProjectComponent> values) {
+        this.values = values;
     }
 
     public List<ProjectComponent> getProjects() {
-        return projects;
+        return values;
     }
 }
