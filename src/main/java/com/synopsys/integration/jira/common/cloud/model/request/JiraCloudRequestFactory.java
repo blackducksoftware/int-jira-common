@@ -32,29 +32,27 @@ import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.request.Request;
 
 public class JiraCloudRequestFactory {
-    public static String DEFAULT_MIME_TYPE = "application/json";
-
     public static final String LIMIT_PARAMETER = "limit";
     public static final String OFFSET_PARAMETER = "offset";
-
     public static final int DEFAULT_LIMIT = 50;
     public static final int DEFAULT_OFFSET = 0;
+    public static String DEFAULT_MIME_TYPE = "application/json";
 
-    public static Request createDefaultGetRequest(final String requestUri) {
+    public static final Request createDefaultGetRequest(final String requestUri) {
         return createDefaultBuilder()
                    .uri(requestUri)
                    .build();
     }
 
-    public static Request.Builder createDefaultPageRequestBuilder() {
+    public static final Request.Builder createDefaultPageRequestBuilder() {
         return populatePageRequestBuilder(createDefaultBuilder(), DEFAULT_LIMIT, DEFAULT_OFFSET);
     }
 
-    public static Request.Builder createDefaultPageRequestBuilder(final int limit, final int offset) {
+    public static final Request.Builder createDefaultPageRequestBuilder(final int limit, final int offset) {
         return populatePageRequestBuilder(createDefaultBuilder(), limit, offset);
     }
 
-    public static Request.Builder populatePageRequestBuilder(final Request.Builder requestBuilder, final int limit, final int offset) {
+    public static final Request.Builder populatePageRequestBuilder(final Request.Builder requestBuilder, final int limit, final int offset) {
         Map<String, Set<String>> queryParameters = requestBuilder.getQueryParameters();
         if (null == queryParameters) {
             requestBuilder.queryParameters(new HashMap<>());
@@ -65,22 +63,27 @@ public class JiraCloudRequestFactory {
         return requestBuilder;
     }
 
-    public static Request.Builder createDefaultBuilder() {
+    public static final Request.Builder createDefaultBuilder() {
         return new Request.Builder()
                    .mimeType(DEFAULT_MIME_TYPE)
                    .method(HttpMethod.GET);
     }
 
-    public static Request.Builder createCommonPostRequestBuilder(String bodyContent) {
+    public static final Request.Builder createCommonPostRequestBuilder(String bodyContent) {
         return new Request.Builder()
                    .method(HttpMethod.POST)
                    .bodyContent(new StringBodyContent(bodyContent));
     }
 
-    public static Request.Builder createCommonPutRequestBuilder(String bodyContent) {
+    public static final Request.Builder createCommonPutRequestBuilder(String bodyContent) {
         return new Request.Builder()
                    .method(HttpMethod.PUT)
                    .bodyContent(new StringBodyContent(bodyContent));
+    }
+
+    public static final Request.Builder createCommonDeleteRequestBuilder() {
+        return new Request.Builder()
+                   .method(HttpMethod.DELETE);
     }
 
 }

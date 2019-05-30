@@ -45,6 +45,11 @@ public class IssueService {
         jiraCloudService.put(requestModel, updateUri);
     }
 
+    public void deleteIssue(final String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiUpdateUri(issueIdOrKey);
+        jiraCloudService.delete(uri);
+    }
+
     public void transitionIssue(final IssueRequestModel requestModel) throws IntegrationException {
         final String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
         jiraCloudService.post(requestModel, transitionsUri);
