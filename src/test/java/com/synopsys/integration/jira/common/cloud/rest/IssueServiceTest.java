@@ -25,7 +25,7 @@ import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueServiceTest extends JiraServiceTest {
     @Test
-    public void createIssue() throws Exception {
+    public void testCreateIssue() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
         IssueService issueService = serviceFactory.createIssueService();
@@ -63,10 +63,15 @@ public class IssueServiceTest extends JiraServiceTest {
         //IssueComponent foundIssue = issueService.getIssue(createdIssue.getId());
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
+    }
 
-        // assertEquals(createdIssue.getId(), foundIssue.getId());
-        // assertEquals(createdIssue.getKey(), foundIssue.getKey());
-        // assertEquals(createdIssue.getFields().getDescription(), foundIssue.getFields().getDescription());
+    @Test
+    public void testAddComment() {
+
+    }
+
+    @Test
+    public void testTransitionIssue() {
 
     }
 }
