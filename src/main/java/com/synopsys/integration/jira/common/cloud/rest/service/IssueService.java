@@ -26,6 +26,8 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.rest.request.Request;
 
 public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
@@ -45,6 +47,12 @@ public class IssueService {
     public void updateIssue(final IssueRequestModel requestModel) throws IntegrationException {
         final String updateUri = createApiUpdateUri(requestModel.getIssueIdOrKey());
         jiraCloudService.put(requestModel, updateUri);
+    }
+
+    public IssueComponent getIssue(final String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiUpdateUri(issueIdOrKey);
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        return jiraCloudService.get(request, IssueComponent.class);
     }
 
     public void deleteIssue(final String issueIdOrKey) throws IntegrationException {
