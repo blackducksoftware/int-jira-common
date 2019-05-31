@@ -24,11 +24,13 @@ package com.synopsys.integration.jira.common.cloud.rest.service;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 
 public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
+    public static final String API_PATH_COMMENTS_SUFFIX = "comments";
 
     private JiraCloudService jiraCloudService;
 
@@ -55,6 +57,11 @@ public class IssueService {
         jiraCloudService.post(requestModel, transitionsUri);
     }
 
+    public void addComment(final IssueCommentRequestModel requestModel) throws IntegrationException {
+        final String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
+        jiraCloudService.post(requestModel, commentsUri);
+    }
+
     private String createApiUri() {
         return jiraCloudService.getBaseUrl() + API_PATH;
     }
@@ -65,6 +72,10 @@ public class IssueService {
 
     private String createApiTransitionsUri(final String issueIdOrKey) {
         return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_TRANSITIONS_SUFFIX);
+    }
+
+    private String createApiCommentsUri(final String issueIdOrKey) {
+        return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_COMMENTS_SUFFIX);
     }
 
 }
