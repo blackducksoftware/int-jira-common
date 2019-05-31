@@ -59,6 +59,10 @@ public class JiraCloudServiceFactory {
         return new IssueService(createCloudService());
     }
 
+    public UserSearchService createUserSearchService() {
+        return new UserSearchService(createCloudService());
+    }
+
     public WorkflowSchemeService createWorkflowSchemeService() {
         return new WorkflowSchemeService();
     }
