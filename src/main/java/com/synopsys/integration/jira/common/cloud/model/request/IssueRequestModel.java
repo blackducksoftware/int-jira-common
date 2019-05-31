@@ -34,10 +34,16 @@ public class IssueRequestModel extends JiraRequestModel {
     private final String issueIdOrKey;
     private final IdComponent transition;
     private final Map<String, Object> fields;
-    private final List<FieldUpdateOperationComponent> update;
+    private final Map<String, List<FieldUpdateOperationComponent>> update;
     private final List<EntityProperty> properties;
 
-    public IssueRequestModel(final String issueIdOrKey, final IdComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<FieldUpdateOperationComponent> update, final List<EntityProperty> properties) {
+    // used to create a new issue sicne the id and transition are optional
+    public IssueRequestModel(final IssueRequestModelFieldsBuilder fieldsBuilder, Map<String, List<FieldUpdateOperationComponent>> update, final List<EntityProperty> properties) {
+        this(null, null, fieldsBuilder, update, properties);
+    }
+
+    public IssueRequestModel(final String issueIdOrKey, final IdComponent transition, final IssueRequestModelFieldsBuilder fieldsBuilder, final Map<String, List<FieldUpdateOperationComponent>> update,
+        final List<EntityProperty> properties) {
         this.issueIdOrKey = issueIdOrKey;
         this.transition = transition;
         this.fields = fieldsBuilder.build();
@@ -57,7 +63,7 @@ public class IssueRequestModel extends JiraRequestModel {
         return fields;
     }
 
-    public List<FieldUpdateOperationComponent> getUpdate() {
+    public Map<String, List<FieldUpdateOperationComponent>> getUpdate() {
         return update;
     }
 
