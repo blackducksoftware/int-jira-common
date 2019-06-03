@@ -28,11 +28,12 @@ import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestMode
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
 import com.synopsys.integration.rest.request.Request;
+import com.synopsys.integration.rest.request.Response;
 
 public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
-    public static final String API_PATH_COMMENTS_SUFFIX = "comments";
+    public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
     private JiraCloudService jiraCloudService;
 
@@ -46,7 +47,11 @@ public class IssueService {
 
     public void updateIssue(final IssueRequestModel requestModel) throws IntegrationException {
         final String updateUri = createApiUpdateUri(requestModel.getIssueIdOrKey());
-        jiraCloudService.put(requestModel, updateUri);
+        Response response = jiraCloudService.put(requestModel, updateUri);
+
+        if (response.isStatusCodeError()) {
+            throw new IntegrationException(String.format("Error updating issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
+        }
     }
 
     public IssueResponseModel getIssue(final String issueIdOrKey) throws IntegrationException {
@@ -62,12 +67,20 @@ public class IssueService {
 
     public void transitionIssue(final IssueRequestModel requestModel) throws IntegrationException {
         final String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
-        jiraCloudService.post(requestModel, transitionsUri);
+        Response response = jiraCloudService.post(requestModel, transitionsUri);
+
+        if (response.isStatusCodeError()) {
+            throw new IntegrationException(String.format("Error transitioning issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
+        }
     }
 
     public void addComment(final IssueCommentRequestModel requestModel) throws IntegrationException {
         final String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
-        jiraCloudService.post(requestModel, commentsUri);
+        Response response = jiraCloudService.post(requestModel, commentsUri);
+
+        if (response.isStatusCodeError()) {
+            throw new IntegrationException(String.format("Error commenting on issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
+        }
     }
 
     private String createApiUri() {
@@ -75,7 +88,7 @@ public class IssueService {
     }
 
     private String createApiUpdateUri(final String issueIdOrKey) {
-        return String.format("%s/%s", jiraCloudService.getBaseUrl() + API_PATH, issueIdOrKey);
+        return String.format("%s/%s", createApiUri(), issueIdOrKey);
     }
 
     private String createApiTransitionsUri(final String issueIdOrKey) {

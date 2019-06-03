@@ -29,15 +29,21 @@ import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueCommentRequestModel extends JiraRequestModel {
     private final String issueIdOrKey;
+    private final String body;
     private final VisibilityComponent visibility;
     private final Boolean jsdPublic;
     private final List<EntityProperty> properties;
 
-    public IssueCommentRequestModel(final String issueIdOrKey, final VisibilityComponent visibility, final Boolean jsdPublic, final List<EntityProperty> properties) {
+    public IssueCommentRequestModel(final String issueIdOrKey, final String body, final VisibilityComponent visibility, final Boolean jsdPublic, final List<EntityProperty> properties) {
         this.issueIdOrKey = issueIdOrKey;
+        this.body = body;
         this.visibility = visibility;
         this.jsdPublic = jsdPublic;
         this.properties = properties;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public String getIssueIdOrKey() {
