@@ -2,6 +2,8 @@ package com.synopsys.integration.jira.common.cloud.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -46,6 +48,36 @@ public class IssueServiceTest extends JiraServiceTest {
 
         assertEquals(createdIssue.getId(), foundIssue.getId());
         assertEquals(createdIssue.getKey(), foundIssue.getKey());
+    }
+
+    @Test
+    public void testUpdateIssue() throws Exception {
+        validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+        UserSearchService userSearchService = serviceFactory.createUserSearchService();
+
+        UserDetailsComponent userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                               .findFirst()
+                                               .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        // create an issue
+        IssueResponseModel createdIssue = createIssue(serviceFactory);
+        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setAssignee(userDetails.getAccountId());
+        Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
+        List<EntityProperty> properties = new LinkedList<>();
+        IssueRequestModel requestModel = new IssueRequestModel(foundIssue.getId(), null, fieldsBuilder, update, properties);
+        issueService.updateIssue(requestModel);
+        IssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
+
+        // delete the issue
+        issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssueWithAssignee.getId());
+        assertNull(foundIssue.getFields().getAssignee());
+        assertNotNull(foundIssueWithAssignee.getFields().getAssignee());
+        assertEquals(userDetails.getAccountId(), foundIssueWithAssignee.getFields().getAssignee().getAccountId());
     }
 
     @Test

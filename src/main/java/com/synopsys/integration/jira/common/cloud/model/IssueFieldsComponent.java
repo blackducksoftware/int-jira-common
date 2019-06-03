@@ -29,6 +29,7 @@ import com.google.gson.annotations.SerializedName;
 public class IssueFieldsComponent {
 
     private List<IssueAttachmentComponent> attachment;
+    private UserDetailsComponent assignee;
     private PageOfIssueCommentsComponent comment;
     private String description;
     private List<IssueLinksComponent> issuelinks;
@@ -45,6 +46,10 @@ public class IssueFieldsComponent {
 
     public List<IssueAttachmentComponent> getAttachment() {
         return attachment;
+    }
+
+    public UserDetailsComponent getAssignee() {
+        return assignee;
     }
 
     public PageOfIssueCommentsComponent getComment() {
