@@ -1,6 +1,7 @@
 package com.synopsys.integration.jira.common.cloud.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,13 +14,16 @@ import org.junit.jupiter.api.Test;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.IdComponent;
 import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
+import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
@@ -68,8 +72,40 @@ public class IssueServiceTest extends JiraServiceTest {
     }
 
     @Test
-    public void testTransitionIssue() {
+    public void testTransitionIssue() throws Exception {
+        validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+        UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
+        UserDetailsComponent userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                               .findFirst()
+                                               .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+
+        // create an issue
+        IssueResponseModel createdIssue = createIssue(serviceFactory);
+        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setAssignee(userDetails.getAccountId());
+
+        Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
+        List<EntityProperty> properties = new LinkedList<>();
+
+        TransitionsResponseModel transitionsResponseModel = issueService.getTransitions(foundIssue.getId());
+        TransitionComponent resolveTransition = transitionsResponseModel.findFirstTransitionByName("Resolve Issue")
+                                                    .orElseThrow(() -> new IllegalStateException("Transition not found for issue"));
+
+        IdComponent transitionId = new IdComponent(resolveTransition.getId());
+        IssueRequestModel transitionRequest = new IssueRequestModel(foundIssue.getId(), transitionId, fieldsBuilder, update, properties);
+        issueService.transitionIssue(transitionRequest);
+
+        IssueResponseModel foundIssueWithTransition = issueService.getIssue(createdIssue.getId());
+        // delete the issue
+        issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssueWithTransition.getId());
+        assertNotEquals(foundIssue.getFields().getUpdated(), foundIssueWithTransition.getFields().getUpdated());
     }
 
     private IssueResponseModel createIssue(final JiraCloudServiceFactory serviceFactory) throws IntegrationException {

@@ -27,6 +27,7 @@ import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequ
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
@@ -72,6 +73,12 @@ public class IssueService {
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error transitioning issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
         }
+    }
+
+    public TransitionsResponseModel getTransitions(final String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiTransitionsUri(issueIdOrKey);
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        return jiraCloudService.get(request, TransitionsResponseModel.class);
     }
 
     public void addComment(final IssueCommentRequestModel requestModel) throws IntegrationException {
