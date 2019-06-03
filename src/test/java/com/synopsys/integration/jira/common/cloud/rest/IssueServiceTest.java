@@ -10,10 +10,12 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
@@ -30,6 +32,47 @@ public class IssueServiceTest extends JiraServiceTest {
     public void testCreateIssue() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+
+        // create an issue
+        IssueResponseModel createdIssue = createIssue(serviceFactory);
+        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        // delete the issue
+        issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssue.getId());
+        assertEquals(createdIssue.getKey(), foundIssue.getKey());
+    }
+
+    @Test
+    public void testAddComment() throws Exception {
+        validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+
+        // create an issue
+        IssueResponseModel createdIssue = createIssue(serviceFactory);
+        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        UUID uniqueId = UUID.randomUUID();
+        IssueCommentRequestModel issueCommentModel = new IssueCommentRequestModel(foundIssue.getId(), uniqueId.toString(), null, true, null);
+
+        issueService.addComment(issueCommentModel);
+
+        IssueResponseModel foundIssueWithComments = issueService.getIssue(createdIssue.getId());
+        // delete the issue
+        issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssueWithComments.getId());
+        assertEquals(1, foundIssueWithComments.getFields().getComment().getTotal().intValue());
+        assertEquals(uniqueId.toString(), foundIssueWithComments.getFields().getComment().getComments().get(0).getBody());
+    }
+
+    @Test
+    public void testTransitionIssue() {
+
+    }
+
+    private IssueResponseModel createIssue(final JiraCloudServiceFactory serviceFactory) throws IntegrationException {
         IssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
@@ -60,22 +103,6 @@ public class IssueServiceTest extends JiraServiceTest {
         IssueRequestModel requestModel = new IssueRequestModel(fieldsBuilder, update, properties);
 
         // create an issue
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
-        // delete the issue
-        issueService.deleteIssue(createdIssue.getId());
-
-        assertEquals(createdIssue.getId(), foundIssue.getId());
-        assertEquals(createdIssue.getKey(), foundIssue.getKey());
-    }
-
-    @Test
-    public void testAddComment() {
-
-    }
-
-    @Test
-    public void testTransitionIssue() {
-
+        return issueService.createIssue(requestModel);
     }
 }
