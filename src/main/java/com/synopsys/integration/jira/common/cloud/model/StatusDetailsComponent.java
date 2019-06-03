@@ -22,40 +22,49 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import java.util.Map;
-
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class FieldUpdateOperationComponent extends IntRestResponse {
-    private Map<String, Object> add;
-    private Map<String, Object> set;
-    private Map<String, Object> remove;
-    private Map<String, Object> edit;
+public class StatusDetailsComponent extends IntRestResponse {
+    private String self;
+    private String description;
+    private String iconUrl;
+    private String name;
+    private String id;
+    private StatusCategory statusCategory;
 
-    public FieldUpdateOperationComponent() {
+    public StatusDetailsComponent() {
     }
 
-    public FieldUpdateOperationComponent(final Map<String, Object> add, final Map<String, Object> set, final Map<String, Object> remove, final Map<String, Object> edit) {
-        this.add = add;
-        this.set = set;
-        this.remove = remove;
-        this.edit = edit;
+    public StatusDetailsComponent(final String self, final String description, final String iconUrl, final String name, final String id, final StatusCategory statusCategory) {
+        this.self = self;
+        this.description = description;
+        this.iconUrl = iconUrl;
+        this.name = name;
+        this.id = id;
+        this.statusCategory = statusCategory;
     }
 
-    public Map<String, Object> getAdd() {
-        return add;
+    public String getSelf() {
+        return self;
     }
 
-    public Map<String, Object> getSet() {
-        return set;
+    public String getDescription() {
+        return description;
     }
 
-    public Map<String, Object> getRemove() {
-        return remove;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
-    public Map<String, Object> getEdit() {
-        return edit;
+    public String getName() {
+        return name;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public StatusCategory getStatusCategory() {
+        return statusCategory;
+    }
 }

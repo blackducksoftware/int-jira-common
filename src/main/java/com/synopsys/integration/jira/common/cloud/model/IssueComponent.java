@@ -1,0 +1,110 @@
+/**
+ * int-jira-common
+ *
+ * Copyright (c) 2019 Synopsys, Inc.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package com.synopsys.integration.jira.common.cloud.model;
+
+import java.util.List;
+import java.util.Map;
+
+import com.synopsys.integration.jira.common.cloud.model.response.PageOfChangelogsResponseModel;
+import com.synopsys.integration.rest.component.IntRestResponse;
+
+public class IssueComponent extends IntRestResponse {
+    private String expand;
+    private String id;
+    private String self;
+    private String key;
+    private Map<String, Object> renderedFields;
+    private Map<String, Object> properties;
+    private Map<String, Object> names;
+    private Map<String, Object> schema; // TODO maybe a Map<String, SchemaComponent> ?
+    private List<IdComponent> transitions;
+    private OperationsComponent operations;
+    private IssueUpdateMetadataComponent editmeta;
+    private PageOfChangelogsResponseModel changelog;
+    private Object versionedRepresentations; // TODO
+    private IssueSeachIncludedFieldsComponent fieldsToInclude;
+    private IssueSearchIssueFieldsComponent fields;
+
+    public IssueComponent() {
+    }
+
+    public String getExpand() {
+        return expand;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Map<String, Object> getRenderedFields() {
+        return renderedFields;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public Map<String, Object> getNames() {
+        return names;
+    }
+
+    public Map<String, Object> getSchema() {
+        return schema;
+    }
+
+    public List<IdComponent> getTransitions() {
+        return transitions;
+    }
+
+    public OperationsComponent getOperations() {
+        return operations;
+    }
+
+    public IssueUpdateMetadataComponent getEditmeta() {
+        return editmeta;
+    }
+
+    public PageOfChangelogsResponseModel getChangelog() {
+        return changelog;
+    }
+
+    public Object getVersionedRepresentations() {
+        return versionedRepresentations;
+    }
+
+    public IssueSeachIncludedFieldsComponent getFieldsToInclude() {
+        return fieldsToInclude;
+    }
+
+    public IssueSearchIssueFieldsComponent getFields() {
+        return fields;
+    }
+}

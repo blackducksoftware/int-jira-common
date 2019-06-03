@@ -22,30 +22,43 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import java.util.List;
-import java.util.Map;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-import com.synopsys.integration.jira.common.cloud.model.response.PageOfChangelogsResponseModel;
-import com.synopsys.integration.rest.component.IntRestComponent;
-
-public class IssueSearchIssueComponent extends IntRestComponent {
-    private String expand;
-    private String id;
+public class StatusCategory extends IntRestResponse {
     private String self;
+    private Integer id;
     private String key;
-    private Map<String, Object> renderedFields;
-    private Map<String, Object> properties;
-    private Map<String, Object> names;
-    private Map<String, Object> schema; // TODO maybe a Map<String, SchemaComponent> ?
-    private List<IdComponent> transitions;
-    private OperationsComponent operations;
-    private IssueUpdateMetadataComponent editmeta;
-    private PageOfChangelogsResponseModel changelog;
-    private Object versionedRepresentations; // TODO
-    private IssueSeachIncludedFieldsComponent fieldsToInclude;
-    private IssueSearchIssueFieldsComponent fields;
+    private String colorName;
+    private String name;
 
-    public IssueSearchIssueComponent() {
+    public StatusCategory() {
     }
 
+    public StatusCategory(final String self, final Integer id, final String key, final String colorName, final String name) {
+        this.self = self;
+        this.id = id;
+        this.key = key;
+        this.colorName = colorName;
+        this.name = name;
+    }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getColorName() {
+        return colorName;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -24,13 +24,13 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.cloud.model.IssueSearchIssueComponent;
+import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.SchemaComponent;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
-    private List<IssueSearchIssueComponent> issues;
+    private List<IssueComponent> issues;
     private List<String> warningMessages;
     private Object names; // TODO create a bean for this object
     private SchemaComponent schema;
@@ -43,11 +43,11 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         this.expand = expand;
     }
 
-    public List<IssueSearchIssueComponent> getIssues() {
+    public List<IssueComponent> getIssues() {
         return issues;
     }
 
-    public void setIssues(final List<IssueSearchIssueComponent> issues) {
+    public void setIssues(final List<IssueComponent> issues) {
         this.issues = issues;
     }
 

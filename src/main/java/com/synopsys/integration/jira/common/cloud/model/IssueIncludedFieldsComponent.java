@@ -22,40 +22,32 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
-import java.util.Map;
+import java.util.List;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+public class IssueIncludedFieldsComponent {
+    private List<String> included;
+    private List<String> excluded;
+    private List<String> actuallyIncluded;
 
-public class FieldUpdateOperationComponent extends IntRestResponse {
-    private Map<String, Object> add;
-    private Map<String, Object> set;
-    private Map<String, Object> remove;
-    private Map<String, Object> edit;
-
-    public FieldUpdateOperationComponent() {
+    public IssueIncludedFieldsComponent() {
     }
 
-    public FieldUpdateOperationComponent(final Map<String, Object> add, final Map<String, Object> set, final Map<String, Object> remove, final Map<String, Object> edit) {
-        this.add = add;
-        this.set = set;
-        this.remove = remove;
-        this.edit = edit;
+    public IssueIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
+        this.included = included;
+        this.excluded = excluded;
+        this.actuallyIncluded = actuallyIncluded;
     }
 
-    public Map<String, Object> getAdd() {
-        return add;
+    public List<String> getIncluded() {
+        return included;
     }
 
-    public Map<String, Object> getSet() {
-        return set;
+    public List<String> getExcluded() {
+        return excluded;
     }
 
-    public Map<String, Object> getRemove() {
-        return remove;
-    }
-
-    public Map<String, Object> getEdit() {
-        return edit;
+    public List<String> getActuallyIncluded() {
+        return actuallyIncluded;
     }
 
 }

@@ -22,62 +22,63 @@
  */
 package com.synopsys.integration.jira.common.cloud.model;
 
+import java.util.Map;
+
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class ProjectComponent extends IntRestResponse {
-    private String self;
+public class TransitionComponent extends IntRestResponse {
     private String id;
-    private String key;
     private String name;
-    private AvatarUrlsComponent avatarUrls;
-    private ProjectCategoryComponent projectCategory;
-    private Boolean simplified;
-    private String style;
+    private StatusDetailsComponent to;
+    private Boolean hasScreen;
+    private Boolean isGlobal;
+    private Boolean isInitial;
+    private Map<String, Object> fields;
+    private String expand;
 
-    public ProjectComponent() {
+    public TransitionComponent() {
     }
 
-    public ProjectComponent(final String self, final String id, final String key, final String name, final AvatarUrlsComponent avatarUrls, final ProjectCategoryComponent projectCategory, final Boolean simplified, final String style) {
-        this.self = self;
+    public TransitionComponent(final String id, final String name, final StatusDetailsComponent to, final Boolean hasScreen, final Boolean isGlobal, final Boolean isInitial, final Map<String, Object> fields, final String expand) {
         this.id = id;
-        this.key = key;
         this.name = name;
-        this.avatarUrls = avatarUrls;
-        this.projectCategory = projectCategory;
-        this.simplified = simplified;
-        this.style = style;
-    }
-
-    public String getSelf() {
-        return self;
+        this.to = to;
+        this.hasScreen = hasScreen;
+        this.isGlobal = isGlobal;
+        this.isInitial = isInitial;
+        this.fields = fields;
+        this.expand = expand;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getKey() {
-        return key;
-    }
-
     public String getName() {
         return name;
     }
 
-    public AvatarUrlsComponent getAvatarUrls() {
-        return avatarUrls;
+    public StatusDetailsComponent getTo() {
+        return to;
     }
 
-    public ProjectCategoryComponent getProjectCategory() {
-        return projectCategory;
+    public Boolean getHasScreen() {
+        return hasScreen;
     }
 
-    public Boolean getSimplified() {
-        return simplified;
+    public Boolean getGlobal() {
+        return isGlobal;
     }
 
-    public String getStyle() {
-        return style;
+    public Boolean getInitial() {
+        return isInitial;
     }
 
+    public Map<String, Object> getFields() {
+        return fields;
+    }
+
+    public String getExpand() {
+        return expand;
+    }
 }
