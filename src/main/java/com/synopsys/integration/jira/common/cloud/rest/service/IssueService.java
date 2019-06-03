@@ -23,10 +23,10 @@
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
 import com.synopsys.integration.rest.request.Request;
 
 public class IssueService {
@@ -40,8 +40,8 @@ public class IssueService {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public IssueComponent createIssue(final IssueRequestModel requestModel) throws IntegrationException {
-        return jiraCloudService.post(requestModel, createApiUri(), IssueComponent.class);
+    public IssueResponseModel createIssue(final IssueRequestModel requestModel) throws IntegrationException {
+        return jiraCloudService.post(requestModel, createApiUri(), IssueResponseModel.class);
     }
 
     public void updateIssue(final IssueRequestModel requestModel) throws IntegrationException {
@@ -49,10 +49,10 @@ public class IssueService {
         jiraCloudService.put(requestModel, updateUri);
     }
 
-    public IssueComponent getIssue(final String issueIdOrKey) throws IntegrationException {
+    public IssueResponseModel getIssue(final String issueIdOrKey) throws IntegrationException {
         final String uri = createApiUpdateUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
-        return jiraCloudService.get(request, IssueComponent.class);
+        return jiraCloudService.get(request, IssueResponseModel.class);
     }
 
     public void deleteIssue(final String issueIdOrKey) throws IntegrationException {

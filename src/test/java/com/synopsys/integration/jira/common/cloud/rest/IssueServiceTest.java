@@ -1,5 +1,7 @@
 package com.synopsys.integration.jira.common.cloud.rest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,10 +12,10 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
-import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
@@ -58,11 +60,13 @@ public class IssueServiceTest extends JiraServiceTest {
         IssueRequestModel requestModel = new IssueRequestModel(fieldsBuilder, update, properties);
 
         // create an issue
-        IssueComponent createdIssue = issueService.createIssue(requestModel);
-        //TODO fix the get issue to a response model.
-        //IssueComponent foundIssue = issueService.getIssue(createdIssue.getId());
+        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssue.getId());
+        assertEquals(createdIssue.getKey(), foundIssue.getKey());
     }
 
     @Test

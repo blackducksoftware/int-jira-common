@@ -32,12 +32,13 @@ public class CommentComponent extends IntRestResponse {
     private UserDetailsComponent updateAuthor;
     private String created;
     private String updated;
-    private Object visibility; // TODO
+    private VisibilityComponent visibility;
 
     public CommentComponent() {
     }
 
-    public CommentComponent(final String self, final String id, final UserDetailsComponent author, final String body, final UserDetailsComponent updateAuthor, final String created, final String updated, final Object visibility) {
+    public CommentComponent(final String self, final String id, final UserDetailsComponent author, final String body, final UserDetailsComponent updateAuthor, final String created, final String updated,
+        final VisibilityComponent visibility) {
         this.self = self;
         this.id = id;
         this.author = author;
