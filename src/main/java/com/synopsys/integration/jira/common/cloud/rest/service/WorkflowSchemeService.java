@@ -22,7 +22,85 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.cloud.model.request.WorkflowIssueTypeMappingsRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.WorkflowRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.WorkflowSchemeRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.response.DefaultWorkflowResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.IssueTypesWorkflowMappingResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.WorkflowSchemeResponseModel;
+import com.synopsys.integration.rest.request.Request;
+import com.synopsys.integration.rest.request.Response;
+
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";
 
+    private JiraCloudService jiraCloudService;
+
+    public WorkflowSchemeService(final JiraCloudService jiraCloudService) {
+        this.jiraCloudService = jiraCloudService;
+    }
+
+    public WorkflowSchemeResponseModel createScheme(final WorkflowSchemeRequestModel requestModel) throws IntegrationException {
+        return jiraCloudService.post(requestModel, createApiUri(), WorkflowSchemeResponseModel.class);
+    }
+
+    public WorkflowSchemeResponseModel updateScheme(final WorkflowSchemeRequestModel requestModel) throws IntegrationException {
+        return jiraCloudService.put(requestModel, createApiUri(), WorkflowSchemeResponseModel.class);
+    }
+
+    public WorkflowSchemeResponseModel getSchemeById(final String schemeId) throws IntegrationException {
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createSchemeApiUri(schemeId));
+        return jiraCloudService.get(request, WorkflowSchemeResponseModel.class);
+    }
+
+    public DefaultWorkflowResponseModel getDefaultWorkflow(final String schemeId) throws IntegrationException {
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createDefaultWorkflowApiUri(schemeId));
+        return jiraCloudService.get(request, DefaultWorkflowResponseModel.class);
+    }
+
+    public DefaultWorkflowResponseModel updateDefaultWorkflow(final WorkflowRequestModel requestModel) throws IntegrationException {
+        final String uri = createDefaultWorkflowApiUri(requestModel.getSchemeId());
+        return jiraCloudService.put(requestModel, uri, DefaultWorkflowResponseModel.class);
+    }
+
+    public WorkflowSchemeResponseModel deleteDefaultWorkflow(final String schemeId) throws IntegrationException {
+        return jiraCloudService.delete(createDefaultWorkflowApiUri(schemeId), WorkflowSchemeResponseModel.class);
+    }
+
+    public IssueTypesWorkflowMappingResponseModel getIssueTypesForWorkflowInScheme(WorkflowIssueTypeMappingsRequestModel requestModel) throws IntegrationException {
+        final String uri = createWorkflowApiUri(requestModel.getId());
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        return jiraCloudService.get(request, IssueTypesWorkflowMappingResponseModel.class);
+    }
+
+    public WorkflowSchemeResponseModel setIssueTypesForWorkflowInScheme(WorkflowIssueTypeMappingsRequestModel requestModel) throws IntegrationException {
+        final String uri = createWorkflowApiUri(requestModel.getId());
+        return jiraCloudService.put(requestModel, uri, WorkflowSchemeResponseModel.class);
+    }
+
+    public void deleteIssueTypesForWorkflowInScheme(final String schemeId) throws IntegrationException {
+        Response response = jiraCloudService.delete(createWorkflowApiUri(schemeId));
+
+        if (response.isStatusCodeError()) {
+            throw new IntegrationException(String.format("Error deleting issue type mappings; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
+        }
+    }
+
+    private String createApiUri() {
+        return jiraCloudService.getBaseUrl() + API_PATH;
+    }
+
+    private String createSchemeApiUri(final String schemeId) {
+        return String.format("%s/%s", createApiUri(), schemeId);
+    }
+
+    private String createDefaultWorkflowApiUri(final String schemeId) {
+        return String.format("%s/default", createSchemeApiUri(schemeId));
+    }
+
+    private String createWorkflowApiUri(final String schemeId) {
+        return String.format("%s/workflow", createSchemeApiUri(schemeId));
+    }
 }

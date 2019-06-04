@@ -68,7 +68,7 @@ public class JiraCloudServiceFactory {
     }
 
     public WorkflowSchemeService createWorkflowSchemeService() {
-        return new WorkflowSchemeService();
+        return new WorkflowSchemeService(createCloudService());
     }
 
     public ProjectService createProjectService() {
