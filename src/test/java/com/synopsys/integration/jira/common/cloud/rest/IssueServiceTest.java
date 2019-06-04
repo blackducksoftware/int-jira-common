@@ -21,13 +21,12 @@ import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
 import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
-import com.synopsys.integration.jira.common.cloud.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.ProjectService;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
@@ -144,12 +143,6 @@ public class IssueServiceTest extends JiraServiceTest {
         IssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
-        IssueTypeService issueTypeService = serviceFactory.createIssueTypeService();
-
-        IssueTypeResponseModel bugIssueType = issueTypeService.getAllIssueTypes().stream()
-                                                  .filter(issueType -> "bug".equalsIgnoreCase(issueType.getName()))
-                                                  .findFirst()
-                                                  .orElseThrow(() -> new IllegalStateException("Jira Bug issue type not found."));
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsComponent userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
                                                .findFirst()
@@ -160,15 +153,12 @@ public class IssueServiceTest extends JiraServiceTest {
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.setReporter(userDetails.getAccountId());
-        fieldsBuilder.setProject(project.getId());
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
-        fieldsBuilder.setIssueType(bugIssueType.getId());
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
         List<EntityProperty> properties = new LinkedList<>();
-        IssueRequestModel requestModel = new IssueRequestModel(fieldsBuilder, update, properties);
+        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
 
         // create an issue
         return issueService.createIssue(requestModel);

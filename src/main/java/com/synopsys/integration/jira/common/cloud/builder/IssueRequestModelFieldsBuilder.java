@@ -52,6 +52,12 @@ public class IssueRequestModelFieldsBuilder {
         this.issueFields = new HashMap<>();
     }
 
+    public IssueRequestModelFieldsBuilder copyFields(final IssueRequestModelFieldsBuilder original) {
+        Map<String, Object> originalFields = original.build();
+        issueFields.putAll(originalFields);
+        return this;
+    }
+
     public Map<String, Object> build() {
         return Collections.unmodifiableMap(issueFields);
     }

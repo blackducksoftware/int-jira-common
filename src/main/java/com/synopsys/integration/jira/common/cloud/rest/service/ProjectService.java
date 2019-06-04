@@ -40,6 +40,15 @@ public class ProjectService {
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 
+    public PageOfProjectsResponseModel getProjectsByName(final String projectName) throws IntegrationException {
+        final Request request = JiraCloudRequestFactory.createDefaultBuilder()
+                                    .uri(createApiUri())
+                                    .addQueryParameter("query", projectName)
+                                    .addQueryParameter("orderBy", "name")
+                                    .build();
+        return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
+    }
+
     private String createApiUri() {
         return jiraCloudService.getBaseUrl() + API_PATH;
     }
