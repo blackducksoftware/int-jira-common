@@ -134,6 +134,14 @@ public class JiraCloudService {
         return execute(request);
     }
 
+    public <R extends IntRestResponse> R delete(final String uri, Class<R> responseClass) throws IntegrationException {
+        final Request request = JiraCloudRequestFactory
+                                    .createCommonDeleteRequestBuilder()
+                                    .uri(uri)
+                                    .build();
+        return execute(request, responseClass);
+    }
+
     private <R extends IntRestResponse> R execute(Request request, Class<R> responseClass) throws IntegrationException {
         return responseTransformer.getResponse(request, responseClass);
     }
