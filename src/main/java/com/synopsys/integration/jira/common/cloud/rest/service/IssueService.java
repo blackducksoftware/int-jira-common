@@ -25,7 +25,6 @@ package com.synopsys.integration.jira.common.cloud.rest.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
@@ -61,22 +60,28 @@ public class IssueService {
     }
 
     public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
+        final String issueTypeName = requestModel.getIssueTypeName();
+        final String projectName = requestModel.getProjectName();
+        final String reporterEmail = requestModel.getReporterEmail();
+
+        IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
+                                                    .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException(String.format("Issue type not found; issue type %s", issueTypeName)));
+        UserDetailsComponent foundUserDetails = userSearchService.findUser(reporterEmail).stream()
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
+        PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
+        ProjectComponent foundProject = pageOfProjects.getProjects().stream()
+                                            .findFirst()
+                                            .orElseThrow(() -> new IllegalStateException(String.format("Project not found; project name: %s", projectName)));
+
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
-        Optional<IssueTypeResponseModel> bugIssueType = issueTypeService.getAllIssueTypes().stream()
-                                                            .filter(issueType -> issueType.getName().equalsIgnoreCase(requestModel.getIssueTypeName()))
-                                                            .findFirst();
-        Optional<UserDetailsComponent> userDetails = userSearchService.findUser(requestModel.getReporterEmail()).stream()
-                                                         .findFirst();
 
-        PageOfProjectsResponseModel projects = projectService.getProjectsByName(requestModel.getProjectName());
-
-        Optional<ProjectComponent> foundProject = projects.getProjects().stream()
-                                                      .findFirst();
-
-        bugIssueType.ifPresent(issueType -> fieldsBuilder.setIssueType(issueType.getId()));
-        userDetails.ifPresent(user -> fieldsBuilder.setReporter(user.getAccountId()));
-        foundProject.ifPresent(project -> fieldsBuilder.setProject(project.getId()));
+        fieldsBuilder.setIssueType(foundIssueType.getId());
+        fieldsBuilder.setReporter(foundUserDetails.getAccountId());
+        fieldsBuilder.setProject(foundProject.getId());
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
         IssueRequestModel issueRequestModel = new IssueRequestModel(fieldsBuilder, update, requestModel.getProperties());
@@ -98,7 +103,10 @@ public class IssueService {
 
     public IssueResponseModel getIssue(final String issueIdOrKey) throws IntegrationException {
         final String uri = createApiUpdateUri(issueIdOrKey);
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        Request request = JiraCloudRequestFactory.createDefaultBuilder()
+                              .uri(uri)
+                              .addQueryParameter("properties", "*all")
+                              .build();
         return jiraCloudService.get(request, IssueResponseModel.class);
     }
 

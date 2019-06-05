@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.response;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.synopsys.integration.jira.common.cloud.model.ChangelogComponent;
@@ -31,6 +32,7 @@ public class PageOfChangelogsResponseModel extends JiraPageResponseModel {
     private List<ChangelogComponent> histories;
 
     public PageOfChangelogsResponseModel() {
+        histories = Collections.emptyList();
     }
 
     public PageOfChangelogsResponseModel(final List<ChangelogComponent> histories) {
