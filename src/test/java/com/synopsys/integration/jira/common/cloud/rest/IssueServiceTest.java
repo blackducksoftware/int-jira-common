@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,19 +23,21 @@ import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
 import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
-import com.synopsys.integration.jira.common.cloud.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.ProjectService;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueServiceTest extends JiraServiceTest {
+
+    public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
+
     @Test
     public void testCreateIssue() throws Exception {
         validateConfiguration();
@@ -48,6 +52,80 @@ public class IssueServiceTest extends JiraServiceTest {
 
         assertEquals(createdIssue.getId(), foundIssue.getId());
         assertEquals(createdIssue.getKey(), foundIssue.getKey());
+        assertTrue(foundIssue.getProperties().containsKey(TEST_PROPERTY_KEY));
+        assertNotNull(foundIssue.getProperties().get(TEST_PROPERTY_KEY));
+    }
+
+    @Test
+    public void testCreateNullFieldExceptions() throws Exception {
+        validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+        ProjectService projectService = serviceFactory.createProjectService();
+        UserSearchService userSearchService = serviceFactory.createUserSearchService();
+
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setDescription("Description of the test issue: ");
+        fieldsBuilder.setSummary("Test Issue ");
+        List<EntityProperty> properties = new LinkedList<>();
+        PageOfProjectsResponseModel projects = projectService.getProjects();
+        ProjectComponent validProject = projects.getProjects().stream()
+                                            .findFirst()
+                                            .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+        UserDetailsComponent validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        final String validIssueType = "bug";
+        final String validEmailAddress = validUserDetails.getEmailAddress();
+        final String validProjectName = validProject.getName();
+
+        final IssueCreationRequestModel emailRequestModel = new IssueCreationRequestModel(null, validIssueType, validProjectName, fieldsBuilder, properties);
+        IllegalStateException emailException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(emailRequestModel));
+        final IssueCreationRequestModel issueTypeRequestModel = new IssueCreationRequestModel(validEmailAddress, null, validProjectName, fieldsBuilder, properties);
+        IllegalStateException issueTypeException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(issueTypeRequestModel));
+        final IssueCreationRequestModel projectRequestModel = new IssueCreationRequestModel(validEmailAddress, validIssueType, null, fieldsBuilder, properties);
+        IllegalStateException projectException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(projectRequestModel));
+
+        assertTrue(emailException.getMessage().contains("Reporter user with email not found; email:"));
+        assertTrue(issueTypeException.getMessage().contains("Issue type not found; issue type"));
+        assertTrue(projectException.getMessage().contains("Project not found; project name:"));
+    }
+
+    @Test
+    public void testCreateFieldsNotFoundExceptions() throws Exception {
+        validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+        ProjectService projectService = serviceFactory.createProjectService();
+        UserSearchService userSearchService = serviceFactory.createUserSearchService();
+
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setDescription("Description of the test issue: ");
+        fieldsBuilder.setSummary("Test Issue ");
+        List<EntityProperty> properties = new LinkedList<>();
+
+        PageOfProjectsResponseModel projects = projectService.getProjects();
+        ProjectComponent validProject = projects.getProjects().stream()
+                                            .findFirst()
+                                            .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+        UserDetailsComponent validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        final String validIssueType = "bug";
+        final String validEmailAddress = validUserDetails.getEmailAddress();
+        final String validProjectName = validProject.getName();
+
+        final IssueCreationRequestModel emailRequestModel = new IssueCreationRequestModel("unknown_user_123_abcd@a.unknown.test.domain.com", validIssueType, validProjectName, fieldsBuilder, properties);
+        IllegalStateException emailException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(emailRequestModel));
+        final IssueCreationRequestModel issueTypeRequestModel = new IssueCreationRequestModel(validEmailAddress, "unknown_test_issue_type", validProjectName, fieldsBuilder, properties);
+        IllegalStateException issueTypeException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(issueTypeRequestModel));
+        final IssueCreationRequestModel projectRequestModel = new IssueCreationRequestModel(validEmailAddress, validIssueType, "unknown_project_name", fieldsBuilder, properties);
+        IllegalStateException projectException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(projectRequestModel));
+
+        assertTrue(emailException.getMessage().contains("Reporter user with email not found; email:"));
+        assertTrue(issueTypeException.getMessage().contains("Issue type not found; issue type"));
+        assertTrue(projectException.getMessage().contains("Project not found; project name:"));
+
     }
 
     @Test
@@ -66,7 +144,10 @@ public class IssueServiceTest extends JiraServiceTest {
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.setAssignee(userDetails.getAccountId());
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
+
+        final String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
+        properties.add(new EntityProperty(TEST_PROPERTY_KEY, propertyValue));
         IssueRequestModel requestModel = new IssueRequestModel(foundIssue.getId(), null, fieldsBuilder, update, properties);
         issueService.updateIssue(requestModel);
         IssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
@@ -78,6 +159,10 @@ public class IssueServiceTest extends JiraServiceTest {
         assertNull(foundIssue.getFields().getAssignee());
         assertNotNull(foundIssueWithAssignee.getFields().getAssignee());
         assertEquals(userDetails.getAccountId(), foundIssueWithAssignee.getFields().getAssignee().getAccountId());
+        assertTrue(foundIssueWithAssignee.getProperties().containsKey(TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
+        assertNotEquals(foundIssue.getProperties().get(TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
     }
 
     @Test
@@ -144,12 +229,6 @@ public class IssueServiceTest extends JiraServiceTest {
         IssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
-        IssueTypeService issueTypeService = serviceFactory.createIssueTypeService();
-
-        IssueTypeResponseModel bugIssueType = issueTypeService.getAllIssueTypes().stream()
-                                                  .filter(issueType -> "bug".equalsIgnoreCase(issueType.getName()))
-                                                  .findFirst()
-                                                  .orElseThrow(() -> new IllegalStateException("Jira Bug issue type not found."));
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsComponent userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
                                                .findFirst()
@@ -160,15 +239,14 @@ public class IssueServiceTest extends JiraServiceTest {
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.setReporter(userDetails.getAccountId());
-        fieldsBuilder.setProject(project.getId());
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
-        fieldsBuilder.setIssueType(bugIssueType.getId());
 
-        Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
+        final String propertyKey = TEST_PROPERTY_KEY;
+        final String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        IssueRequestModel requestModel = new IssueRequestModel(fieldsBuilder, update, properties);
+        properties.add(new EntityProperty(propertyKey, propertyValue));
+        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
 
         // create an issue
         return issueService.createIssue(requestModel);

@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.response;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
@@ -31,6 +32,7 @@ public class PageOfProjectsResponseModel extends JiraPageResponseModel {
     private List<ProjectComponent> values;
 
     public PageOfProjectsResponseModel() {
+        values = Collections.emptyList();
     }
 
     public PageOfProjectsResponseModel(final List<ProjectComponent> values) {

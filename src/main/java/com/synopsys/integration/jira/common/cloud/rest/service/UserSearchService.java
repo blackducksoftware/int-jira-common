@@ -22,7 +22,10 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
@@ -39,6 +42,10 @@ public class UserSearchService {
     }
 
     public List<UserDetailsComponent> findUser(final String queryValue) throws IntegrationException {
+        if (StringUtils.isBlank(queryValue)) {
+            return Collections.emptyList();
+        }
+
         final String uri = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)

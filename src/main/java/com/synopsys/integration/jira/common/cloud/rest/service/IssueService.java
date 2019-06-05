@@ -22,11 +22,22 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
+import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
@@ -36,13 +47,48 @@ public class IssueService {
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
-    private JiraCloudService jiraCloudService;
+    private final JiraCloudService jiraCloudService;
+    private final UserSearchService userSearchService;
+    private final ProjectService projectService;
+    private final IssueTypeService issueTypeService;
 
-    public IssueService(final JiraCloudService jiraCloudService) {
+    public IssueService(final JiraCloudService jiraCloudService, final UserSearchService userSearchService, final ProjectService projectService, final IssueTypeService issueTypeService) {
         this.jiraCloudService = jiraCloudService;
+        this.userSearchService = userSearchService;
+        this.projectService = projectService;
+        this.issueTypeService = issueTypeService;
     }
 
-    public IssueResponseModel createIssue(final IssueRequestModel requestModel) throws IntegrationException {
+    public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
+        final String issueTypeName = requestModel.getIssueTypeName();
+        final String projectName = requestModel.getProjectName();
+        final String reporterEmail = requestModel.getReporterEmail();
+
+        IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
+                                                    .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException(String.format("Issue type not found; issue type %s", issueTypeName)));
+        UserDetailsComponent foundUserDetails = userSearchService.findUser(reporterEmail).stream()
+                                                    .findFirst()
+                                                    .orElseThrow(() -> new IllegalStateException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
+        PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
+        ProjectComponent foundProject = pageOfProjects.getProjects().stream()
+                                            .findFirst()
+                                            .orElseThrow(() -> new IllegalStateException(String.format("Project not found; project name: %s", projectName)));
+
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
+
+        fieldsBuilder.setIssueType(foundIssueType.getId());
+        fieldsBuilder.setReporter(foundUserDetails.getAccountId());
+        fieldsBuilder.setProject(foundProject.getId());
+
+        Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
+        IssueRequestModel issueRequestModel = new IssueRequestModel(fieldsBuilder, update, requestModel.getProperties());
+        return createIssue(issueRequestModel);
+    }
+
+    private IssueResponseModel createIssue(final IssueRequestModel requestModel) throws IntegrationException {
         return jiraCloudService.post(requestModel, createApiUri(), IssueResponseModel.class);
     }
 
@@ -57,7 +103,10 @@ public class IssueService {
 
     public IssueResponseModel getIssue(final String issueIdOrKey) throws IntegrationException {
         final String uri = createApiUpdateUri(issueIdOrKey);
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        Request request = JiraCloudRequestFactory.createDefaultBuilder()
+                              .uri(uri)
+                              .addQueryParameter("properties", "*all")
+                              .build();
         return jiraCloudService.get(request, IssueResponseModel.class);
     }
 

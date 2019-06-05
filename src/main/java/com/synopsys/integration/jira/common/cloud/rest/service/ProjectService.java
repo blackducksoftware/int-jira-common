@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
@@ -37,6 +39,19 @@ public class ProjectService {
 
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
         final Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
+    }
+
+    public PageOfProjectsResponseModel getProjectsByName(final String projectName) throws IntegrationException {
+        if (StringUtils.isBlank(projectName)) {
+            return new PageOfProjectsResponseModel();
+        }
+
+        final Request request = JiraCloudRequestFactory.createDefaultBuilder()
+                                    .uri(createApiUri())
+                                    .addQueryParameter("query", projectName)
+                                    .addQueryParameter("orderBy", "name")
+                                    .build();
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 
