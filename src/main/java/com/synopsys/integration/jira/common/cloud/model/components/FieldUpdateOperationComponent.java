@@ -20,13 +20,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.Map;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class FieldUpdateOperationComponent extends IntRestResponse {
+public class FieldUpdateOperationComponent extends IntRestComponent {
     private Map<String, Object> add;
     private Map<String, Object> set;
     private Map<String, Object> remove;

@@ -20,24 +20,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import java.util.List;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+public class IdComponent extends IntRestComponent {
+    private String id;
 
-public class OperationsComponent extends IntRestResponse {
-    private List<Object> linkGroup;
-
-    public OperationsComponent() {
+    public IdComponent() {
     }
 
-    public OperationsComponent(final List<Object> linkGroup) {
-        this.linkGroup = linkGroup;
+    public IdComponent(final String id) {
+        this.id = id;
     }
 
-    public List<Object> getLinkGroup() {
-        return linkGroup;
+    public String getId() {
+        return id;
     }
 
 }

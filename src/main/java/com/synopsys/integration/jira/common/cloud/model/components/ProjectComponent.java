@@ -20,33 +20,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class StatusCategory extends IntRestResponse {
+public class ProjectComponent extends IntRestComponent {
     private String self;
-    private Integer id;
+    private String id;
     private String key;
-    private String colorName;
     private String name;
+    private AvatarUrlsComponent avatarUrls;
+    private ProjectCategoryComponent projectCategory;
+    private Boolean simplified;
+    private String style;
 
-    public StatusCategory() {
+    public ProjectComponent() {
     }
 
-    public StatusCategory(final String self, final Integer id, final String key, final String colorName, final String name) {
+    public ProjectComponent(final String self, final String id, final String key, final String name, final AvatarUrlsComponent avatarUrls, final ProjectCategoryComponent projectCategory, final Boolean simplified, final String style) {
         this.self = self;
         this.id = id;
         this.key = key;
-        this.colorName = colorName;
         this.name = name;
+        this.avatarUrls = avatarUrls;
+        this.projectCategory = projectCategory;
+        this.simplified = simplified;
+        this.style = style;
     }
 
     public String getSelf() {
         return self;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -54,11 +60,24 @@ public class StatusCategory extends IntRestResponse {
         return key;
     }
 
-    public String getColorName() {
-        return colorName;
-    }
-
     public String getName() {
         return name;
     }
+
+    public AvatarUrlsComponent getAvatarUrls() {
+        return avatarUrls;
+    }
+
+    public ProjectCategoryComponent getProjectCategory() {
+        return projectCategory;
+    }
+
+    public Boolean getSimplified() {
+        return simplified;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
 }

@@ -25,14 +25,14 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 import java.util.List;
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.cloud.model.IdComponent;
-import com.synopsys.integration.jira.common.cloud.model.IssueFieldsComponent;
-import com.synopsys.integration.jira.common.cloud.model.IssueIncludedFieldsComponent;
-import com.synopsys.integration.jira.common.cloud.model.IssueUpdateMetadataComponent;
-import com.synopsys.integration.jira.common.cloud.model.OperationsComponent;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.jira.common.cloud.model.components.IdComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.IssueFieldsComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.IssueIncludedFieldsComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.IssueUpdateMetadataComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.OperationsComponent;
+import com.synopsys.integration.jira.common.model.JiraResponse;
 
-public class IssueResponseModel extends IntRestResponse {
+public class IssueResponseModel extends JiraResponse {
     private String expand;
     private String id;
     private String self;

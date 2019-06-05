@@ -24,7 +24,7 @@ package com.synopsys.integration.jira.common.cloud.model.request;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.cloud.model.VisibilityComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.VisibilityComponent;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueCommentRequestModel extends JiraRequestModel {

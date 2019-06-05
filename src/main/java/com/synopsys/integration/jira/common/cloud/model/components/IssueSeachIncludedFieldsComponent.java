@@ -20,42 +20,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.List;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class WatcherComponent extends IntRestResponse {
-    private String self;
-    private Boolean isWatching;
-    private Integer watchCount;
-    private List<UserDetailsComponent> watchers;
+public class IssueSeachIncludedFieldsComponent extends IntRestComponent {
+    private List<String> included;
+    private List<String> excluded;
+    private List<String> actuallyIncluded;
 
-    public WatcherComponent() {
+    public IssueSeachIncludedFieldsComponent() {
     }
 
-    public WatcherComponent(final String self, final Boolean isWatching, final Integer watchCount, final List<UserDetailsComponent> watchers) {
-        this.self = self;
-        this.isWatching = isWatching;
-        this.watchCount = watchCount;
-        this.watchers = watchers;
+    public IssueSeachIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
+        this.included = included;
+        this.excluded = excluded;
+        this.actuallyIncluded = actuallyIncluded;
     }
 
-    public String getSelf() {
-        return self;
+    public List<String> getIncluded() {
+        return included;
     }
 
-    public Boolean getWatching() {
-        return isWatching;
+    public List<String> getExcluded() {
+        return excluded;
     }
 
-    public Integer getWatchCount() {
-        return watchCount;
-    }
-
-    public List<UserDetailsComponent> getWatchers() {
-        return watchers;
+    public List<String> getActuallyIncluded() {
+        return actuallyIncluded;
     }
 
 }

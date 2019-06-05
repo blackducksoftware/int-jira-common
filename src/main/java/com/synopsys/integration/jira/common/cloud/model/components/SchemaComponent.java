@@ -20,27 +20,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model.response;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import java.util.Collections;
-import java.util.List;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-import com.synopsys.integration.jira.common.cloud.model.components.ChangelogComponent;
-import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
+public class SchemaComponent extends IntRestComponent {
+    private String type;
+    private String system;
 
-public class PageOfChangelogsResponseModel extends JiraPageResponseModel {
-    private List<ChangelogComponent> histories;
-
-    public PageOfChangelogsResponseModel() {
-        histories = Collections.emptyList();
+    public SchemaComponent() {
     }
 
-    public PageOfChangelogsResponseModel(final List<ChangelogComponent> histories) {
-        this.histories = histories;
+    public SchemaComponent(final String type, final String system) {
+        this.type = type;
+        this.system = system;
     }
 
-    public List<ChangelogComponent> getHistories() {
-        return histories;
+    public String getType() {
+        return type;
+    }
+
+    public String getSystem() {
+        return system;
     }
 
 }

@@ -20,34 +20,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueLinksComponent extends IntRestResponse {
-    private String id;
-    private Object type; // TODO
-    private Object outwardIssue; // TODO
+public class StatusCategory extends IntRestComponent {
+    private String self;
+    private Integer id;
+    private String key;
+    private String colorName;
+    private String name;
 
-    public IssueLinksComponent() {
+    public StatusCategory() {
     }
 
-    public IssueLinksComponent(final String id, final Object type, final Object outwardIssue) {
+    public StatusCategory(final String self, final Integer id, final String key, final String colorName, final String name) {
+        this.self = self;
         this.id = id;
-        this.type = type;
-        this.outwardIssue = outwardIssue;
+        this.key = key;
+        this.colorName = colorName;
+        this.name = name;
     }
 
-    public String getId() {
+    public String getSelf() {
+        return self;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public Object getType() {
-        return type;
+    public String getKey() {
+        return key;
     }
 
-    public Object getOutwardIssue() {
-        return outwardIssue;
+    public String getColorName() {
+        return colorName;
     }
 
+    public String getName() {
+        return name;
+    }
 }

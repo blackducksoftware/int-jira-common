@@ -20,32 +20,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class ProjectComponent extends IntRestResponse {
+public class ProjectCategoryComponent extends IntRestComponent {
     private String self;
     private String id;
-    private String key;
     private String name;
-    private AvatarUrlsComponent avatarUrls;
-    private ProjectCategoryComponent projectCategory;
-    private Boolean simplified;
-    private String style;
+    private String description;
 
-    public ProjectComponent() {
+    public ProjectCategoryComponent() {
     }
 
-    public ProjectComponent(final String self, final String id, final String key, final String name, final AvatarUrlsComponent avatarUrls, final ProjectCategoryComponent projectCategory, final Boolean simplified, final String style) {
+    public ProjectCategoryComponent(final String self, final String id, final String name, final String description) {
         this.self = self;
         this.id = id;
-        this.key = key;
         this.name = name;
-        this.avatarUrls = avatarUrls;
-        this.projectCategory = projectCategory;
-        this.simplified = simplified;
-        this.style = style;
+        this.description = description;
     }
 
     public String getSelf() {
@@ -56,28 +48,12 @@ public class ProjectComponent extends IntRestResponse {
         return id;
     }
 
-    public String getKey() {
-        return key;
-    }
-
     public String getName() {
         return name;
     }
 
-    public AvatarUrlsComponent getAvatarUrls() {
-        return avatarUrls;
-    }
-
-    public ProjectCategoryComponent getProjectCategory() {
-        return projectCategory;
-    }
-
-    public Boolean getSimplified() {
-        return simplified;
-    }
-
-    public String getStyle() {
-        return style;
+    public String getDescription() {
+        return description;
     }
 
 }

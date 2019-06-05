@@ -20,34 +20,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import java.util.List;
+import com.synopsys.integration.jira.common.model.JiraPagedModel;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueIncludedFieldsComponent {
-    private List<String> included;
-    private List<String> excluded;
-    private List<String> actuallyIncluded;
+public class JiraPagedComponent extends IntRestComponent implements JiraPagedModel {
+    private Integer startAt;
+    private Integer maxResults;
+    private Integer total;
 
-    public IssueIncludedFieldsComponent() {
+    @Override
+    public Integer getStartAt() {
+        return startAt;
     }
 
-    public IssueIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
-        this.included = included;
-        this.excluded = excluded;
-        this.actuallyIncluded = actuallyIncluded;
+    @Override
+    public Integer getMaxResults() {
+        return maxResults;
     }
 
-    public List<String> getIncluded() {
-        return included;
+    @Override
+    public Integer getTotal() {
+        return total;
     }
-
-    public List<String> getExcluded() {
-        return excluded;
-    }
-
-    public List<String> getActuallyIncluded() {
-        return actuallyIncluded;
-    }
-
 }

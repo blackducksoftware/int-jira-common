@@ -24,7 +24,7 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.UserDetailsComponent;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 
 public class WorkflowSchemeResponseModel extends JiraResponse {

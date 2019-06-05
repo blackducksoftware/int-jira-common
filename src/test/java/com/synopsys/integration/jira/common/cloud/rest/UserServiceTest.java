@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
+import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
 
@@ -21,7 +21,7 @@ public class UserServiceTest extends JiraServiceTest {
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         final String email = getEnvUserEmail();
 
-        List<UserDetailsComponent> users = userSearchService.findUser(email);
+        List<UserDetailsResponseModel> users = userSearchService.findUser(email);
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
         assertEquals(email, users.get(0).getEmailAddress());
@@ -34,7 +34,7 @@ public class UserServiceTest extends JiraServiceTest {
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         final String email = "invalid_user@does_not_exist_abc_123.org";
 
-        List<UserDetailsComponent> users = userSearchService.findUser(email);
+        List<UserDetailsResponseModel> users = userSearchService.findUser(email);
         assertTrue(users.isEmpty());
     }
 }

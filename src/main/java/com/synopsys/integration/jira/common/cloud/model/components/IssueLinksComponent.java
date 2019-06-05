@@ -20,28 +20,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class SchemaComponent extends IntRestResponse {
-    private String type;
-    private String system;
+public class IssueLinksComponent extends IntRestComponent {
+    private String id;
+    private Object type; // TODO
+    private Object outwardIssue; // TODO
 
-    public SchemaComponent() {
+    public IssueLinksComponent() {
     }
 
-    public SchemaComponent(final String type, final String system) {
+    public IssueLinksComponent(final String id, final Object type, final Object outwardIssue) {
+        this.id = id;
         this.type = type;
-        this.system = system;
+        this.outwardIssue = outwardIssue;
     }
 
-    public String getType() {
+    public String getId() {
+        return id;
+    }
+
+    public Object getType() {
         return type;
     }
 
-    public String getSystem() {
-        return system;
+    public Object getOutwardIssue() {
+        return outwardIssue;
     }
 
 }

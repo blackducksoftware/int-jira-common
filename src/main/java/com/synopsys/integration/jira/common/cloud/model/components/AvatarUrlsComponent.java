@@ -20,12 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class AvatarUrlsComponent extends IntRestResponse {
+public class AvatarUrlsComponent extends IntRestComponent {
     @SerializedName("16x16")
     private String sixteen;
     @SerializedName("24x24")

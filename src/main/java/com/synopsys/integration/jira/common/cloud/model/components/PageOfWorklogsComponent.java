@@ -20,36 +20,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
+import java.util.Collections;
 import java.util.List;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+public class PageOfWorklogsComponent extends JiraPagedComponent {
+    private List<WorklogComponent> worklogs;
 
-public class IssueSeachIncludedFieldsComponent extends IntRestResponse {
-    private List<String> included;
-    private List<String> excluded;
-    private List<String> actuallyIncluded;
-
-    public IssueSeachIncludedFieldsComponent() {
+    public PageOfWorklogsComponent() {
+        worklogs = Collections.emptyList();
     }
 
-    public IssueSeachIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
-        this.included = included;
-        this.excluded = excluded;
-        this.actuallyIncluded = actuallyIncluded;
+    public PageOfWorklogsComponent(final List<WorklogComponent> worklogs) {
+        this.worklogs = worklogs;
     }
 
-    public List<String> getIncluded() {
-        return included;
+    public List<WorklogComponent> getWorklogs() {
+        return worklogs;
     }
-
-    public List<String> getExcluded() {
-        return excluded;
-    }
-
-    public List<String> getActuallyIncluded() {
-        return actuallyIncluded;
-    }
-
 }

@@ -20,27 +20,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import java.util.List;
 
-public class VisibilityComponent extends IntRestResponse {
-    private String type;
-    private String value;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-    public VisibilityComponent() {
+public class IssueIncludedFieldsComponent extends IntRestComponent {
+    private List<String> included;
+    private List<String> excluded;
+    private List<String> actuallyIncluded;
+
+    public IssueIncludedFieldsComponent() {
     }
 
-    public VisibilityComponent(final String type, final String value) {
-        this.type = type;
-        this.value = value;
+    public IssueIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
+        this.included = included;
+        this.excluded = excluded;
+        this.actuallyIncluded = actuallyIncluded;
     }
 
-    public String getType() {
-        return type;
+    public List<String> getIncluded() {
+        return included;
     }
 
-    public String getValue() {
-        return value;
+    public List<String> getExcluded() {
+        return excluded;
     }
+
+    public List<String> getActuallyIncluded() {
+        return actuallyIncluded;
+    }
+
 }

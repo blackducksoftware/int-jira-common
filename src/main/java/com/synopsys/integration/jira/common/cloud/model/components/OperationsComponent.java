@@ -20,22 +20,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import java.util.List;
 
-public class IssueUpdateMetadataComponent extends IntRestResponse {
-    private Object fields;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-    public IssueUpdateMetadataComponent() {
+public class OperationsComponent extends IntRestComponent {
+    private List<Object> linkGroup;
+
+    public OperationsComponent() {
     }
 
-    public IssueUpdateMetadataComponent(final Object fields) {
-        this.fields = fields;
+    public OperationsComponent(final List<Object> linkGroup) {
+        this.linkGroup = linkGroup;
     }
 
-    public Object getFields() {
-        return fields;
+    public List<Object> getLinkGroup() {
+        return linkGroup;
     }
 
 }

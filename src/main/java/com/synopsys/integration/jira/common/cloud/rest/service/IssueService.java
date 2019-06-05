@@ -28,9 +28,8 @@ import java.util.Map;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
-import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
-import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
@@ -39,6 +38,7 @@ import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseMo
 import com.synopsys.integration.jira.common.cloud.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
@@ -68,9 +68,9 @@ public class IssueService {
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
                                                     .findFirst()
                                                     .orElseThrow(() -> new IllegalStateException(String.format("Issue type not found; issue type %s", issueTypeName)));
-        UserDetailsComponent foundUserDetails = userSearchService.findUser(reporterEmail).stream()
-                                                    .findFirst()
-                                                    .orElseThrow(() -> new IllegalStateException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
+        UserDetailsResponseModel foundUserDetails = userSearchService.findUser(reporterEmail).stream()
+                                                        .findFirst()
+                                                        .orElseThrow(() -> new IllegalStateException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = pageOfProjects.getProjects().stream()
                                             .findFirst()

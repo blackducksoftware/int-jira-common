@@ -20,40 +20,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class ProjectCategoryComponent extends IntRestResponse {
-    private String self;
-    private String id;
-    private String name;
-    private String description;
+public class VisibilityComponent extends IntRestComponent {
+    private String type;
+    private String value;
 
-    public ProjectCategoryComponent() {
+    public VisibilityComponent() {
     }
 
-    public ProjectCategoryComponent(final String self, final String id, final String name, final String description) {
-        this.self = self;
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public VisibilityComponent(final String type, final String value) {
+        this.type = type;
+        this.value = value;
     }
 
-    public String getSelf() {
-        return self;
+    public String getType() {
+        return type;
     }
 
-    public String getId() {
-        return id;
+    public String getValue() {
+        return value;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
 }

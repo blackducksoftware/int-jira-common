@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
-import com.synopsys.integration.jira.common.cloud.model.IdComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.IdComponent;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueRequestModel extends JiraRequestModel {

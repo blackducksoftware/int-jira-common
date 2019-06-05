@@ -20,11 +20,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class HistoryMetadataComponent extends IntRestResponse {
+public class HistoryMetadataComponent extends IntRestComponent {
     private String type;
     private String description;
     private String descriptionKey;

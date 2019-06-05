@@ -20,13 +20,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.List;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class ChangelogComponent extends IntRestResponse {
+public class ChangelogComponent extends IntRestComponent {
     private String id;
     private UserDetailsComponent author;
     private String created;

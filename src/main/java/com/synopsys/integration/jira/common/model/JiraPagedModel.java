@@ -20,25 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.model;
 
-import java.util.Collections;
-import java.util.List;
+public interface JiraPagedModel {
+    Integer getStartAt();
 
-import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
+    Integer getMaxResults();
 
-public class PageOfIssueCommentsComponent extends JiraPageResponseModel {
-    private List<CommentComponent> comments;
-
-    public PageOfIssueCommentsComponent() {
-        comments = Collections.emptyList();
-    }
-
-    public PageOfIssueCommentsComponent(final List<CommentComponent> comments) {
-        this.comments = comments;
-    }
-
-    public List<CommentComponent> getComments() {
-        return comments;
-    }
+    Integer getTotal();
 }

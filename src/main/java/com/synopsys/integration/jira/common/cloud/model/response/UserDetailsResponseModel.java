@@ -20,11 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.response;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.jira.common.cloud.model.components.AvatarUrlsComponent;
+import com.synopsys.integration.jira.common.model.JiraResponse;
 
-public class UserDetailsComponent extends IntRestResponse {
+public class UserDetailsResponseModel extends JiraResponse {
     private String self;
     private String name;
     private String key;
@@ -36,10 +37,10 @@ public class UserDetailsComponent extends IntRestResponse {
     private String timeZone;
     private String accountType;
 
-    public UserDetailsComponent() {
+    public UserDetailsResponseModel() {
     }
 
-    public UserDetailsComponent(final String self, final String name, final String key, final String accountId, final String emailAddress, final AvatarUrlsComponent avatarUrls, final String displayName, final Boolean active,
+    public UserDetailsResponseModel(final String self, final String name, final String key, final String accountId, final String emailAddress, final AvatarUrlsComponent avatarUrls, final String displayName, final Boolean active,
         final String timeZone, final String accountType) {
         this.self = self;
         this.name = name;
@@ -92,5 +93,4 @@ public class UserDetailsComponent extends IntRestResponse {
     public String getAccountType() {
         return accountType;
     }
-
 }
