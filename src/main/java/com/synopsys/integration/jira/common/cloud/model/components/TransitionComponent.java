@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.Map;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class TransitionComponent extends IntRestResponse {
+public class TransitionComponent extends IntRestComponent {
     private String id;
     private String name;
     private StatusDetailsComponent to;

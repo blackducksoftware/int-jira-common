@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.synopsys.integration.jira.common.cloud.model.response.PageOfChangelogsResponseModel;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueComponent extends IntRestResponse {
+public class IssueComponent extends IntRestComponent {
     private String expand;
     private String id;
     private String self;

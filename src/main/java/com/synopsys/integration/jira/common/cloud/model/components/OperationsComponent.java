@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.List;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class OperationsComponent extends IntRestResponse {
+public class OperationsComponent extends IntRestComponent {
     private List<Object> linkGroup;
 
     public OperationsComponent() {

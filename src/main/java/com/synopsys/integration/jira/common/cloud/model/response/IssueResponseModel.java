@@ -30,9 +30,9 @@ import com.synopsys.integration.jira.common.cloud.model.components.IssueFieldsCo
 import com.synopsys.integration.jira.common.cloud.model.components.IssueIncludedFieldsComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.IssueUpdateMetadataComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.OperationsComponent;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.jira.common.model.JiraResponse;
 
-public class IssueResponseModel extends IntRestResponse {
+public class IssueResponseModel extends JiraResponse {
     private String expand;
     private String id;
     private String self;

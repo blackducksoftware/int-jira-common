@@ -25,9 +25,9 @@ package com.synopsys.integration.jira.common.cloud.model.components;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueSearchIssueFieldsComponent extends IntRestResponse {
+public class IssueSearchIssueFieldsComponent extends IntRestComponent {
     private List<IssueAttachmentComponent> attachment;
     private List<CommentComponent> comment;
     private String description;

@@ -25,9 +25,7 @@ package com.synopsys.integration.jira.common.cloud.model.components;
 import java.util.Collections;
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
-
-public class PageOfWorklogsComponent extends JiraPageResponseModel {
+public class PageOfWorklogsComponent extends JiraPagedComponent {
     private List<WorklogComponent> worklogs;
 
     public PageOfWorklogsComponent() {

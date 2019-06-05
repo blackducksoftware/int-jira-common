@@ -28,8 +28,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.components.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {
@@ -41,7 +41,7 @@ public class UserSearchService {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public List<UserDetailsComponent> findUser(final String queryValue) throws IntegrationException {
+    public List<UserDetailsResponseModel> findUser(final String queryValue) throws IntegrationException {
         if (StringUtils.isBlank(queryValue)) {
             return Collections.emptyList();
         }
@@ -51,7 +51,7 @@ public class UserSearchService {
                               .uri(uri)
                               .addQueryParameter("query", queryValue)
                               .build();
-        return jiraCloudService.getList(request, UserDetailsComponent.class);
+        return jiraCloudService.getList(request, UserDetailsResponseModel.class);
     }
 
     private String createApiUri() {

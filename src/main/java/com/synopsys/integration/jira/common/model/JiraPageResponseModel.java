@@ -22,19 +22,22 @@
  */
 package com.synopsys.integration.jira.common.model;
 
-public class JiraPageResponseModel extends JiraResponse {
+public class JiraPageResponseModel extends JiraResponse implements JiraPagedModel {
     private Integer startAt;
     private Integer maxResults;
     private Integer total;
 
+    @Override
     public Integer getStartAt() {
         return startAt;
     }
 
+    @Override
     public Integer getMaxResults() {
         return maxResults;
     }
 
+    @Override
     public Integer getTotal() {
         return total;
     }

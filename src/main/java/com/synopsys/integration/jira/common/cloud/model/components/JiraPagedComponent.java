@@ -22,25 +22,26 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.components;
 
+import com.synopsys.integration.jira.common.model.JiraPagedModel;
 import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class VisibilityComponent extends IntRestComponent {
-    private String type;
-    private String value;
+public class JiraPagedComponent extends IntRestComponent implements JiraPagedModel {
+    private Integer startAt;
+    private Integer maxResults;
+    private Integer total;
 
-    public VisibilityComponent() {
+    @Override
+    public Integer getStartAt() {
+        return startAt;
     }
 
-    public VisibilityComponent(final String type, final String value) {
-        this.type = type;
-        this.value = value;
+    @Override
+    public Integer getMaxResults() {
+        return maxResults;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getValue() {
-        return value;
+    @Override
+    public Integer getTotal() {
+        return total;
     }
 }

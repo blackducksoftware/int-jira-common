@@ -20,27 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model.components;
+package com.synopsys.integration.jira.common.model;
 
-import com.synopsys.integration.rest.component.IntRestComponent;
+public interface JiraPagedModel {
+    Integer getStartAt();
 
-public class VisibilityComponent extends IntRestComponent {
-    private String type;
-    private String value;
+    Integer getMaxResults();
 
-    public VisibilityComponent() {
-    }
-
-    public VisibilityComponent(final String type, final String value) {
-        this.type = type;
-        this.value = value;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getValue() {
-        return value;
-    }
+    Integer getTotal();
 }

@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class StatusDetailsComponent extends IntRestResponse {
+public class StatusDetailsComponent extends IntRestComponent {
     private String self;
     private String description;
     private String iconUrl;

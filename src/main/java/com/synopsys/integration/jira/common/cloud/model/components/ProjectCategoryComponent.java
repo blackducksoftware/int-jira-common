@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class ProjectCategoryComponent extends IntRestResponse {
+public class ProjectCategoryComponent extends IntRestComponent {
     private String self;
     private String id;
     private String name;

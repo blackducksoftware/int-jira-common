@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueLinksComponent extends IntRestResponse {
+public class IssueLinksComponent extends IntRestComponent {
     private String id;
     private Object type; // TODO
     private Object outwardIssue; // TODO

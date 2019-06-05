@@ -35,7 +35,7 @@ import com.synopsys.integration.jira.common.cloud.model.request.JiraRequestModel
 import com.synopsys.integration.jira.common.cloud.rest.JiraCloudHttpClient;
 import com.synopsys.integration.jira.common.cloud.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.jira.common.model.JiraResponse;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
@@ -59,11 +59,11 @@ public class JiraCloudService {
         return httpClient.getBaseUrl();
     }
 
-    public <R extends IntRestResponse> R get(Request request, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R get(Request request, Class<R> responseClass) throws IntegrationException {
         return execute(request, responseClass);
     }
 
-    public <R extends IntRestResponse> List<R> getList(Request request, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> List<R> getList(Request request, Class<R> responseClass) throws IntegrationException {
         try (Response response = httpClient.execute(request)) {
             response.throwExceptionForError();
             final String responseJson = response.getContentString();
@@ -90,7 +90,7 @@ public class JiraCloudService {
         return responseTransformer.getResponses(requestBuilder, pageRequestHandler, responseClass, pageSize);
     }
 
-    public <R extends IntRestResponse> R post(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R post(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
         final String jsonRequestBody = gson.toJson(jiraRequestModel);
         final Request request = JiraCloudRequestFactory
                                     .createCommonPostRequestBuilder(jsonRequestBody)
@@ -108,7 +108,7 @@ public class JiraCloudService {
         return execute(request);
     }
 
-    public <R extends IntRestResponse> R put(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R put(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
         final String jsonRequestBody = gson.toJson(jiraRequestModel);
         final Request request = JiraCloudRequestFactory
                                     .createCommonPutRequestBuilder(jsonRequestBody)
@@ -134,7 +134,7 @@ public class JiraCloudService {
         return execute(request);
     }
 
-    public <R extends IntRestResponse> R delete(final String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R delete(final String uri, Class<R> responseClass) throws IntegrationException {
         final Request request = JiraCloudRequestFactory
                                     .createCommonDeleteRequestBuilder()
                                     .uri(uri)
@@ -142,7 +142,7 @@ public class JiraCloudService {
         return execute(request, responseClass);
     }
 
-    private <R extends IntRestResponse> R execute(Request request, Class<R> responseClass) throws IntegrationException {
+    private <R extends JiraResponse> R execute(Request request, Class<R> responseClass) throws IntegrationException {
         return responseTransformer.getResponse(request, responseClass);
     }
 

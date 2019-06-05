@@ -25,9 +25,7 @@ package com.synopsys.integration.jira.common.cloud.model.components;
 import java.util.Collections;
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
-
-public class PageOfIssueCommentsComponent extends JiraPageResponseModel {
+public class PageOfIssueCommentsComponent extends JiraPagedComponent {
     private List<CommentComponent> comments;
 
     public PageOfIssueCommentsComponent() {

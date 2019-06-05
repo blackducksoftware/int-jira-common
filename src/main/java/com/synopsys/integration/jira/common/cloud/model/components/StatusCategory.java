@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class StatusCategory extends IntRestResponse {
+public class StatusCategory extends IntRestComponent {
     private String self;
     private Integer id;
     private String key;
