@@ -20,45 +20,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.google.gson.annotations.SerializedName;
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class AvatarUrlsComponent extends IntRestResponse {
-    @SerializedName("16x16")
-    private String sixteen;
-    @SerializedName("24x24")
-    private String twentyFour;
-    @SerializedName("32x32")
-    private String thirtyTwo;
-    @SerializedName("48x48")
-    private String fortyEight;
+public class IssueLinksComponent extends IntRestResponse {
+    private String id;
+    private Object type; // TODO
+    private Object outwardIssue; // TODO
 
-    public AvatarUrlsComponent() {
+    public IssueLinksComponent() {
     }
 
-    public AvatarUrlsComponent(final String sixteen, final String twentyFour, final String thirtyTwo, final String fortyEight) {
-        this.sixteen = sixteen;
-        this.twentyFour = twentyFour;
-        this.thirtyTwo = thirtyTwo;
-        this.fortyEight = fortyEight;
+    public IssueLinksComponent(final String id, final Object type, final Object outwardIssue) {
+        this.id = id;
+        this.type = type;
+        this.outwardIssue = outwardIssue;
     }
 
-    public String getSixteen() {
-        return sixteen;
+    public String getId() {
+        return id;
     }
 
-    public String getTwentyFour() {
-        return twentyFour;
+    public Object getType() {
+        return type;
     }
 
-    public String getThirtyTwo() {
-        return thirtyTwo;
-    }
-
-    public String getFortyEight() {
-        return fortyEight;
+    public Object getOutwardIssue() {
+        return outwardIssue;
     }
 
 }

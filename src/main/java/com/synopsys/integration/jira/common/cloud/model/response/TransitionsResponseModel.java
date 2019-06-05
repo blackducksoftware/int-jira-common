@@ -25,7 +25,7 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 import java.util.List;
 import java.util.Optional;
 
-import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.TransitionComponent;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 
 public class TransitionsResponseModel extends JiraResponse {

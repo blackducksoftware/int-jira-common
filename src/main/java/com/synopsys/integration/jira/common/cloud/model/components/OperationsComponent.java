@@ -20,25 +20,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import java.util.Collections;
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class PageOfWorklogsComponent extends JiraPageResponseModel {
-    private List<WorklogComponent> worklogs;
+public class OperationsComponent extends IntRestResponse {
+    private List<Object> linkGroup;
 
-    public PageOfWorklogsComponent() {
-        worklogs = Collections.emptyList();
+    public OperationsComponent() {
     }
 
-    public PageOfWorklogsComponent(final List<WorklogComponent> worklogs) {
-        this.worklogs = worklogs;
+    public OperationsComponent(final List<Object> linkGroup) {
+        this.linkGroup = linkGroup;
     }
 
-    public List<WorklogComponent> getWorklogs() {
-        return worklogs;
+    public List<Object> getLinkGroup() {
+        return linkGroup;
     }
+
 }

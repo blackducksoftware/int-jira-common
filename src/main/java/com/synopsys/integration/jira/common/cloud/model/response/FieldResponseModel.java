@@ -24,7 +24,7 @@ package com.synopsys.integration.jira.common.cloud.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.cloud.model.SchemaComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.SchemaComponent;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 
 public class FieldResponseModel extends JiraResponse {

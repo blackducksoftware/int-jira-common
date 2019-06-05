@@ -20,34 +20,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueSearchIssueFieldsComponent extends IntRestResponse {
+public class IssueFieldsComponent {
+
     private List<IssueAttachmentComponent> attachment;
-    private List<CommentComponent> comment;
+    private UserDetailsComponent assignee;
+    private PageOfIssueCommentsComponent comment;
     private String description;
     private List<IssueLinksComponent> issuelinks;
     private ProjectComponent project;
-    @SerializedName("sub-tasks")
+    @SerializedName("subtasks")
     private List<IssueLinksComponent> subTasks;
     private Object timetracking; // TODO
-    private Integer updated;
+    private String updated;
     private WatcherComponent watcher;
-    private List<Object> worklog; // TODO
+    private PageOfWorklogsComponent worklog;
 
-    public IssueSearchIssueFieldsComponent() {
+    public IssueFieldsComponent() {
     }
 
     public List<IssueAttachmentComponent> getAttachment() {
         return attachment;
     }
 
-    public List<CommentComponent> getComment() {
+    public UserDetailsComponent getAssignee() {
+        return assignee;
+    }
+
+    public PageOfIssueCommentsComponent getComment() {
         return comment;
     }
 
@@ -71,7 +76,7 @@ public class IssueSearchIssueFieldsComponent extends IntRestResponse {
         return timetracking;
     }
 
-    public Integer getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
@@ -79,8 +84,7 @@ public class IssueSearchIssueFieldsComponent extends IntRestResponse {
         return watcher;
     }
 
-    public List<Object> getWorklog() {
+    public PageOfWorklogsComponent getWorklog() {
         return worklog;
     }
-
 }

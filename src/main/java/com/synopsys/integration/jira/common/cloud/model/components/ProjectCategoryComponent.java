@@ -20,42 +20,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
-
-import java.util.Map;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class FieldUpdateOperationComponent extends IntRestResponse {
-    private Map<String, Object> add;
-    private Map<String, Object> set;
-    private Map<String, Object> remove;
-    private Map<String, Object> edit;
+public class ProjectCategoryComponent extends IntRestResponse {
+    private String self;
+    private String id;
+    private String name;
+    private String description;
 
-    public FieldUpdateOperationComponent() {
+    public ProjectCategoryComponent() {
     }
 
-    public FieldUpdateOperationComponent(final Map<String, Object> add, final Map<String, Object> set, final Map<String, Object> remove, final Map<String, Object> edit) {
-        this.add = add;
-        this.set = set;
-        this.remove = remove;
-        this.edit = edit;
+    public ProjectCategoryComponent(final String self, final String id, final String name, final String description) {
+        this.self = self;
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
-    public Map<String, Object> getAdd() {
-        return add;
+    public String getSelf() {
+        return self;
     }
 
-    public Map<String, Object> getSet() {
-        return set;
+    public String getId() {
+        return id;
     }
 
-    public Map<String, Object> getRemove() {
-        return remove;
+    public String getName() {
+        return name;
     }
 
-    public Map<String, Object> getEdit() {
-        return edit;
+    public String getDescription() {
+        return description;
     }
 
 }

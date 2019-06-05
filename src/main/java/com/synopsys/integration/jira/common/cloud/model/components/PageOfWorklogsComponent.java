@@ -20,40 +20,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import java.util.Collections;
+import java.util.List;
 
-public class ProjectCategoryComponent extends IntRestResponse {
-    private String self;
-    private String id;
-    private String name;
-    private String description;
+import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
-    public ProjectCategoryComponent() {
+public class PageOfWorklogsComponent extends JiraPageResponseModel {
+    private List<WorklogComponent> worklogs;
+
+    public PageOfWorklogsComponent() {
+        worklogs = Collections.emptyList();
     }
 
-    public ProjectCategoryComponent(final String self, final String id, final String name, final String description) {
-        this.self = self;
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public PageOfWorklogsComponent(final List<WorklogComponent> worklogs) {
+        this.worklogs = worklogs;
     }
 
-    public String getSelf() {
-        return self;
+    public List<WorklogComponent> getWorklogs() {
+        return worklogs;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
 }

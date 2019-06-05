@@ -20,42 +20,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
-
-import java.util.List;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class WatcherComponent extends IntRestResponse {
-    private String self;
-    private Boolean isWatching;
-    private Integer watchCount;
-    private List<UserDetailsComponent> watchers;
+public class IdComponent extends IntRestResponse {
+    private String id;
 
-    public WatcherComponent() {
+    public IdComponent() {
     }
 
-    public WatcherComponent(final String self, final Boolean isWatching, final Integer watchCount, final List<UserDetailsComponent> watchers) {
-        this.self = self;
-        this.isWatching = isWatching;
-        this.watchCount = watchCount;
-        this.watchers = watchers;
+    public IdComponent(final String id) {
+        this.id = id;
     }
 
-    public String getSelf() {
-        return self;
-    }
-
-    public Boolean getWatching() {
-        return isWatching;
-    }
-
-    public Integer getWatchCount() {
-        return watchCount;
-    }
-
-    public List<UserDetailsComponent> getWatchers() {
-        return watchers;
+    public String getId() {
+        return id;
     }
 
 }

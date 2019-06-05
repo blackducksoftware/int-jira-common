@@ -20,34 +20,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import java.util.List;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueIncludedFieldsComponent {
-    private List<String> included;
-    private List<String> excluded;
-    private List<String> actuallyIncluded;
+public class StatusCategory extends IntRestResponse {
+    private String self;
+    private Integer id;
+    private String key;
+    private String colorName;
+    private String name;
 
-    public IssueIncludedFieldsComponent() {
+    public StatusCategory() {
     }
 
-    public IssueIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
-        this.included = included;
-        this.excluded = excluded;
-        this.actuallyIncluded = actuallyIncluded;
+    public StatusCategory(final String self, final Integer id, final String key, final String colorName, final String name) {
+        this.self = self;
+        this.id = id;
+        this.key = key;
+        this.colorName = colorName;
+        this.name = name;
     }
 
-    public List<String> getIncluded() {
-        return included;
+    public String getSelf() {
+        return self;
     }
 
-    public List<String> getExcluded() {
-        return excluded;
+    public Integer getId() {
+        return id;
     }
 
-    public List<String> getActuallyIncluded() {
-        return actuallyIncluded;
+    public String getKey() {
+        return key;
     }
 
+    public String getColorName() {
+        return colorName;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

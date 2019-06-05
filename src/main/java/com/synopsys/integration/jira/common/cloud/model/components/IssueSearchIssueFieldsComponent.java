@@ -20,39 +20,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueFieldsComponent {
-
+public class IssueSearchIssueFieldsComponent extends IntRestResponse {
     private List<IssueAttachmentComponent> attachment;
-    private UserDetailsComponent assignee;
-    private PageOfIssueCommentsComponent comment;
+    private List<CommentComponent> comment;
     private String description;
     private List<IssueLinksComponent> issuelinks;
     private ProjectComponent project;
-    @SerializedName("subtasks")
+    @SerializedName("sub-tasks")
     private List<IssueLinksComponent> subTasks;
     private Object timetracking; // TODO
-    private String updated;
+    private Integer updated;
     private WatcherComponent watcher;
-    private PageOfWorklogsComponent worklog;
+    private List<Object> worklog; // TODO
 
-    public IssueFieldsComponent() {
+    public IssueSearchIssueFieldsComponent() {
     }
 
     public List<IssueAttachmentComponent> getAttachment() {
         return attachment;
     }
 
-    public UserDetailsComponent getAssignee() {
-        return assignee;
-    }
-
-    public PageOfIssueCommentsComponent getComment() {
+    public List<CommentComponent> getComment() {
         return comment;
     }
 
@@ -76,7 +71,7 @@ public class IssueFieldsComponent {
         return timetracking;
     }
 
-    public String getUpdated() {
+    public Integer getUpdated() {
         return updated;
     }
 
@@ -84,7 +79,8 @@ public class IssueFieldsComponent {
         return watcher;
     }
 
-    public PageOfWorklogsComponent getWorklog() {
+    public List<Object> getWorklog() {
         return worklog;
     }
+
 }

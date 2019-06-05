@@ -20,22 +20,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import java.util.List;
 
-public class IssueUpdateMetadataComponent extends IntRestResponse {
-    private Object fields;
+public class IssueIncludedFieldsComponent {
+    private List<String> included;
+    private List<String> excluded;
+    private List<String> actuallyIncluded;
 
-    public IssueUpdateMetadataComponent() {
+    public IssueIncludedFieldsComponent() {
     }
 
-    public IssueUpdateMetadataComponent(final Object fields) {
-        this.fields = fields;
+    public IssueIncludedFieldsComponent(final List<String> included, final List<String> excluded, final List<String> actuallyIncluded) {
+        this.included = included;
+        this.excluded = excluded;
+        this.actuallyIncluded = actuallyIncluded;
     }
 
-    public Object getFields() {
-        return fields;
+    public List<String> getIncluded() {
+        return included;
+    }
+
+    public List<String> getExcluded() {
+        return excluded;
+    }
+
+    public List<String> getActuallyIncluded() {
+        return actuallyIncluded;
     }
 
 }

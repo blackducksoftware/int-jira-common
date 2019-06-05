@@ -20,27 +20,42 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
+
+import java.util.Map;
 
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class VisibilityComponent extends IntRestResponse {
-    private String type;
-    private String value;
+public class FieldUpdateOperationComponent extends IntRestResponse {
+    private Map<String, Object> add;
+    private Map<String, Object> set;
+    private Map<String, Object> remove;
+    private Map<String, Object> edit;
 
-    public VisibilityComponent() {
+    public FieldUpdateOperationComponent() {
     }
 
-    public VisibilityComponent(final String type, final String value) {
-        this.type = type;
-        this.value = value;
+    public FieldUpdateOperationComponent(final Map<String, Object> add, final Map<String, Object> set, final Map<String, Object> remove, final Map<String, Object> edit) {
+        this.add = add;
+        this.set = set;
+        this.remove = remove;
+        this.edit = edit;
     }
 
-    public String getType() {
-        return type;
+    public Map<String, Object> getAdd() {
+        return add;
     }
 
-    public String getValue() {
-        return value;
+    public Map<String, Object> getSet() {
+        return set;
     }
+
+    public Map<String, Object> getRemove() {
+        return remove;
+    }
+
+    public Map<String, Object> getEdit() {
+        return edit;
+    }
+
 }

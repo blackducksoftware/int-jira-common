@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.FieldUpdateOperationComponent;
-import com.synopsys.integration.jira.common.cloud.model.IdComponent;
-import com.synopsys.integration.jira.common.cloud.model.ProjectComponent;
-import com.synopsys.integration.jira.common.cloud.model.TransitionComponent;
-import com.synopsys.integration.jira.common.cloud.model.UserDetailsComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.IdComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.TransitionComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.UserDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;

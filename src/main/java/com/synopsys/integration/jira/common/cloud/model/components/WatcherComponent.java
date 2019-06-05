@@ -20,51 +20,42 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
+
+import java.util.List;
 
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class StatusDetailsComponent extends IntRestResponse {
+public class WatcherComponent extends IntRestResponse {
     private String self;
-    private String description;
-    private String iconUrl;
-    private String name;
-    private String id;
-    private StatusCategory statusCategory;
+    private Boolean isWatching;
+    private Integer watchCount;
+    private List<UserDetailsComponent> watchers;
 
-    public StatusDetailsComponent() {
+    public WatcherComponent() {
     }
 
-    public StatusDetailsComponent(final String self, final String description, final String iconUrl, final String name, final String id, final StatusCategory statusCategory) {
+    public WatcherComponent(final String self, final Boolean isWatching, final Integer watchCount, final List<UserDetailsComponent> watchers) {
         this.self = self;
-        this.description = description;
-        this.iconUrl = iconUrl;
-        this.name = name;
-        this.id = id;
-        this.statusCategory = statusCategory;
+        this.isWatching = isWatching;
+        this.watchCount = watchCount;
+        this.watchers = watchers;
     }
 
     public String getSelf() {
         return self;
     }
 
-    public String getDescription() {
-        return description;
+    public Boolean getWatching() {
+        return isWatching;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public Integer getWatchCount() {
+        return watchCount;
     }
 
-    public String getName() {
-        return name;
+    public List<UserDetailsComponent> getWatchers() {
+        return watchers;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public StatusCategory getStatusCategory() {
-        return statusCategory;
-    }
 }

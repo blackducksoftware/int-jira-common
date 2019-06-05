@@ -20,45 +20,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.model;
+package com.synopsys.integration.jira.common.cloud.model.components;
 
+import com.google.gson.annotations.SerializedName;
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class StatusCategory extends IntRestResponse {
-    private String self;
-    private Integer id;
-    private String key;
-    private String colorName;
-    private String name;
+public class AvatarUrlsComponent extends IntRestResponse {
+    @SerializedName("16x16")
+    private String sixteen;
+    @SerializedName("24x24")
+    private String twentyFour;
+    @SerializedName("32x32")
+    private String thirtyTwo;
+    @SerializedName("48x48")
+    private String fortyEight;
 
-    public StatusCategory() {
+    public AvatarUrlsComponent() {
     }
 
-    public StatusCategory(final String self, final Integer id, final String key, final String colorName, final String name) {
-        this.self = self;
-        this.id = id;
-        this.key = key;
-        this.colorName = colorName;
-        this.name = name;
+    public AvatarUrlsComponent(final String sixteen, final String twentyFour, final String thirtyTwo, final String fortyEight) {
+        this.sixteen = sixteen;
+        this.twentyFour = twentyFour;
+        this.thirtyTwo = thirtyTwo;
+        this.fortyEight = fortyEight;
     }
 
-    public String getSelf() {
-        return self;
+    public String getSixteen() {
+        return sixteen;
     }
 
-    public Integer getId() {
-        return id;
+    public String getTwentyFour() {
+        return twentyFour;
     }
 
-    public String getKey() {
-        return key;
+    public String getThirtyTwo() {
+        return thirtyTwo;
     }
 
-    public String getColorName() {
-        return colorName;
+    public String getFortyEight() {
+        return fortyEight;
     }
 
-    public String getName() {
-        return name;
-    }
 }
