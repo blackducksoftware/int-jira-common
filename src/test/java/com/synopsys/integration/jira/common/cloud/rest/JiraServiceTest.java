@@ -13,6 +13,7 @@ public class JiraServiceTest {
     public static final String ENV_BASE_URL = "JIRA_CLOUD_URL";
     public static final String ENV_USER_EMAIL = "JIRA_CLOUD_EMAIL";
     public static final String ENV_API_TOKEN = "JIRA_CLOUD_TOKEN";
+    public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
 
     public void validateConfiguration() {
         final String baseUrl = getEnvBaseUrl();

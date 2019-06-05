@@ -36,8 +36,6 @@ import com.synopsys.integration.jira.common.model.EntityProperty;
 
 public class IssueServiceTest extends JiraServiceTest {
 
-    static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
-
     @Test
     public void testCreateIssue() throws Exception {
         validateConfiguration();
