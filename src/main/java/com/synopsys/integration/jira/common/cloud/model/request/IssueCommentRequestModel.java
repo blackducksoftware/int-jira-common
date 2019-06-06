@@ -34,6 +34,10 @@ public class IssueCommentRequestModel extends JiraRequestModel {
     private final Boolean jsdPublic;
     private final List<EntityProperty> properties;
 
+    public IssueCommentRequestModel(final String issueIdOrKey, final String body) {
+        this(issueIdOrKey, body, null, null, null);
+    }
+
     public IssueCommentRequestModel(final String issueIdOrKey, final String body, final VisibilityComponent visibility, final Boolean jsdPublic, final List<EntityProperty> properties) {
         this.issueIdOrKey = issueIdOrKey;
         this.body = body;
