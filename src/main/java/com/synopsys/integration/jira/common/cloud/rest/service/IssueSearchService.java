@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.enumeration.ExpandableTypes;
 import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStrategy;
@@ -42,18 +41,14 @@ public class IssueSearchService {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public IssueSearchResponseModel findIssueByProperty(final String propertyKey, final String value) throws IntegrationException {
-        final String jql = String.format("issue.property['%s'].value ~ '%s'", propertyKey, value);
-        final List<ExpandableTypes> typesToExpand = new ArrayList<>(1);
+    public IssueSearchResponseModel findIssuesByComment(final String comment) throws IntegrationException {
+        final String jql = String.format("comment ~ '%s'", comment);
+        final List<ExpandableTypes> typesToExpand = new ArrayList<>();
         typesToExpand.addAll(Arrays.asList(ExpandableTypes.values()));
+        List<String> properties = Collections.emptyList();
 
-        // TODO we can only have 5 properties defined.  Should we include all of our custom properties.
-        final List<String> properties = Collections.singletonList(propertyKey);
-
-        IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, null, null,
+        final IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, null, null,
             IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
-        System.out.print("Issue request: ");
-        System.out.println(new Gson().toJson(requestModel));
         return findIssue(requestModel);
     }
 
