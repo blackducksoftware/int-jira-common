@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.jira.common.cloud.model.request;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStr
 
 public class IssueSearchRequestModel extends JiraRequestModel {
     public static final String ALL_FIELDS_OPTION = "*all";
+    public static final List<String> ALL_FIELDS_LIST = Collections.singletonList(ALL_FIELDS_OPTION);
     public static final String NAVIGABLE_FIELDS_OPTION = "*navigable";
     public static final String FIELD_EXCLUSION_PREFIX = "-";
 

@@ -52,7 +52,7 @@ public class JiraCloudServiceFactory {
     }
 
     public IssueSearchService createIssueSearchService() {
-        return new IssueSearchService();
+        return new IssueSearchService(createCloudService());
     }
 
     public IssueService createIssueService() {
