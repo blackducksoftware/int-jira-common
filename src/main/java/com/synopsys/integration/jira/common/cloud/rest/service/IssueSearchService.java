@@ -35,6 +35,7 @@ import com.synopsys.integration.jira.common.cloud.model.response.IssueSearchResp
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
+
     private JiraCloudService jiraCloudService;
 
     public IssueSearchService(final JiraCloudService jiraCloudService) {
@@ -42,7 +43,12 @@ public class IssueSearchService {
     }
 
     public IssueSearchResponseModel findIssuesByDescription(String projectKey, String issueType, String descriptionSearchTerm) throws IntegrationException {
-        final String jql = String.format("project = %s AND issuetype = %s AND description ~ '%s'", projectKey, issueType, descriptionSearchTerm);
+        final String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "description", descriptionSearchTerm);
+        return queryForIssues(jql);
+    }
+
+    public IssueSearchResponseModel findIssuesByComment(String projectKey, String issueType, String commentSerchTerm) throws IntegrationException {
+        final String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "comment", commentSerchTerm);
         return queryForIssues(jql);
     }
 
@@ -61,6 +67,10 @@ public class IssueSearchService {
 
     private IssueSearchResponseModel findIssues(IssueSearchRequestModel requestModel) throws IntegrationException {
         return jiraCloudService.post(requestModel, createApiUri(), IssueSearchResponseModel.class);
+    }
+
+    private String createProjectAndIssueTypeJqlForSearchTerm(String projectKey, String issueType, String fieldName, String searchTerm) {
+        return String.format("project = %s AND issuetype = %s AND %s ~ '%s'", projectKey, issueType, fieldName, searchTerm);
     }
 
     private String createApiUri() {
