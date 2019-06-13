@@ -27,6 +27,42 @@ import com.synopsys.integration.jira.common.model.EntityProperty;
 public class IssueSearchServiceTest extends JiraServiceTest {
 
     @Test
+    public void findIssuesByDescriptionTest() throws Exception {
+        validateConfiguration();
+        final JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        final IssueService issueService = serviceFactory.createIssueService();
+        final IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
+        final UserSearchService userSearchService = serviceFactory.createUserSearchService();
+        final ProjectService projectService = serviceFactory.createProjectService();
+
+        final PageOfProjectsResponseModel projects = projectService.getProjects();
+        final UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                                         .findFirst()
+                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        final ProjectComponent project = projects.getProjects().stream()
+                                             .findFirst()
+                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+
+        final UUID uniqueId = UUID.randomUUID();
+        final String uniqueIdString = uniqueId.toString();
+
+        final IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setDescription("Description of the test issue: " + uniqueIdString);
+        fieldsBuilder.setSummary("Test Issue " + uniqueIdString);
+
+        final String issueType = "bug";
+        final List<EntityProperty> properties = new LinkedList<>();
+        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
+        final IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+
+        final IssueSearchResponseModel foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
+
+        assertEquals(1, foundIssues.getIssues().size());
+        IssueComponent foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        assertEquals(foundIssue.getId(), foundIssue.getId());
+    }
+
+    @Test
     public void testSearchForIssueWithSingleComment() throws Exception {
         validateConfiguration();
         final JiraCloudServiceFactory serviceFactory = createServiceFactory();
