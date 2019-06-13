@@ -59,7 +59,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         final IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByDescription(commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
@@ -109,7 +109,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         final IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByDescription(commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
@@ -153,7 +153,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
         final IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
         issueService.addComment(lastComment);
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByDescription(commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(0, issueFromSearchService.getIssues().size());

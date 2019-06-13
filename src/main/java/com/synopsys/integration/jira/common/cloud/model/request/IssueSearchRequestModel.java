@@ -44,9 +44,7 @@ public class IssueSearchRequestModel extends JiraRequestModel {
     private final List<String> properties;
     private final Boolean fieldsByKeys;
 
-    public IssueSearchRequestModel(
-        final String jql, final Integer startAt, final Integer maxResults, final List<String> fields, final QueryValidationStrategy validationStrategy, final List<ExpandableTypes> typesToExpand, final List<String> properties,
-        final Boolean fieldsByKeys) {
+    public IssueSearchRequestModel(String jql, Integer startAt, Integer maxResults, List<String> fields, QueryValidationStrategy validationStrategy, List<ExpandableTypes> typesToExpand, List<String> properties, Boolean fieldsByKeys) {
         this.jql = jql;
         this.startAt = startAt;
         this.maxResults = maxResults;
@@ -89,11 +87,11 @@ public class IssueSearchRequestModel extends JiraRequestModel {
         return fieldsByKeys;
     }
 
-    private String initialValidationStrategy(final QueryValidationStrategy validationStrategy) {
+    private String initialValidationStrategy(QueryValidationStrategy validationStrategy) {
         return null != validationStrategy ? validationStrategy.toString() : QueryValidationStrategy.STRICT.toString();
     }
 
-    private List<String> initialTypesToExpand(final List<ExpandableTypes> typesToExpand) {
+    private List<String> initialTypesToExpand(List<ExpandableTypes> typesToExpand) {
         return typesToExpand
                    .stream()
                    .map(ExpandableTypes::toString)

@@ -41,18 +41,25 @@ public class IssueSearchService {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public IssueSearchResponseModel findIssuesByComment(final String comment) throws IntegrationException {
-        final String jql = String.format("comment ~ '%s'", comment);
+    public IssueSearchResponseModel findIssuesByDescription(String projectKey, String issueType, String descriptionSearchTerm) throws IntegrationException {
+        final String jql = String.format("project = %s AND issuetype = %s AND description ~ '%s'", projectKey, issueType, descriptionSearchTerm);
+        return queryForIssues(jql);
+    }
+
+    public IssueSearchResponseModel queryForIssues(String jql) throws IntegrationException {
+        return queryForIssuePage(jql, null, null);
+    }
+
+    public IssueSearchResponseModel queryForIssuePage(String jql, Integer startAt, Integer maxResults) throws IntegrationException {
         final List<ExpandableTypes> typesToExpand = new ArrayList<>();
         typesToExpand.addAll(Arrays.asList(ExpandableTypes.values()));
         List<String> properties = Collections.emptyList();
 
-        final IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, null, null,
-            IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
-        return findIssue(requestModel);
+        final IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, startAt, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
+        return findIssues(requestModel);
     }
 
-    private IssueSearchResponseModel findIssue(IssueSearchRequestModel requestModel) throws IntegrationException {
+    private IssueSearchResponseModel findIssues(IssueSearchRequestModel requestModel) throws IntegrationException {
         return jiraCloudService.post(requestModel, createApiUri(), IssueSearchResponseModel.class);
     }
 
