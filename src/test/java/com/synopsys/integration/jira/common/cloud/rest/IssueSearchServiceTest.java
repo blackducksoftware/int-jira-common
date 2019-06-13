@@ -27,6 +27,42 @@ import com.synopsys.integration.jira.common.model.EntityProperty;
 public class IssueSearchServiceTest extends JiraServiceTest {
 
     @Test
+    public void findIssuesByDescriptionTest() throws Exception {
+        validateConfiguration();
+        final JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        final IssueService issueService = serviceFactory.createIssueService();
+        final IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
+        final UserSearchService userSearchService = serviceFactory.createUserSearchService();
+        final ProjectService projectService = serviceFactory.createProjectService();
+
+        final PageOfProjectsResponseModel projects = projectService.getProjects();
+        final UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+                                                         .findFirst()
+                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        final ProjectComponent project = projects.getProjects().stream()
+                                             .findFirst()
+                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+
+        final UUID uniqueId = UUID.randomUUID();
+        final String uniqueIdString = uniqueId.toString();
+
+        final IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.setDescription("Description of the test issue: " + uniqueIdString);
+        fieldsBuilder.setSummary("Test Issue " + uniqueIdString);
+
+        final String issueType = "bug";
+        final List<EntityProperty> properties = new LinkedList<>();
+        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
+        final IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+
+        final IssueSearchResponseModel foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
+
+        assertEquals(1, foundIssues.getIssues().size());
+        IssueComponent foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        assertEquals(createdIssue.getId(), foundIssue.getId());
+    }
+
+    @Test
     public void testSearchForIssueWithSingleComment() throws Exception {
         validateConfiguration();
         final JiraCloudServiceFactory serviceFactory = createServiceFactory();
@@ -48,9 +84,10 @@ public class IssueSearchServiceTest extends JiraServiceTest {
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
 
+        final String issueType = "bug";
         final String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
         final List<EntityProperty> properties = new LinkedList<>();
-        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
+        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
         final IssueResponseModel createdIssue = issueService.createIssue(requestModel);
@@ -59,7 +96,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         final IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
@@ -89,9 +126,10 @@ public class IssueSearchServiceTest extends JiraServiceTest {
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
 
+        final String issueType = "bug";
         final String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
         final List<EntityProperty> properties = new LinkedList<>();
-        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
+        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
         final IssueResponseModel createdIssue = issueService.createIssue(requestModel);
@@ -109,7 +147,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         final IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
@@ -139,9 +177,10 @@ public class IssueSearchServiceTest extends JiraServiceTest {
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
 
+        final String issueType = "bug";
         final String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
         final List<EntityProperty> properties = new LinkedList<>();
-        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
+        final IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
         final IssueResponseModel createdIssue = issueService.createIssue(requestModel);
@@ -153,7 +192,7 @@ public class IssueSearchServiceTest extends JiraServiceTest {
         final IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
         issueService.addComment(lastComment);
 
-        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(commentValue);
+        final IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(0, issueFromSearchService.getIssues().size());
