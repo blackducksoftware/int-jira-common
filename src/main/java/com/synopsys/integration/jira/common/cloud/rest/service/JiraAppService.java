@@ -48,14 +48,14 @@ public class JiraAppService {
     }
 
     public Response installApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
-        String uri = jiraCloudService.getBaseUrl();
+        String uri = getBaseUrl();
         final String pluginToken = retrievePluginToken(uri, username, accessToken);
         final Request request = createUploadRequest(uri + API_PATH, username, accessToken, pluginToken, pluginName, pluginUri);
         return httpClient.execute(request);
     }
 
     public Response uninstallApp(String appKey, String username, String accessToken) throws IntegrationException {
-        String apiUri = jiraCloudService.getBaseUrl() + API_PATH;
+        String apiUri = getBaseUrl() + API_PATH;
         final String pluginToken = retrievePluginToken(apiUri, username, accessToken);
         final Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessToken, pluginToken);
         return httpClient.execute(request);
@@ -103,6 +103,14 @@ public class JiraAppService {
         AppUploadRequestModel uploadRequestModel = new AppUploadRequestModel(pluginUri, pluginName);
         final String uploadRequestJson = gson.toJson(uploadRequestModel);
         return new StringBodyContent(uploadRequestJson);
+    }
+
+    private String getBaseUrl() {
+        String url = jiraCloudService.getBaseUrl();
+        if (url.endsWith("/")) {
+            return url.substring(0, url.length() - 1);
+        }
+        return url;
     }
 
 }
