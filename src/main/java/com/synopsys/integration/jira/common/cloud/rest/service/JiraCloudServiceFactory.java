@@ -79,6 +79,10 @@ public class JiraCloudServiceFactory {
         return new ProjectService(createCloudService());
     }
 
+    public JiraAppService createJiraAppService() {
+        return new JiraAppService(gson, httpClient, createCloudService());
+    }
+
     public IntLogger getLogger() {
         return logger;
     }
