@@ -119,6 +119,10 @@ public class JiraCloudService {
 
     public Response put(JiraRequestModel jiraRequestModel, String uri) throws IntegrationException {
         final String jsonRequestBody = gson.toJson(jiraRequestModel);
+        return put(jsonRequestBody, uri);
+    }
+
+    public Response put(String jsonRequestBody, String uri) throws IntegrationException {
         final Request request = JiraCloudRequestFactory
                                     .createCommonPutRequestBuilder(jsonRequestBody)
                                     .uri(uri)

@@ -51,6 +51,10 @@ public class JiraCloudServiceFactory {
         return new FieldService(createCloudService());
     }
 
+    public IssuePropertyService createIssuePropertyService() {
+        return new IssuePropertyService(gson, createCloudService());
+    }
+
     public IssueSearchService createIssueSearchService() {
         return new IssueSearchService(createCloudService());
     }
@@ -90,4 +94,5 @@ public class JiraCloudServiceFactory {
     public Gson getGson() {
         return gson;
     }
+
 }
