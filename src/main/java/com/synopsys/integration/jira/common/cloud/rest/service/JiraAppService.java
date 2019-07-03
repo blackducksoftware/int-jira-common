@@ -42,6 +42,17 @@ import com.synopsys.integration.rest.request.Response;
 public class JiraAppService {
     public static final String API_PATH = "/rest/plugins/1.0/";
 
+    private static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
+    private static final String QUERY_VALUE_OS_AUTH_TYPE = "basic";
+
+    private static final String MEDIA_TYPE_PREFIX = "application/vnd.atl.plugins";
+    private static final String MEDIA_TYPE_SUFFIX = "+json";
+    private static final String MEDIA_TYPE_DEFAULT = "application/json";
+
+    private static final String MEDIA_TYPE_PLUGIN = MEDIA_TYPE_PREFIX + ".plugin" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_INSTALLED = MEDIA_TYPE_PREFIX + ".installed" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_INSTALL_URI = MEDIA_TYPE_PREFIX + ".install.uri" + MEDIA_TYPE_SUFFIX;
+
     private Gson gson;
     private JiraCloudHttpClient httpClient;
     private JiraCloudService jiraCloudService;
@@ -55,9 +66,9 @@ public class JiraAppService {
     public Optional<PluginResponseModel> getInstalledApp(String username, String accessToken, String appKey) throws IntegrationException {
         final String apiUri = getBaseUrl() + API_PATH + appKey + "-key";
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
-        requestBuilder.addQueryParameter("os_authType", "basic");
+        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
-        requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.plugin+json");
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
 
         try {
             final PluginResponseModel pluginComponent = jiraCloudService.get(requestBuilder.build(), PluginResponseModel.class);
@@ -72,9 +83,9 @@ public class JiraAppService {
 
     public InstalledAppsResponseModel getInstalledApps(String username, String accessToken) throws IntegrationException {
         Request.Builder requestBuilder = createBasicRequestBuilder(getBaseUrl() + API_PATH, username, accessToken);
-        requestBuilder.addQueryParameter("os_authType", "basic");
+        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
-        requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.installed+json");
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_INSTALLED);
 
         return jiraCloudService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
@@ -95,9 +106,9 @@ public class JiraAppService {
 
     public String retrievePluginToken(String username, String accessToken) throws IntegrationException {
         Request.Builder requestBuilder = createBasicRequestBuilder(getBaseUrl() + API_PATH, username, accessToken);
-        requestBuilder.addQueryParameter("os_authType", "basic");
+        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
-        requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.installed+json");
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_INSTALLED);
         Response response = httpClient.execute(requestBuilder.build());
         return response.getHeaderValue("upm-token");
     }
@@ -106,8 +117,8 @@ public class JiraAppService {
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
         requestBuilder.addQueryParameter("token", pluginToken);
         requestBuilder.method(HttpMethod.POST);
-        requestBuilder.addAdditionalHeader("Content-Type", "application/vnd.atl.plugins.install.uri+json");
-        requestBuilder.addAdditionalHeader("Accept", "application/json");
+        requestBuilder.addAdditionalHeader("Content-Type", MEDIA_TYPE_INSTALL_URI);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_DEFAULT);
         requestBuilder.bodyContent(createBodyContent(pluginName, pluginUri));
         return requestBuilder.build();
     }
@@ -116,8 +127,8 @@ public class JiraAppService {
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
         requestBuilder.addQueryParameter("token", pluginToken);
         requestBuilder.method(HttpMethod.DELETE);
-        requestBuilder.addAdditionalHeader("Content-Type", "application/json");
-        requestBuilder.addAdditionalHeader("Accept", "application/json");
+        requestBuilder.addAdditionalHeader("Content-Type", MEDIA_TYPE_DEFAULT);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_DEFAULT);
         return requestBuilder.build();
     }
 
