@@ -22,15 +22,20 @@
  */
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
+import java.util.Optional;
+
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.request.AppUploadRequestModel;
+import com.synopsys.integration.jira.common.cloud.model.response.InstalledAppsResponseModel;
+import com.synopsys.integration.jira.common.cloud.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.JiraCloudHttpClient;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
+import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
@@ -47,22 +52,49 @@ public class JiraAppService {
         this.jiraCloudService = jiraCloudService;
     }
 
+    public Optional<PluginResponseModel> getInstalledApp(String username, String accessToken, String appKey) throws IntegrationException {
+        final String apiUri = getBaseUrl() + API_PATH + appKey + "-key";
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
+        requestBuilder.addQueryParameter("os_authType", "basic");
+        requestBuilder.method(HttpMethod.GET);
+        requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.plugin+json");
+
+        try {
+            final PluginResponseModel pluginComponent = jiraCloudService.get(requestBuilder.build(), PluginResponseModel.class);
+            return Optional.of(pluginComponent);
+        } catch (IntegrationRestException e) {
+            if (404 != e.getHttpStatusCode()) {
+                throw e;
+            }
+        }
+        return Optional.empty();
+    }
+
+    public InstalledAppsResponseModel getInstalledApps(String username, String accessToken) throws IntegrationException {
+        Request.Builder requestBuilder = createBasicRequestBuilder(getBaseUrl() + API_PATH, username, accessToken);
+        requestBuilder.addQueryParameter("os_authType", "basic");
+        requestBuilder.method(HttpMethod.GET);
+        requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.installed+json");
+
+        return jiraCloudService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
+    }
+
     public Response installApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
-        String uri = getBaseUrl();
-        final String pluginToken = retrievePluginToken(uri, username, accessToken);
-        final Request request = createUploadRequest(uri + API_PATH, username, accessToken, pluginToken, pluginName, pluginUri);
+        String apiUri = getBaseUrl() + API_PATH;
+        final String pluginToken = retrievePluginToken(username, accessToken);
+        final Request request = createUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
         return httpClient.execute(request);
     }
 
     public Response uninstallApp(String appKey, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH;
-        final String pluginToken = retrievePluginToken(apiUri, username, accessToken);
+        final String pluginToken = retrievePluginToken(username, accessToken);
         final Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessToken, pluginToken);
         return httpClient.execute(request);
     }
 
-    public String retrievePluginToken(String baseUri, String username, String accessToken) throws IntegrationException {
-        Request.Builder requestBuilder = createBasicRequestBuilder(baseUri + API_PATH, username, accessToken);
+    public String retrievePluginToken(String username, String accessToken) throws IntegrationException {
+        Request.Builder requestBuilder = createBasicRequestBuilder(getBaseUrl() + API_PATH, username, accessToken);
         requestBuilder.addQueryParameter("os_authType", "basic");
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", "application/vnd.atl.plugins.installed+json");
