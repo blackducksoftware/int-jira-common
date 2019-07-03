@@ -4,14 +4,14 @@ buildscript {
         mavenCentral()
         maven { url 'https://plugins.gradle.org/m2/' }
     }
-    dependencies { classpath 'com.blackducksoftware.integration:common-gradle-plugin:0.0.+' }
+    dependencies { classpath 'com.blackducksoftware.integration:common-gradle-plugin:0.0.65' }
 }
 
 project.ext.moduleName = 'com.synopsys.integration.int-jira-common'
 project.ext.javaUseAutoModuleName = 'true'
 
 group = 'com.synopsys.integration'
-version = '0.2.0-SNAPSHOT'
+version = '0.2.0'
 description = 'A library for using various capabilities of Jira.'
 
 apply plugin: 'com.blackducksoftware.integration.library'
