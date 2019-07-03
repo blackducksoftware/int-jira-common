@@ -39,7 +39,6 @@ import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
 public class JiraCloudHttpClient extends AuthenticatingIntHttpClient {
-    private static final String AUTHENTICATION_SPEC = "";
     private static final String AUTHORIZATION_TYPE = "Basic";
 
     private final AuthenticationSupport authenticationSupport;
