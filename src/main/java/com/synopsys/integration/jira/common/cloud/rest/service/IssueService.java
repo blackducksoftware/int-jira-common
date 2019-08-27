@@ -26,10 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.StatusDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
@@ -47,12 +50,14 @@ public class IssueService {
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
+    private final Gson gson;
     private final JiraCloudService jiraCloudService;
     private final UserSearchService userSearchService;
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(final JiraCloudService jiraCloudService, final UserSearchService userSearchService, final ProjectService projectService, final IssueTypeService issueTypeService) {
+    public IssueService(Gson gson, JiraCloudService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+        this.gson = gson;
         this.jiraCloudService = jiraCloudService;
         this.userSearchService = userSearchService;
         this.projectService = projectService;
@@ -88,12 +93,12 @@ public class IssueService {
         return createIssue(issueRequestModel);
     }
 
-    private IssueResponseModel createIssue(final IssueRequestModel requestModel) throws IntegrationException {
+    private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         return jiraCloudService.post(requestModel, createApiUri(), IssueResponseModel.class);
     }
 
-    public void updateIssue(final IssueRequestModel requestModel) throws IntegrationException {
-        final String updateUri = createApiUpdateUri(requestModel.getIssueIdOrKey());
+    public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
+        final String updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.put(requestModel, updateUri);
 
         if (response.isStatusCodeError()) {
@@ -101,8 +106,8 @@ public class IssueService {
         }
     }
 
-    public IssueResponseModel getIssue(final String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiUpdateUri(issueIdOrKey);
+    public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiIssueUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)
                               .addQueryParameter("properties", "*all")
@@ -110,12 +115,12 @@ public class IssueService {
         return jiraCloudService.get(request, IssueResponseModel.class);
     }
 
-    public void deleteIssue(final String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiUpdateUri(issueIdOrKey);
+    public void deleteIssue(String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiIssueUri(issueIdOrKey);
         jiraCloudService.delete(uri);
     }
 
-    public void transitionIssue(final IssueRequestModel requestModel) throws IntegrationException {
+    public void transitionIssue(IssueRequestModel requestModel) throws IntegrationException {
         final String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.post(requestModel, transitionsUri);
 
@@ -124,13 +129,13 @@ public class IssueService {
         }
     }
 
-    public TransitionsResponseModel getTransitions(final String issueIdOrKey) throws IntegrationException {
+    public TransitionsResponseModel getTransitions(String issueIdOrKey) throws IntegrationException {
         final String uri = createApiTransitionsUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraCloudService.get(request, TransitionsResponseModel.class);
     }
 
-    public void addComment(final IssueCommentRequestModel requestModel) throws IntegrationException {
+    public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         final String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.post(requestModel, commentsUri);
 
@@ -139,19 +144,42 @@ public class IssueService {
         }
     }
 
+    public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
+        final String uri = createApiIssueQueryUri(issueIdOrKey, "status");
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        IssueResponseModel issueResponseModel = jiraCloudService.get(request, IssueResponseModel.class);
+        String json = issueResponseModel.getJson();
+
+        JsonObject issueObject = gson.fromJson(json, JsonObject.class);
+        if (!issueObject.has("fields")) {
+            throw new IntegrationException(String.format("The fields are missing from the IssueResponseModel. %s", json));
+        }
+        JsonObject fieldsObject = issueObject.getAsJsonObject("fields");
+        if (!fieldsObject.has("status")) {
+            throw new IntegrationException(String.format("The status is missing from the fields in the IssueResponseModel. %s", json));
+        }
+        JsonObject statusObject = fieldsObject.getAsJsonObject("status");
+        StatusDetailsComponent statusDetailsComponent = gson.fromJson(statusObject, StatusDetailsComponent.class);
+        return statusDetailsComponent;
+    }
+
     private String createApiUri() {
         return jiraCloudService.getBaseUrl() + API_PATH;
     }
 
-    private String createApiUpdateUri(final String issueIdOrKey) {
+    private String createApiIssueUri(String issueIdOrKey) {
         return String.format("%s/%s", createApiUri(), issueIdOrKey);
     }
 
-    private String createApiTransitionsUri(final String issueIdOrKey) {
+    private String createApiIssueQueryUri(String issueIdOrKey, String queryField) {
+        return String.format("%s/%s?fields=%s", createApiUri(), issueIdOrKey, queryField);
+    }
+
+    private String createApiTransitionsUri(String issueIdOrKey) {
         return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_TRANSITIONS_SUFFIX);
     }
 
-    private String createApiCommentsUri(final String issueIdOrKey) {
+    private String createApiCommentsUri(String issueIdOrKey) {
         return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_COMMENTS_SUFFIX);
     }
 

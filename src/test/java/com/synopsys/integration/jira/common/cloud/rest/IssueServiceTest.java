@@ -20,6 +20,7 @@ import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelField
 import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.IdComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.cloud.model.components.StatusDetailsComponent;
 import com.synopsys.integration.jira.common.cloud.model.components.TransitionComponent;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
@@ -184,6 +185,24 @@ public class IssueServiceTest extends JiraServiceTest {
         assertEquals(createdIssue.getId(), foundIssueWithComments.getId());
         assertEquals(1, foundIssueWithComments.getFields().getComment().getTotal().intValue());
         assertEquals(uniqueId.toString(), foundIssueWithComments.getFields().getComment().getComments().get(0).getBody());
+    }
+
+    @Test
+    public void testGetStatus() throws Exception {
+        validateConfiguration();
+        final JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        final IssueService issueService = serviceFactory.createIssueService();
+
+        // create an issue
+        final IssueResponseModel createdIssue = createIssue(serviceFactory);
+        final IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+
+        final StatusDetailsComponent status = issueService.getStatus(foundIssue.getId());
+        // delete the issue
+        issueService.deleteIssue(createdIssue.getId());
+
+        assertEquals(createdIssue.getId(), foundIssue.getId());
+        assertEquals("Open", status.getName());
     }
 
     @Test
