@@ -60,7 +60,7 @@ public class JiraCloudServiceFactory {
     }
 
     public IssueService createIssueService() {
-        return new IssueService(createCloudService(), createUserSearchService(), createProjectService(), createIssueTypeService());
+        return new IssueService(jsonTransformer, createCloudService(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public IssueTypeService createIssueTypeService() {
