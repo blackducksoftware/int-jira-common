@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
@@ -44,20 +43,21 @@ import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResp
 import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
-    private final Gson gson;
+    private final IntJsonTransformer intJsonTransformer;
     private final JiraCloudService jiraCloudService;
     private final UserSearchService userSearchService;
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(Gson gson, JiraCloudService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
-        this.gson = gson;
+    public IssueService(IntJsonTransformer intJsonTransformer, JiraCloudService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+        this.intJsonTransformer = intJsonTransformer;
         this.jiraCloudService = jiraCloudService;
         this.userSearchService = userSearchService;
         this.projectService = projectService;
@@ -150,7 +150,7 @@ public class IssueService {
         IssueResponseModel issueResponseModel = jiraCloudService.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
-        JsonObject issueObject = gson.fromJson(json, JsonObject.class);
+        JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
         if (!issueObject.has("fields")) {
             throw new IntegrationException(String.format("The fields are missing from the IssueResponseModel. %s", json));
         }
@@ -159,7 +159,8 @@ public class IssueService {
             throw new IntegrationException(String.format("The status is missing from the fields in the IssueResponseModel. %s", json));
         }
         JsonObject statusObject = fieldsObject.getAsJsonObject("status");
-        StatusDetailsComponent statusDetailsComponent = gson.fromJson(statusObject, StatusDetailsComponent.class);
+        StatusDetailsComponent statusDetailsComponent = intJsonTransformer.getComponentAs(statusObject, StatusDetailsComponent.class);
+
         return statusDetailsComponent;
     }
 
