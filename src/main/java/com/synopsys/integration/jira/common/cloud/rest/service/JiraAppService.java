@@ -48,9 +48,11 @@ public class JiraAppService {
     private static final String MEDIA_TYPE_PREFIX = "application/vnd.atl.plugins";
     private static final String MEDIA_TYPE_SUFFIX = "+json";
     private static final String MEDIA_TYPE_DEFAULT = "application/json";
+    private static final String MEDIA_TYPE_WILDCARD = "*/*";
 
     private static final String MEDIA_TYPE_PLUGIN = MEDIA_TYPE_PREFIX + ".plugin" + MEDIA_TYPE_SUFFIX;
     private static final String MEDIA_TYPE_INSTALLED = MEDIA_TYPE_PREFIX + ".installed" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_REMOTE_INSTALL = MEDIA_TYPE_PREFIX + ".remote.install" + MEDIA_TYPE_SUFFIX;
     private static final String MEDIA_TYPE_INSTALL_URI = MEDIA_TYPE_PREFIX + ".install.uri" + MEDIA_TYPE_SUFFIX;
 
     private Gson gson;
@@ -90,10 +92,17 @@ public class JiraAppService {
         return jiraCloudService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
 
-    public Response installApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
+    public Response installMarketplaceApp(String addonKey, String username, String accessToken) throws IntegrationException {
+        String apiUri = getBaseUrl() + API_PATH + "apps/install-subscribe";
+        final String pluginToken = retrievePluginToken(username, accessToken);
+        final Request request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
+        return httpClient.execute(request);
+    }
+
+    public Response installDevelopmentApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH;
         final String pluginToken = retrievePluginToken(username, accessToken);
-        final Request request = createUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
+        final Request request = createAppUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
         return httpClient.execute(request);
     }
 
@@ -113,7 +122,17 @@ public class JiraAppService {
         return response.getHeaderValue("upm-token");
     }
 
-    private Request createUploadRequest(String apiUri, String username, String accessToken, String pluginToken, String pluginName, String pluginUri) {
+    private Request createMarketplaceInstallRequest(String apiUri, String username, String accessToken, String pluginToken, String addonKey) {
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
+        requestBuilder.addQueryParameter("addonKey", addonKey);
+        requestBuilder.addQueryParameter("token", pluginToken);
+        requestBuilder.method(HttpMethod.POST);
+        requestBuilder.addAdditionalHeader("Content-Type", MEDIA_TYPE_REMOTE_INSTALL);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_WILDCARD);
+        return requestBuilder.build();
+    }
+
+    private Request createAppUploadRequest(String apiUri, String username, String accessToken, String pluginToken, String pluginName, String pluginUri) {
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
         requestBuilder.addQueryParameter("token", pluginToken);
         requestBuilder.method(HttpMethod.POST);

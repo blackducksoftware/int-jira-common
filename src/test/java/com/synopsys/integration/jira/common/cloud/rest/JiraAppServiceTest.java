@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
@@ -18,10 +20,15 @@ import com.synopsys.integration.rest.request.Response;
 
 public class JiraAppServiceTest extends JiraServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
-    private static final String APP_URI = "https://raw.githubusercontent.com/blackducksoftware/blackduck-alert/d94fafae9fba14e3b068acdc9ff458d77d27ca63/src/main/resources/jira/atlassian-connect.json";
+    private static final String APP_URI = "https://blackducksoftware.github.io/blackduck-alert/JiraCloudApp/1.0.0/atlassian-connect.json";
+
+    @AfterEach
+    public void waitForUninstallToFinish() throws InterruptedException {
+        Thread.sleep(1000);
+    }
 
     @Test
-    public void installAppTest() throws Exception {
+    public void installMarketplaceAppTest() throws Exception {
         validateConfiguration();
         final JiraCloudServiceFactory serviceFactory = createServiceFactory();
         final JiraAppService jiraAppService = serviceFactory.createJiraAppService();
@@ -29,14 +36,32 @@ public class JiraAppServiceTest extends JiraServiceTest {
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        final Response installResponse = jiraAppService.installApp(
+        Response installResponse = jiraAppService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
+        Thread.sleep(1000);
+        final Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);
+        assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
+    }
+
+    @Test
+    @Disabled
+    // Disabled because development mode will likely not be turned on most of the time.
+    public void installDevelopmentAppTest() throws Exception {
+        validateConfiguration();
+        final JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        final JiraAppService jiraAppService = serviceFactory.createJiraAppService();
+
+        String userEmail = getEnvUserEmail();
+        String apiToken = getEnvApiToken();
+
+        final Response installResponse = jiraAppService.installDevelopmentApp(
             "Test",
             APP_URI,
             userEmail,
             apiToken
         );
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
-
+        Thread.sleep(1000);
         final Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
@@ -53,7 +78,7 @@ public class JiraAppServiceTest extends JiraServiceTest {
         final Optional<PluginResponseModel> fakeApp = jiraAppService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        final Response installResponse = jiraAppService.installApp("Test", APP_URI, userEmail, apiToken);
+        final Response installResponse = jiraAppService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
         installResponse.throwExceptionForError();
 
         final InstalledAppsResponseModel installedApps = jiraAppService.getInstalledApps(userEmail, apiToken);
