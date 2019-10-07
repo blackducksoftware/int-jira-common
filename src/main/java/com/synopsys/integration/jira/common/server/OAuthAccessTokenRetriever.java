@@ -47,6 +47,10 @@ public class OAuthAccessTokenRetriever {
         }
     }
 
+    /**
+     * @param oAuthRequestTokenResponse the response from calling OAuthAccessTokenRetriever.getRequestToken()
+     * @return A link that must be followed as part of 2-step verification for the request token.
+     */
     public String createAuthorizationLink(OAuthTokenResponse oAuthRequestTokenResponse) {
         String baseUrl = jiraBaseUrl;
         if (jiraBaseUrl.endsWith("/")) {
@@ -57,10 +61,10 @@ public class OAuthAccessTokenRetriever {
 
     public OAuthTokenResponse getAccessToken(String consumerKey, String privateKey, OAuthTokenResponse oAuthRequestTokenResponse, String verificationCode) throws IntegrationException {
         try {
-            OAuthGetAccessToken oAuthGetAccessToken = new OAuthGetAccessToken(jiraBaseUrl);
+            OAuthGetAccessToken oAuthGetAccessToken = new OAuthGetAccessToken(jiraBaseUrl + ACCESS_TOKEN_SPEC);
             oAuthGetAccessToken.consumerKey = consumerKey;
             oAuthGetAccessToken.signer = getOAuthRsaSigner(privateKey);
-            oAuthGetAccessToken.transport = null;
+            oAuthGetAccessToken.transport = new ApacheHttpTransport(); // TODO construct the correct transport
             oAuthGetAccessToken.verifier = verificationCode;
             oAuthGetAccessToken.temporaryToken = oAuthRequestTokenResponse.getToken();
 
