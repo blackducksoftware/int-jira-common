@@ -20,6 +20,7 @@ nexusStaging { packageGroup = 'com.synopsys' }
 
 dependencies {
     api 'com.blackducksoftware.integration:integration-rest:0.11.0'
+    implementation 'com.google.oauth-client:google-oauth-client-servlet:1.30.3'
 
     testImplementation 'org.mockito:mockito-core:2.18.3'
 }
