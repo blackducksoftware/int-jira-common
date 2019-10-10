@@ -28,19 +28,20 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.FieldRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.FieldResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 
 public class FieldService {
     public static final String API_PATH = "/rest/api/2/field";
 
-    private final JiraCloudService jiraCloudService;
+    private final JiraService jiraCloudService;
 
-    public FieldService(final JiraCloudService jiraCloudService) {
+    public FieldService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
     public List<FieldResponseModel> getUserVisibleFields() throws IntegrationException {
-        final Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
         return jiraCloudService.getList(request, FieldResponseModel.class);
     }
 

@@ -41,6 +41,7 @@ import com.synopsys.integration.jira.common.model.response.IssueTypeResponseMode
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
@@ -51,12 +52,12 @@ public class IssueService {
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
     private final IntJsonTransformer intJsonTransformer;
-    private final JiraCloudService jiraCloudService;
+    private final JiraService jiraCloudService;
     private final UserSearchService userSearchService;
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(IntJsonTransformer intJsonTransformer, JiraCloudService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+    public IssueService(IntJsonTransformer intJsonTransformer, JiraService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
         this.intJsonTransformer = intJsonTransformer;
         this.jiraCloudService = jiraCloudService;
         this.userSearchService = userSearchService;
@@ -65,9 +66,9 @@ public class IssueService {
     }
 
     public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
-        final String issueTypeName = requestModel.getIssueTypeName();
-        final String projectName = requestModel.getProjectName();
-        final String reporterEmail = requestModel.getReporterEmail();
+        String issueTypeName = requestModel.getIssueTypeName();
+        String projectName = requestModel.getProjectName();
+        String reporterEmail = requestModel.getReporterEmail();
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
@@ -98,7 +99,7 @@ public class IssueService {
     }
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
-        final String updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
+        String updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.put(requestModel, updateUri);
 
         if (response.isStatusCodeError()) {
@@ -107,7 +108,7 @@ public class IssueService {
     }
 
     public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiIssueUri(issueIdOrKey);
+        String uri = createApiIssueUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)
                               .addQueryParameter("properties", "*all")
@@ -116,12 +117,12 @@ public class IssueService {
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiIssueUri(issueIdOrKey);
+        String uri = createApiIssueUri(issueIdOrKey);
         jiraCloudService.delete(uri);
     }
 
     public void transitionIssue(IssueRequestModel requestModel) throws IntegrationException {
-        final String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
+        String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.post(requestModel, transitionsUri);
 
         if (response.isStatusCodeError()) {
@@ -130,13 +131,13 @@ public class IssueService {
     }
 
     public TransitionsResponseModel getTransitions(String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiTransitionsUri(issueIdOrKey);
+        String uri = createApiTransitionsUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraCloudService.get(request, TransitionsResponseModel.class);
     }
 
     public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
-        final String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
+        String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
         Response response = jiraCloudService.post(requestModel, commentsUri);
 
         if (response.isStatusCodeError()) {
@@ -145,7 +146,7 @@ public class IssueService {
     }
 
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
-        final String uri = createApiIssueQueryUri(issueIdOrKey, "status");
+        String uri = createApiIssueQueryUri(issueIdOrKey, "status");
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         IssueResponseModel issueResponseModel = jiraCloudService.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();

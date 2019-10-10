@@ -30,23 +30,24 @@ import org.apache.commons.lang3.StringUtils;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user/search";
 
-    private JiraCloudService jiraCloudService;
+    private JiraService jiraCloudService;
 
-    public UserSearchService(final JiraCloudService jiraCloudService) {
+    public UserSearchService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public List<UserDetailsResponseModel> findUser(final String queryValue) throws IntegrationException {
+    public List<UserDetailsResponseModel> findUser(String queryValue) throws IntegrationException {
         if (StringUtils.isBlank(queryValue)) {
             return Collections.emptyList();
         }
 
-        final String uri = createApiUri();
+        String uri = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)
                               .addQueryParameter("query", queryValue)

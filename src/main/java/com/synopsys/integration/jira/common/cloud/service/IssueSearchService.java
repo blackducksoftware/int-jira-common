@@ -32,23 +32,24 @@ import com.synopsys.integration.jira.common.enumeration.ExpandableTypes;
 import com.synopsys.integration.jira.common.enumeration.QueryValidationStrategy;
 import com.synopsys.integration.jira.common.model.request.IssueSearchRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraService;
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
 
-    private JiraCloudService jiraCloudService;
+    private JiraService jiraCloudService;
 
-    public IssueSearchService(final JiraCloudService jiraCloudService) {
+    public IssueSearchService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
     public IssueSearchResponseModel findIssuesByDescription(String projectKey, String issueType, String descriptionSearchTerm) throws IntegrationException {
-        final String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "description", descriptionSearchTerm);
+        String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "description", descriptionSearchTerm);
         return queryForIssues(jql);
     }
 
     public IssueSearchResponseModel findIssuesByComment(String projectKey, String issueType, String commentSerchTerm) throws IntegrationException {
-        final String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "comment", commentSerchTerm);
+        String jql = createProjectAndIssueTypeJqlForSearchTerm(projectKey, issueType, "comment", commentSerchTerm);
         return queryForIssues(jql);
     }
 
@@ -57,11 +58,11 @@ public class IssueSearchService {
     }
 
     public IssueSearchResponseModel queryForIssuePage(String jql, Integer startAt, Integer maxResults) throws IntegrationException {
-        final List<ExpandableTypes> typesToExpand = new ArrayList<>();
+        List<ExpandableTypes> typesToExpand = new ArrayList<>();
         typesToExpand.addAll(Arrays.asList(ExpandableTypes.values()));
         List<String> properties = Collections.emptyList();
 
-        final IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, startAt, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
+        IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, startAt, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
         return findIssues(requestModel);
     }
 

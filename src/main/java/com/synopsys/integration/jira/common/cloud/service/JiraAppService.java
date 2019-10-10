@@ -33,6 +33,7 @@ import com.synopsys.integration.jira.common.model.request.AppUploadRequestModel;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
@@ -57,23 +58,23 @@ public class JiraAppService {
 
     private Gson gson;
     private JiraHttpClient httpClient;
-    private JiraCloudService jiraCloudService;
+    private JiraService jiraCloudService;
 
-    public JiraAppService(final Gson gson, JiraHttpClient httpClient, final JiraCloudService jiraCloudService) {
+    public JiraAppService(Gson gson, JiraHttpClient httpClient, JiraService jiraCloudService) {
         this.gson = gson;
         this.httpClient = httpClient;
         this.jiraCloudService = jiraCloudService;
     }
 
     public Optional<PluginResponseModel> getInstalledApp(String username, String accessToken, String appKey) throws IntegrationException {
-        final String apiUri = getBaseUrl() + API_PATH + appKey + "-key";
+        String apiUri = getBaseUrl() + API_PATH + appKey + "-key";
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
 
         try {
-            final PluginResponseModel pluginComponent = jiraCloudService.get(requestBuilder.build(), PluginResponseModel.class);
+            PluginResponseModel pluginComponent = jiraCloudService.get(requestBuilder.build(), PluginResponseModel.class);
             return Optional.of(pluginComponent);
         } catch (IntegrationRestException e) {
             if (404 != e.getHttpStatusCode()) {
@@ -94,22 +95,22 @@ public class JiraAppService {
 
     public Response installMarketplaceApp(String addonKey, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH + "apps/install-subscribe";
-        final String pluginToken = retrievePluginToken(username, accessToken);
-        final Request request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
+        String pluginToken = retrievePluginToken(username, accessToken);
+        Request request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
         return httpClient.execute(request);
     }
 
     public Response installDevelopmentApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH;
-        final String pluginToken = retrievePluginToken(username, accessToken);
-        final Request request = createAppUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
+        String pluginToken = retrievePluginToken(username, accessToken);
+        Request request = createAppUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
         return httpClient.execute(request);
     }
 
     public Response uninstallApp(String appKey, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH;
-        final String pluginToken = retrievePluginToken(username, accessToken);
-        final Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessToken, pluginToken);
+        String pluginToken = retrievePluginToken(username, accessToken);
+        Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessToken, pluginToken);
         return httpClient.execute(request);
     }
 
@@ -163,7 +164,7 @@ public class JiraAppService {
 
     private StringBodyContent createBodyContent(String pluginName, String pluginUri) {
         AppUploadRequestModel uploadRequestModel = new AppUploadRequestModel(pluginUri, pluginName);
-        final String uploadRequestJson = gson.toJson(uploadRequestModel);
+        String uploadRequestJson = gson.toJson(uploadRequestModel);
         return new StringBodyContent(uploadRequestJson);
     }
 

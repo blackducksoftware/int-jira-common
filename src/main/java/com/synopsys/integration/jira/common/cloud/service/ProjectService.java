@@ -27,27 +27,28 @@ import org.apache.commons.lang3.StringUtils;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
-    private JiraCloudService jiraCloudService;
+    private JiraService jiraCloudService;
 
-    public ProjectService(final JiraCloudService jiraCloudService) {
+    public ProjectService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
-        final Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 
-    public PageOfProjectsResponseModel getProjectsByName(final String projectName) throws IntegrationException {
+    public PageOfProjectsResponseModel getProjectsByName(String projectName) throws IntegrationException {
         if (StringUtils.isBlank(projectName)) {
             return new PageOfProjectsResponseModel();
         }
 
-        final Request request = JiraCloudRequestFactory.createDefaultBuilder()
+        Request request = JiraCloudRequestFactory.createDefaultBuilder()
                                     .uri(createApiUri())
                                     .addQueryParameter("query", projectName)
                                     .addQueryParameter("orderBy", "name")
