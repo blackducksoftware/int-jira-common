@@ -31,7 +31,7 @@ public class EntityProperty extends IntRestComponent {
     public EntityProperty() {
     }
 
-    public EntityProperty(final String key, final Object value) {
+    public EntityProperty(String key, Object value) {
         this.key = key;
         this.value = value;
     }

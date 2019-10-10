@@ -23,19 +23,19 @@
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.jira.common.cloud.rest.JiraCloudHttpClient;
+import com.synopsys.integration.jira.common.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
 
 public class JiraCloudServiceFactory {
     private final IntLogger logger;
-    private final JiraCloudHttpClient httpClient;
+    private final JiraHttpClient httpClient;
     private final Gson gson;
     private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
-    public JiraCloudServiceFactory(final IntLogger logger, final JiraCloudHttpClient httpClient, final Gson gson) {
+    public JiraCloudServiceFactory(final IntLogger logger, final JiraHttpClient httpClient, final Gson gson) {
         this.logger = logger;
         this.httpClient = httpClient;
         this.gson = gson;
@@ -87,7 +87,7 @@ public class JiraCloudServiceFactory {
         return logger;
     }
 
-    public JiraCloudHttpClient getHttpClient() {
+    public JiraHttpClient getHttpClient() {
         return httpClient;
     }
 

@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.JiraHttpClient;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
@@ -25,7 +26,7 @@ public class JiraCloudHttpClientTest extends JiraServiceTest {
         validateConfiguration();
 
         final PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        final JiraCloudHttpClient jiraCloudHttpClient = new JiraCloudHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
+        final JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
 
         final String requestUrl = baseUrl + RESTRICTED_ENDPOINT_SPEC;
         final Request request = new Request.Builder(requestUrl).build();

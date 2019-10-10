@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest;
+package com.synopsys.integration.jira.common;
 
 import java.util.Base64;
 
@@ -38,7 +38,7 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraCloudHttpClient extends AuthenticatingIntHttpClient {
+public class JiraHttpClient extends AuthenticatingIntHttpClient {
     private static final String AUTHORIZATION_TYPE = "Basic";
 
     private final AuthenticationSupport authenticationSupport;
@@ -46,9 +46,7 @@ public class JiraCloudHttpClient extends AuthenticatingIntHttpClient {
     private final String userEmail;
     private final String apiToken;
 
-    public JiraCloudHttpClient(
-        final IntLogger logger, final int timeout, final boolean alwaysTrustServerCertificate, final ProxyInfo proxyInfo, final String baseUrl, final AuthenticationSupport authenticationSupport,
-        final String authUserEmail, final String apiToken) {
+    public JiraHttpClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken) {
         super(logger, timeout, alwaysTrustServerCertificate, proxyInfo);
         this.authenticationSupport = authenticationSupport;
         this.baseUrl = baseUrl;
@@ -58,25 +56,25 @@ public class JiraCloudHttpClient extends AuthenticatingIntHttpClient {
     }
 
     @Override
-    public void populateHttpClientBuilder(final HttpClientBuilder httpClientBuilder, final RequestConfig.Builder defaultRequestConfigBuilder) {
+    public void populateHttpClientBuilder(HttpClientBuilder httpClientBuilder, RequestConfig.Builder defaultRequestConfigBuilder) {
         httpClientBuilder.setDefaultCookieStore(new BasicCookieStore());
         defaultRequestConfigBuilder.setCookieSpec(CookieSpecs.DEFAULT);
     }
 
     @Override
-    public void handleErrorResponse(final HttpUriRequest request, final Response response) {
+    public void handleErrorResponse(HttpUriRequest request, Response response) {
         super.handleErrorResponse(request, response);
 
         authenticationSupport.handleErrorResponse(this, request, response, RestConstants.X_CSRF_TOKEN);
     }
 
     @Override
-    public boolean isAlreadyAuthenticated(final HttpUriRequest request) {
+    public boolean isAlreadyAuthenticated(HttpUriRequest request) {
         return request.containsHeader(AuthenticationSupport.AUTHORIZATION_HEADER);
     }
 
     @Override
-    protected void completeAuthenticationRequest(final HttpUriRequest request, final Response responseIgnored) {
+    protected void completeAuthenticationRequest(HttpUriRequest request, Response responseIgnored) {
         final Base64.Encoder encoder = Base64.getEncoder();
         final String unencodedAuthPair = String.format("%s:%s", userEmail, apiToken);
         final String encodedAuthPair = encoder.encodeToString(unencodedAuthPair.getBytes());

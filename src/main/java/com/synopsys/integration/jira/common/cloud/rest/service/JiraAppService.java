@@ -29,10 +29,10 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.JiraHttpClient;
 import com.synopsys.integration.jira.common.cloud.model.request.AppUploadRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.cloud.model.response.PluginResponseModel;
-import com.synopsys.integration.jira.common.cloud.rest.JiraCloudHttpClient;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
@@ -56,10 +56,10 @@ public class JiraAppService {
     private static final String MEDIA_TYPE_INSTALL_URI = MEDIA_TYPE_PREFIX + ".install.uri" + MEDIA_TYPE_SUFFIX;
 
     private Gson gson;
-    private JiraCloudHttpClient httpClient;
+    private JiraHttpClient httpClient;
     private JiraCloudService jiraCloudService;
 
-    public JiraAppService(final Gson gson, JiraCloudHttpClient httpClient, final JiraCloudService jiraCloudService) {
+    public JiraAppService(final Gson gson, JiraHttpClient httpClient, final JiraCloudService jiraCloudService) {
         this.gson = gson;
         this.httpClient = httpClient;
         this.jiraCloudService = jiraCloudService;

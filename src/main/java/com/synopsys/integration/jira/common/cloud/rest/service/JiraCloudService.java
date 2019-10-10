@@ -30,9 +30,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.JiraHttpClient;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.cloud.model.request.JiraRequestModel;
-import com.synopsys.integration.jira.common.cloud.rest.JiraCloudHttpClient;
 import com.synopsys.integration.jira.common.cloud.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.JiraResponse;
@@ -43,12 +43,12 @@ import com.synopsys.integration.rest.service.IntResponseTransformer;
 
 public class JiraCloudService {
     private final Gson gson;
-    private final JiraCloudHttpClient httpClient;
+    private final JiraHttpClient httpClient;
     private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
     // TODO implement methods as needed
-    public JiraCloudService(final Gson gson, final JiraCloudHttpClient httpClient, final IntResponseTransformer responseTransformer, final IntJsonTransformer jsonTransformer) {
+    public JiraCloudService(final Gson gson, final JiraHttpClient httpClient, final IntResponseTransformer responseTransformer, final IntJsonTransformer jsonTransformer) {
         this.gson = gson;
         this.httpClient = httpClient;
         this.responseTransformer = responseTransformer;
