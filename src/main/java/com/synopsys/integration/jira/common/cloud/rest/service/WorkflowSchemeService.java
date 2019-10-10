@@ -23,11 +23,11 @@
 package com.synopsys.integration.jira.common.cloud.rest.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.cloud.model.request.WorkflowIssueTypeMappingsRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.request.WorkflowSchemeRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueTypesWorkflowMappingResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.WorkflowSchemeResponseModel;
+import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.WorkflowIssueTypeMappingsRequestModel;
+import com.synopsys.integration.jira.common.model.request.WorkflowSchemeRequestModel;
+import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMappingResponseModel;
+import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 

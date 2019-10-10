@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
+import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
 public class UserServiceTest extends JiraServiceTest {
 

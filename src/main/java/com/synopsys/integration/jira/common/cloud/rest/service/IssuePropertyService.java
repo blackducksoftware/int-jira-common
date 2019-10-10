@@ -26,9 +26,9 @@ import java.io.Serializable;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.cloud.model.response.IssuePropertyKeysResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssuePropertyResponseModel;
+import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 

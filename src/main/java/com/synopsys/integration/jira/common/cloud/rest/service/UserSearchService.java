@@ -28,8 +28,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {

@@ -25,9 +25,9 @@ package com.synopsys.integration.jira.common.cloud.rest.service;
 import java.util.List;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.request.FieldRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.cloud.model.response.FieldResponseModel;
+import com.synopsys.integration.jira.common.model.request.FieldRequestModel;
+import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.response.FieldResponseModel;
 import com.synopsys.integration.rest.request.Request;
 
 public class FieldService {

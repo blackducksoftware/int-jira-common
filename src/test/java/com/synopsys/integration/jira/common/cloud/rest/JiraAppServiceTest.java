@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.response.InstalledAppsResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraAppService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
+import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.rest.request.Response;
 
 public class JiraAppServiceTest extends JiraServiceTest {

@@ -13,27 +13,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.components.FieldUpdateOperationComponent;
-import com.synopsys.integration.jira.common.cloud.model.components.IdComponent;
-import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
-import com.synopsys.integration.jira.common.cloud.model.components.StatusDetailsComponent;
-import com.synopsys.integration.jira.common.cloud.model.components.TransitionComponent;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.TransitionsResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.ProjectService;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.EntityProperty;
+import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.model.components.IdComponent;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
+import com.synopsys.integration.jira.common.model.components.TransitionComponent;
+import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.model.request.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
+import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
+import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
 public class IssueServiceTest extends JiraServiceTest {
 

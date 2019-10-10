@@ -30,8 +30,8 @@ import java.util.List;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.enumeration.ExpandableTypes;
 import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStrategy;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueSearchRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueSearchResponseModel;
+import com.synopsys.integration.jira.common.model.request.IssueSearchRequestModel;
+import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";

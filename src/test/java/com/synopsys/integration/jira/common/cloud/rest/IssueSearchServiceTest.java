@@ -1,28 +1,27 @@
 package com.synopsys.integration.jira.common.cloud.rest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.cloud.model.components.IssueComponent;
-import com.synopsys.integration.jira.common.cloud.model.components.ProjectComponent;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueCommentRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.request.IssueCreationRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.IssueSearchResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.PageOfProjectsResponseModel;
-import com.synopsys.integration.jira.common.cloud.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueSearchService;
 import com.synopsys.integration.jira.common.cloud.rest.service.IssueService;
 import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.rest.service.ProjectService;
 import com.synopsys.integration.jira.common.cloud.rest.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.EntityProperty;
+import com.synopsys.integration.jira.common.model.components.IssueComponent;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.model.request.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
+import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
 public class IssueSearchServiceTest extends JiraServiceTest {
 
