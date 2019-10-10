@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.enumeration;
+package com.synopsys.integration.jira.common.enumeration;
 
 public enum FieldType {
     CASCADING_SELECT("com.atlassian.jira.plugin.system.customfieldtypes:cascadingselect", "com.atlassian.jira.plugin.system.customfieldtypes:cascadingselectsearcher"),

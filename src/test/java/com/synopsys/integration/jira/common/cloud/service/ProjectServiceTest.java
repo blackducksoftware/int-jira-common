@@ -1,12 +1,10 @@
-package com.synopsys.integration.jira.common.cloud.rest;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
-import com.synopsys.integration.jira.common.cloud.rest.service.ProjectService;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 
 public class ProjectServiceTest extends JiraServiceTest {

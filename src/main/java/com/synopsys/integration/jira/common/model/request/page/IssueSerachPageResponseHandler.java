@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import com.synopsys.integration.jira.common.cloud.rest.JiraCloudPageRequestHandler;
+import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.component.IntRestResponse;

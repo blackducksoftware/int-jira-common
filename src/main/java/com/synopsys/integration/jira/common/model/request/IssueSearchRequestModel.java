@@ -26,8 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.synopsys.integration.jira.common.cloud.enumeration.ExpandableTypes;
-import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStrategy;
+import com.synopsys.integration.jira.common.enumeration.ExpandableTypes;
+import com.synopsys.integration.jira.common.enumeration.QueryValidationStrategy;
 
 public class IssueSearchRequestModel extends JiraRequestModel {
     public static final String ALL_FIELDS_OPTION = "*all";

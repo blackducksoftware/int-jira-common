@@ -1,10 +1,9 @@
-package com.synopsys.integration.jira.common.cloud.rest;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.synopsys.integration.jira.common.cloud.configuration.JiraServerConfig;
-import com.synopsys.integration.jira.common.cloud.configuration.JiraServerConfigBuilder;
-import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfig;
+import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfigBuilder;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
@@ -16,18 +15,17 @@ public class JiraServiceTest {
     public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
 
     public void validateConfiguration() {
-        final String baseUrl = getEnvBaseUrl();
-        final String userEmail = getEnvUserEmail();
-        final String apiToken = getEnvApiToken();
+        String baseUrl = getEnvBaseUrl();
+        String userEmail = getEnvUserEmail();
+        String apiToken = getEnvApiToken();
 
         assumeTrue(null != baseUrl, "No Jira Cloud base url provided");
         assumeTrue(null != userEmail, "No Jira Cloud user email provided");
         assumeTrue(null != apiToken, "No Jira Cloud API Token provided");
     }
 
-    public JiraServerConfig createJiraServerConfig() {
-
-        JiraServerConfigBuilder builder = JiraServerConfig.newBuilder();
+    public JiraCloudRestConfig createJiraServerConfig() {
+        JiraCloudRestConfigBuilder builder = JiraCloudRestConfig.newBuilder();
 
         builder.setUrl(getEnvBaseUrl())
             .setAuthUserEmail(getEnvUserEmail())
@@ -37,7 +35,7 @@ public class JiraServiceTest {
 
     public JiraCloudServiceFactory createServiceFactory() {
         IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        JiraServerConfig serverConfig = createJiraServerConfig();
+        JiraCloudRestConfig serverConfig = createJiraServerConfig();
         return serverConfig.createJiraCloudServiceFactory(logger);
     }
 

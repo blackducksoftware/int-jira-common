@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest.service;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import java.util.Optional;
 
@@ -29,10 +29,10 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraHttpClient;
 import com.synopsys.integration.jira.common.model.request.AppUploadRequestModel;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;

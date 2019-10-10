@@ -27,14 +27,14 @@ import java.util.function.BiConsumer;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.builder.Buildable;
-import com.synopsys.integration.jira.common.JiraHttpClient;
-import com.synopsys.integration.jira.common.cloud.rest.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 import com.synopsys.integration.util.Stringable;
 
-public class JiraServerConfig extends Stringable implements Buildable {
+public class JiraCloudRestConfig extends Stringable implements Buildable {
     private final URL jiraUrl;
     private final int timeoutSeconds;
     private final String authUserEmail;
@@ -44,8 +44,7 @@ public class JiraServerConfig extends Stringable implements Buildable {
     private final Gson gson;
     private final AuthenticationSupport authenticationSupport;
 
-    public JiraServerConfig(final URL jiraUrl, final int timeoutSeconds, final ProxyInfo proxyInfo, final boolean alwaysTrustServerCertificate, final Gson gson,
-        final AuthenticationSupport authenticationSupport, final String authUserEmail, final String apiToken) {
+    public JiraCloudRestConfig(URL jiraUrl, int timeoutSeconds, ProxyInfo proxyInfo, boolean alwaysTrustServerCertificate, Gson gson, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken) {
         this.jiraUrl = jiraUrl;
         this.timeoutSeconds = timeoutSeconds;
         this.authUserEmail = authUserEmail;
@@ -56,7 +55,9 @@ public class JiraServerConfig extends Stringable implements Buildable {
         this.authenticationSupport = authenticationSupport;
     }
 
-    public static final JiraServerConfigBuilder newBuilder() { return new JiraServerConfigBuilder(); }
+    public static final JiraCloudRestConfigBuilder newBuilder() {
+        return new JiraCloudRestConfigBuilder();
+    }
 
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
         return new JiraHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
@@ -67,9 +68,9 @@ public class JiraServerConfig extends Stringable implements Buildable {
     }
 
     public void populateEnvironmentVariables(BiConsumer<String, String> pairsConsumer) {
-        pairsConsumer.accept(JiraServerConfigBuilder.URL_KEY.getKey(), jiraUrl.toString());
-        pairsConsumer.accept(JiraServerConfigBuilder.AUTH_USER_EMAIL.getKey(), authUserEmail);
-        pairsConsumer.accept(JiraServerConfigBuilder.ACCESS_TOKEN_KEY.getKey(), apiToken);
+        pairsConsumer.accept(JiraCloudRestConfigBuilder.URL_KEY.getKey(), jiraUrl.toString());
+        pairsConsumer.accept(JiraCloudRestConfigBuilder.AUTH_USER_EMAIL.getKey(), authUserEmail);
+        pairsConsumer.accept(JiraCloudRestConfigBuilder.ACCESS_TOKEN_KEY.getKey(), apiToken);
     }
 
     public URL getJiraUrl() {
@@ -103,4 +104,5 @@ public class JiraServerConfig extends Stringable implements Buildable {
     public AuthenticationSupport getAuthenticationSupport() {
         return authenticationSupport;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.synopsys.integration.jira.common.cloud.rest;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
@@ -20,17 +20,17 @@ public class JiraCloudHttpClientTest extends JiraServiceTest {
 
     @Test
     public void authenticationTest() throws IntegrationException, IOException {
-        final String baseUrl = getEnvBaseUrl();
-        final String userEmail = getEnvUserEmail();
-        final String apiToken = getEnvApiToken();
+        String baseUrl = getEnvBaseUrl();
+        String userEmail = getEnvUserEmail();
+        String apiToken = getEnvApiToken();
         validateConfiguration();
 
-        final PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        final JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
+        PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
+        JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
 
-        final String requestUrl = baseUrl + RESTRICTED_ENDPOINT_SPEC;
-        final Request request = new Request.Builder(requestUrl).build();
-        try (final Response reponse = jiraCloudHttpClient.execute(request)) {
+        String requestUrl = baseUrl + RESTRICTED_ENDPOINT_SPEC;
+        Request request = new Request.Builder(requestUrl).build();
+        try (Response reponse = jiraCloudHttpClient.execute(request)) {
             assertTrue(reponse.isStatusCodeOkay(), "Expected the request to be valid");
         }
     }

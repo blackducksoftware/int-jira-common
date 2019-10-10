@@ -22,7 +22,7 @@
  */
 package com.synopsys.integration.jira.common.model.request;
 
-import com.synopsys.integration.jira.common.cloud.enumeration.FieldType;
+import com.synopsys.integration.jira.common.enumeration.FieldType;
 
 public class FieldRequestModel extends JiraRequestModel {
     private final String name;

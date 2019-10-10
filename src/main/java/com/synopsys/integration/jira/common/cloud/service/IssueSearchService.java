@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest.service;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.enumeration.ExpandableTypes;
-import com.synopsys.integration.jira.common.cloud.enumeration.QueryValidationStrategy;
+import com.synopsys.integration.jira.common.enumeration.ExpandableTypes;
+import com.synopsys.integration.jira.common.enumeration.QueryValidationStrategy;
 import com.synopsys.integration.jira.common.model.request.IssueSearchRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
 

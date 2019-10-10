@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest;
+package com.synopsys.integration.jira.common.rest;
 
 import java.util.HashSet;
 import java.util.Set;

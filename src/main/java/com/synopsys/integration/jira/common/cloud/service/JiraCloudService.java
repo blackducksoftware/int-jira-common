@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest.service;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -30,8 +30,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraHttpClient;
-import com.synopsys.integration.jira.common.cloud.rest.JiraCloudPageRequestHandler;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;

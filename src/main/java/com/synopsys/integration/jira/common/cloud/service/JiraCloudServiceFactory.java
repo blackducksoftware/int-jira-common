@@ -20,10 +20,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.rest.service;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.jira.common.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
