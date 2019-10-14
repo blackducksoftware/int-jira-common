@@ -24,7 +24,7 @@ import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
-public class IssuePropertyServiceTest extends JiraServiceTest {
+public class IssuePropertyServiceTest extends JiraCloudServiceTest {
     @Test
     public void getPropertyKeysTest() throws IntegrationException {
         validateConfiguration();
@@ -35,11 +35,11 @@ public class IssuePropertyServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
         UUID uniqueId = UUID.randomUUID();
         String uniqueIdString = uniqueId.toString();
@@ -75,11 +75,11 @@ public class IssuePropertyServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
         UUID uniqueId = UUID.randomUUID();
         String uniqueIdString = uniqueId.toString();

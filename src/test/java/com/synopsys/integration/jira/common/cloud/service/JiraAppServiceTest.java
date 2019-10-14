@@ -16,7 +16,7 @@ import com.synopsys.integration.jira.common.model.response.InstalledAppsResponse
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.rest.request.Response;
 
-public class JiraAppServiceTest extends JiraServiceTest {
+public class JiraAppServiceTest extends JiraCloudServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_URI = "https://blackducksoftware.github.io/blackduck-alert/JiraCloudApp/1.0.0/atlassian-connect.json";
 
@@ -82,9 +82,9 @@ public class JiraAppServiceTest extends JiraServiceTest {
         InstalledAppsResponseModel installedApps = jiraAppService.getInstalledApps(userEmail, apiToken);
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();
         List<PluginResponseModel> userInstalledPlugins = allInstalledPlugins
-                                                                   .stream()
-                                                                   .filter(plugin -> plugin.getUserInstalled())
-                                                                   .collect(Collectors.toList());
+                                                             .stream()
+                                                             .filter(plugin -> plugin.getUserInstalled())
+                                                             .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
         Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);

@@ -19,7 +19,7 @@ import com.synopsys.integration.jira.common.model.response.IssueSearchResponseMo
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
-public class IssueSearchServiceTest extends JiraServiceTest {
+public class IssueSearchServiceTest extends JiraCloudServiceTest {
 
     @Test
     public void findIssuesByDescriptionTest() throws Exception {
@@ -32,11 +32,11 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
         UUID uniqueId = UUID.randomUUID();
         String uniqueIdString = uniqueId.toString();
@@ -68,11 +68,11 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
@@ -110,11 +110,11 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
@@ -161,11 +161,11 @@ public class IssueSearchServiceTest extends JiraServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                         .findFirst()
-                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+                                                   .findFirst()
+                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                             .findFirst()
-                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
+                                       .findFirst()
+                                       .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();

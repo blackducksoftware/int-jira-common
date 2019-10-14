@@ -49,10 +49,10 @@ public class ProjectService {
         }
 
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                                    .uri(createApiUri())
-                                    .addQueryParameter("query", projectName)
-                                    .addQueryParameter("orderBy", "name")
-                                    .build();
+                              .uri(createApiUri())
+                              .addQueryParameter("query", projectName)
+                              .addQueryParameter("orderBy", "name")
+                              .build();
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 

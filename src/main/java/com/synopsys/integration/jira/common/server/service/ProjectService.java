@@ -20,38 +20,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.server.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.IssueTypeRequestModel;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 
-public class IssueTypeService {
-    private static final String API_PATH = "/rest/api/2/issuetype";
+public class ProjectService {
+    public static final String API_PATH = "/rest/api/2/project";
+    private JiraService jiraService;
 
-    private JiraService jiraCloudService;
-
-    public IssueTypeService(JiraService jiraCloudService) {
-        this.jiraCloudService = jiraCloudService;
+    public ProjectService(JiraService jiraService) {
+        this.jiraService = jiraService;
     }
 
-    public List<IssueTypeResponseModel> getAllIssueTypes() throws IntegrationException {
-        String uri = createApiUri();
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
-        return jiraCloudService.getList(request, IssueTypeResponseModel.class);
+    public List<ProjectComponent> getProjects() throws IntegrationException {
+        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        return jiraService.getList(request, ProjectComponent.class);
     }
 
-    public IssueTypeResponseModel createIssueType(IssueTypeRequestModel issueTypeRequestModel) throws IntegrationException {
-        String uri = createApiUri();
-        return jiraCloudService.post(issueTypeRequestModel, uri, IssueTypeResponseModel.class);
+    public List<ProjectComponent> getProjectsByName(String projectName) throws IntegrationException {
+        // TODO gavink - I could not find a way to query for projects through the API, so we may have issues handling large collections of results.
+        return getProjects()
+                   .stream()
+                   .filter(project -> project.getName().contains(projectName))
+                   .collect(Collectors.toList());
     }
 
     private String createApiUri() {
-        return jiraCloudService.getBaseUrl() + API_PATH;
+        return jiraService.getBaseUrl() + API_PATH;
     }
+
 }

@@ -8,7 +8,7 @@ import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 
-public class JiraServiceTest {
+public abstract class JiraCloudServiceTest {
     public static final String ENV_BASE_URL = "JIRA_CLOUD_URL";
     public static final String ENV_USER_EMAIL = "JIRA_CLOUD_EMAIL";
     public static final String ENV_API_TOKEN = "JIRA_CLOUD_TOKEN";

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 
-public class UserServiceTest extends JiraServiceTest {
+public class UserServiceTest extends JiraCloudServiceTest {
 
     @Test
     public void testSearchUser() throws Exception {

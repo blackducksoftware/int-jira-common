@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 
-public class ProjectServiceTest extends JiraServiceTest {
+public class ProjectServiceTest extends JiraCloudServiceTest {
 
     @Test
     public void testGetAllProjects() throws Exception {

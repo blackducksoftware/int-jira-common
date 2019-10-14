@@ -15,7 +15,7 @@ import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraCloudHttpClientTest extends JiraServiceTest {
+public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
     private static final String RESTRICTED_ENDPOINT_SPEC = "/rest/api/2/field";
 
     @Test

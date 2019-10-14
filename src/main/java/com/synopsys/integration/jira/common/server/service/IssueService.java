@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.server.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,8 @@ import java.util.Map;
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.cloud.service.ProjectService;
+import com.synopsys.integration.jira.common.cloud.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
@@ -55,7 +57,7 @@ public class IssueService {
     private final IntJsonTransformer intJsonTransformer;
     private final JiraService jiraCloudService;
     private final UserSearchService userSearchService;
-    private final ProjectService projectService;
+    private final com.synopsys.integration.jira.common.cloud.service.ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
     public IssueService(IntJsonTransformer intJsonTransformer, JiraService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
@@ -185,5 +187,4 @@ public class IssueService {
     private String createApiCommentsUri(String issueIdOrKey) {
         return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_COMMENTS_SUFFIX);
     }
-
 }

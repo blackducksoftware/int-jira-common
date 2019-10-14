@@ -1,3 +1,25 @@
+/**
+ * int-jira-common
+ *
+ * Copyright (c) 2019 Synopsys, Inc.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package com.synopsys.integration.jira.common.server.configuration;
 
 import java.net.MalformedURLException;
@@ -15,7 +37,6 @@ import com.synopsys.integration.builder.BuilderProperties;
 import com.synopsys.integration.builder.BuilderPropertyKey;
 import com.synopsys.integration.builder.BuilderStatus;
 import com.synopsys.integration.builder.IntegrationBuilder;
-import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfig;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
@@ -25,7 +46,7 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.proxy.ProxyInfoBuilder;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraCloudRestConfig> {
+public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraServerRestConfig> {
     public static final BuilderPropertyKey URL_KEY = new BuilderPropertyKey("JIRA_URL");
     public static final BuilderPropertyKey AUTH_USERNAME = new BuilderPropertyKey("JIRA_AUTH_USERNAME");
     public static final BuilderPropertyKey AUTH_PASSWORD = new BuilderPropertyKey("JIRA_AUTH_PASSWORD");
@@ -64,14 +85,14 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraCloudRes
     }
 
     @Override
-    protected JiraCloudRestConfig buildWithoutValidation() {
+    protected JiraServerRestConfig buildWithoutValidation() {
         URL jiraUrl = null;
         try {
             jiraUrl = new URL(getUrl());
         } catch (MalformedURLException e) {
         }
 
-        return new JiraCloudRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), isTrustCert(), gson, authenticationSupport, getAuthUserEmail(), getApiToken());
+        return new JiraServerRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), isTrustCert(), gson, authenticationSupport, getAuthUsername(), getAuthPassword());
     }
 
     @Override
@@ -87,11 +108,11 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraCloudRes
             }
         }
 
-        if (StringUtils.isBlank(getAuthUserEmail())) {
+        if (StringUtils.isBlank(getAuthUsername())) {
             builderStatus.addErrorMessage("The Jira Cloud user name must be specified.");
         }
 
-        if (StringUtils.isBlank(getApiToken())) {
+        if (StringUtils.isBlank(getAuthPassword())) {
             builderStatus.addErrorMessage("The Jira Cloud access token must be specified.");
         }
 
@@ -206,21 +227,21 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraCloudRes
         return this;
     }
 
-    public String getAuthUserEmail() {
+    public String getAuthUsername() {
         return builderProperties.get(AUTH_USERNAME);
     }
 
-    public JiraServerRestConfigBuilder setAuthUserEmail(String authUserEmail) {
-        builderProperties.set(AUTH_USERNAME, authUserEmail);
+    public JiraServerRestConfigBuilder setAuthUsername(String authUsername) {
+        builderProperties.set(AUTH_USERNAME, authUsername);
         return this;
     }
 
-    public String getApiToken() {
+    public String getAuthPassword() {
         return builderProperties.get(AUTH_PASSWORD);
     }
 
-    public JiraServerRestConfigBuilder setApiToken(String accessToken) {
-        builderProperties.set(AUTH_PASSWORD, accessToken);
+    public JiraServerRestConfigBuilder setAuthPassword(String authPassword) {
+        builderProperties.set(AUTH_PASSWORD, authPassword);
         return this;
     }
 
