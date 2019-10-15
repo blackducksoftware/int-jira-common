@@ -6,13 +6,13 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 
 public class PlaceholderTest {
     @Test
     public void test() {
-        final IssueRequestModelFieldsBuilder builder = new IssueRequestModelFieldsBuilder();
-        final Map<String, Object> issueRequestModelFields = builder.build();
+        IssueRequestModelFieldsBuilder builder = new IssueRequestModelFieldsBuilder();
+        Map<String, Object> issueRequestModelFields = builder.build();
         assertTrue(issueRequestModelFields.isEmpty(), "Expected the map to be empty");
     }
 

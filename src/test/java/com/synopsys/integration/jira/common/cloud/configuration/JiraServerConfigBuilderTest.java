@@ -14,16 +14,16 @@ import org.junit.jupiter.api.Test;
 public class JiraServerConfigBuilderTest {
     @Test
     public void testSimpleValidConfig() {
-        JiraServerConfigBuilder jiraServerConfigBuilder = createBuilderWithoutAccessToken();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = createBuilderWithoutAccessToken();
         jiraServerConfigBuilder.setApiToken("fake but valid (not blank) api token");
 
-        JiraServerConfig jiraServerConfig = jiraServerConfigBuilder.build();
+        JiraCloudRestConfig jiraServerConfig = jiraServerConfigBuilder.build();
         assertNotNull(jiraServerConfig);
     }
 
     @Test
     public void testPopulatedFromEnvironment() {
-        JiraServerConfigBuilder jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
 
         Map<String, String> fakeEnvironment = new HashMap<>();
         fakeEnvironment.put("jira.auth.user.email", "fake but valid (not blank) user email");
@@ -41,18 +41,18 @@ public class JiraServerConfigBuilderTest {
 
     @Test
     public void testInvalidTimeoutFromEnvironment() {
-        JiraServerConfigBuilder jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
 
         Map<String, String> fakeEnvironment = new HashMap<>();
         fakeEnvironment.put("jira.timeout.in.seconds", "invalid - not numeric");
         jiraServerConfigBuilder.setProperties(fakeEnvironment.entrySet());
 
-        assertEquals(JiraServerConfigBuilder.DEFAULT_TIMEOUT_SECONDS, jiraServerConfigBuilder.getTimeoutInSeconds());
+        assertEquals(JiraCloudRestConfigBuilder.DEFAULT_TIMEOUT_SECONDS, jiraServerConfigBuilder.getTimeoutInSeconds());
     }
 
     @Test
     public void testUrlConfigFromEnvironment() {
-        JiraServerConfigBuilder jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
         jiraServerConfigBuilder.setAuthUserEmail("fake but valid (not blank) user email");
         jiraServerConfigBuilder.setApiToken("fake but valid (not blank) access token");
         jiraServerConfigBuilder.setTimeoutInSeconds(120);
@@ -67,7 +67,7 @@ public class JiraServerConfigBuilderTest {
         jiraServerConfigBuilder.setProperties(fakeEnvironment.entrySet());
         assertTrue(jiraServerConfigBuilder.isValid());
 
-        jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+        jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
         jiraServerConfigBuilder.setAuthUserEmail("fake but valid (not blank) user email");
         jiraServerConfigBuilder.setApiToken("fake but valid (not blank) access token");
         jiraServerConfigBuilder.setTimeoutInSeconds(120);
@@ -77,7 +77,7 @@ public class JiraServerConfigBuilderTest {
         jiraServerConfigBuilder.setProperties(fakeEnvironment.entrySet());
         assertTrue(jiraServerConfigBuilder.isValid());
 
-        jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+        jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
         jiraServerConfigBuilder.setAuthUserEmail("fake but valid (not blank) user email");
         jiraServerConfigBuilder.setApiToken("fake but valid (not blank) access token");
         jiraServerConfigBuilder.setTimeoutInSeconds(120);
@@ -88,7 +88,7 @@ public class JiraServerConfigBuilderTest {
         Map<String, String> properties = new HashMap<>();
         properties.put("jira.api.token", "fake but valid not blank access token");
 
-        JiraServerConfigBuilder jiraServerConfigBuilder = createBuilderWithoutAccessToken();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = createBuilderWithoutAccessToken();
         assertFalse(jiraServerConfigBuilder.isValid());
 
         jiraServerConfigBuilder.setProperties(properties.entrySet());
@@ -105,7 +105,7 @@ public class JiraServerConfigBuilderTest {
         commonUserEnvironment.put("BLACKDUCK_USERNAME", "username");
         commonUserEnvironment.put("BLACKDUCK_PASSWORD", "password");
 
-        JiraServerConfigBuilder jiraServerConfigBuilder = new JiraServerConfigBuilder();
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = new JiraCloudRestConfigBuilder();
         Set<String> keys = jiraServerConfigBuilder.getEnvironmentVariableKeys();
         for (String key : keys) {
             if (commonUserEnvironment.containsKey(key)) {
@@ -113,14 +113,14 @@ public class JiraServerConfigBuilderTest {
             }
         }
 
-        JiraServerConfig jiraServerConfig = jiraServerConfigBuilder.build();
+        JiraCloudRestConfig jiraServerConfig = jiraServerConfigBuilder.build();
         assertEquals("http://www.google.com", jiraServerConfig.getJiraUrl().toString());
         assertEquals("fake but valid not blank user email", jiraServerConfig.getAuthUserEmail());
         assertEquals("fake but valid not blank access token", jiraServerConfig.getApiToken());
     }
 
-    private JiraServerConfigBuilder createBuilderWithoutAccessToken() {
-        JiraServerConfigBuilder jiraServerConfigBuilder = JiraServerConfig.newBuilder();
+    private JiraCloudRestConfigBuilder createBuilderWithoutAccessToken() {
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
 
         jiraServerConfigBuilder.setUrl("http://www.google.com/fake_but_valid_not_blank_url");
         jiraServerConfigBuilder.setAuthUserEmail("fake but valid (not blank) user email");
