@@ -49,24 +49,8 @@ public class IssueSearchRequestModel extends JiraRequestModel {
         return new IssueSearchRequestModel(jql, DEFAULT_START_AT, DEFAULT_MAX_RESULTS, true, null, null);
     }
 
-    public static final IssueSearchRequestModel withAllFields(String jql) {
-        return new IssueSearchRequestModel(jql, DEFAULT_START_AT, DEFAULT_MAX_RESULTS, true, ALL_FIELDS_LIST, ALL_FIELDS_LIST);
-    }
-
     public static final IssueSearchRequestModel paged(String jql, Integer startAt, Integer maxResults) {
         return new IssueSearchRequestModel(jql, startAt, maxResults, true, null, null);
-    }
-
-    public static final IssueSearchRequestModel pagedWithAllFields(String jql, Integer startAt, Integer maxResults) {
-        return new IssueSearchRequestModel(jql, startAt, maxResults, true, ALL_FIELDS_LIST, ALL_FIELDS_LIST);
-    }
-
-    public static final String createExpandParam(String... fieldsToExpand) {
-        return String.join(",", fieldsToExpand);
-    }
-
-    public static final String createExpandParam(List<String> fieldsToExpand) {
-        return String.join(",", fieldsToExpand);
     }
 
     /**
