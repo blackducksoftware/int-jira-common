@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.IdComponent;
@@ -75,11 +76,11 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         String validProjectName = validProject.getName();
 
         IssueCreationRequestModel emailRequestModel = new IssueCreationRequestModel(null, validIssueType, validProjectName, fieldsBuilder, properties);
-        IllegalStateException emailException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(emailRequestModel));
+        JiraPreconditionNotMetException emailException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(emailRequestModel));
         IssueCreationRequestModel issueTypeRequestModel = new IssueCreationRequestModel(validEmailAddress, null, validProjectName, fieldsBuilder, properties);
-        IllegalStateException issueTypeException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(issueTypeRequestModel));
+        JiraPreconditionNotMetException issueTypeException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(issueTypeRequestModel));
         IssueCreationRequestModel projectRequestModel = new IssueCreationRequestModel(validEmailAddress, validIssueType, null, fieldsBuilder, properties);
-        IllegalStateException projectException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(projectRequestModel));
+        JiraPreconditionNotMetException projectException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(projectRequestModel));
 
         assertTrue(emailException.getMessage().contains("Reporter user with email not found; email:"));
         assertTrue(issueTypeException.getMessage().contains("Issue type not found; issue type"));
@@ -111,11 +112,11 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         String validProjectName = validProject.getName();
 
         IssueCreationRequestModel emailRequestModel = new IssueCreationRequestModel("unknown_user_123_abcd@a.unknown.test.domain.com", validIssueType, validProjectName, fieldsBuilder, properties);
-        IllegalStateException emailException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(emailRequestModel));
+        JiraPreconditionNotMetException emailException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(emailRequestModel));
         IssueCreationRequestModel issueTypeRequestModel = new IssueCreationRequestModel(validEmailAddress, "unknown_test_issue_type", validProjectName, fieldsBuilder, properties);
-        IllegalStateException issueTypeException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(issueTypeRequestModel));
+        JiraPreconditionNotMetException issueTypeException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(issueTypeRequestModel));
         IssueCreationRequestModel projectRequestModel = new IssueCreationRequestModel(validEmailAddress, validIssueType, "unknown_project_name", fieldsBuilder, properties);
-        IllegalStateException projectException = assertThrows(IllegalStateException.class, () -> issueService.createIssue(projectRequestModel));
+        JiraPreconditionNotMetException projectException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(projectRequestModel));
 
         assertTrue(emailException.getMessage().contains("Reporter user with email not found; email:"));
         assertTrue(issueTypeException.getMessage().contains("Issue type not found; issue type"));
@@ -263,4 +264,5 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         // create an issue
         return issueService.createIssue(requestModel);
     }
+
 }

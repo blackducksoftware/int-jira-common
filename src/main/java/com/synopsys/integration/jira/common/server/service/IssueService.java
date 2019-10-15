@@ -29,6 +29,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
@@ -74,13 +75,13 @@ public class IssueService {
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
                                                     .findFirst()
-                                                    .orElseThrow(() -> new IllegalStateException(String.format("Issue type not found; issue type %s", issueTypeName)));
+                                                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
         UserDetailsResponseModel foundUserDetails = userSearchService.findUserByUsername(reporter)
-                                                        .orElseThrow(() -> new IllegalStateException(String.format("Reporter user with email not found; email: %s", reporter)));
+                                                        .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporter)));
         List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = projects.stream()
                                             .findFirst()
-                                            .orElseThrow(() -> new IllegalStateException(String.format("Project not found; project name: %s", projectName)));
+                                            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
