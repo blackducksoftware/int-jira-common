@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Test;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.IssuePropertyKeyComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
-import com.synopsys.integration.jira.common.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 
 public class IssuePropertyServiceTest extends JiraCloudServiceTest {
     @Test

@@ -28,12 +28,11 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
-import com.synopsys.integration.jira.common.model.request.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
@@ -43,6 +42,7 @@ import com.synopsys.integration.jira.common.model.response.TransitionsResponseMo
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
+import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;

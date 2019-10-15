@@ -26,18 +26,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
-import com.synopsys.integration.jira.common.model.response.IssueSearchResponseModel;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.component.IntRestResponse;
 
 public class IssueSerachPageResponseHandler extends JiraCloudPageRequestHandler {
-    public IssueSerachPageResponseHandler(final IntLogger logger) {
+    public IssueSerachPageResponseHandler(IntLogger logger) {
         super(logger);
     }
 
     @Override
-    public <R extends IntRestResponse> R combineResponses(final Collection<R> pagedResponses) {
+    public <R extends IntRestResponse> R combineResponses(Collection<R> pagedResponses) {
         if (null == pagedResponses || pagedResponses.isEmpty()) {
             return (R) createEmpty();
         }
@@ -60,7 +60,7 @@ public class IssueSerachPageResponseHandler extends JiraCloudPageRequestHandler 
     }
 
     private IssueSearchResponseModel createEmpty() {
-        final IssueSearchResponseModel issueSearchResponse = new IssueSearchResponseModel();
+        IssueSearchResponseModel issueSearchResponse = new IssueSearchResponseModel();
         issueSearchResponse.setIssues(Collections.emptyList());
         issueSearchResponse.setWarningMessages(Collections.emptyList());
         return issueSearchResponse;

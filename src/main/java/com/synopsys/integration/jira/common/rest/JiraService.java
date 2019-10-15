@@ -45,7 +45,6 @@ public class JiraService {
     private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
-    // TODO implement methods as needed
     public JiraService(Gson gson, JiraHttpClient httpClient, IntResponseTransformer responseTransformer, IntJsonTransformer jsonTransformer) {
         this.gson = gson;
         this.httpClient = httpClient;
@@ -91,27 +90,27 @@ public class JiraService {
     public <R extends JiraResponse> R post(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
-                                    .createCommonPostRequestBuilder(jsonRequestBody)
-                                    .uri(uri)
-                                    .build();
+                              .createCommonPostRequestBuilder(jsonRequestBody)
+                              .uri(uri)
+                              .build();
         return execute(request, responseClass);
     }
 
     public Response post(JiraRequestModel jiraRequestModel, String uri) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
-                                    .createCommonPostRequestBuilder(jsonRequestBody)
-                                    .uri(uri)
-                                    .build();
+                              .createCommonPostRequestBuilder(jsonRequestBody)
+                              .uri(uri)
+                              .build();
         return execute(request);
     }
 
     public <R extends JiraResponse> R put(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
-                                    .createCommonPutRequestBuilder(jsonRequestBody)
-                                    .uri(uri)
-                                    .build();
+                              .createCommonPutRequestBuilder(jsonRequestBody)
+                              .uri(uri)
+                              .build();
         return execute(request, responseClass);
     }
 
@@ -122,25 +121,25 @@ public class JiraService {
 
     public Response put(String jsonRequestBody, String uri) throws IntegrationException {
         Request request = JiraCloudRequestFactory
-                                    .createCommonPutRequestBuilder(jsonRequestBody)
-                                    .uri(uri)
-                                    .build();
+                              .createCommonPutRequestBuilder(jsonRequestBody)
+                              .uri(uri)
+                              .build();
         return execute(request);
     }
 
     public Response delete(String uri) throws IntegrationException {
         Request request = JiraCloudRequestFactory
-                                    .createCommonDeleteRequestBuilder()
-                                    .uri(uri)
-                                    .build();
+                              .createCommonDeleteRequestBuilder()
+                              .uri(uri)
+                              .build();
         return execute(request);
     }
 
     public <R extends JiraResponse> R delete(String uri, Class<R> responseClass) throws IntegrationException {
         Request request = JiraCloudRequestFactory
-                                    .createCommonDeleteRequestBuilder()
-                                    .uri(uri)
-                                    .build();
+                              .createCommonDeleteRequestBuilder()
+                              .uri(uri)
+                              .build();
         return execute(request, responseClass);
     }
 

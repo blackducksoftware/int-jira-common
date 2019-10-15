@@ -20,11 +20,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.components;
+package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 import java.util.Map;
 
+import com.synopsys.integration.jira.common.model.components.IdComponent;
+import com.synopsys.integration.jira.common.model.components.IssueSeachIncludedFieldsComponent;
+import com.synopsys.integration.jira.common.model.components.IssueUpdateMetadataComponent;
+import com.synopsys.integration.jira.common.model.components.OperationsComponent;
 import com.synopsys.integration.jira.common.model.response.PageOfChangelogsResponseModel;
 import com.synopsys.integration.rest.component.IntRestComponent;
 

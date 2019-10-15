@@ -20,11 +20,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.components;
+package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
+import com.synopsys.integration.jira.common.model.components.CommentComponent;
+import com.synopsys.integration.jira.common.model.components.IssueAttachmentComponent;
+import com.synopsys.integration.jira.common.model.components.IssueLinksComponent;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.components.WatcherComponent;
 import com.synopsys.integration.rest.component.IntRestComponent;
 
 public class IssueSearchIssueFieldsComponent extends IntRestComponent {

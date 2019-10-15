@@ -20,12 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.request;
+package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.model.EntityProperty;
+import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 
 public class IssueCreationRequestModel {
     private final String reporterEmail;
@@ -34,7 +34,7 @@ public class IssueCreationRequestModel {
     private final IssueRequestModelFieldsBuilder fieldsBuilder;
     private final List<EntityProperty> properties;
 
-    public IssueCreationRequestModel(final String reporterEmail, final String issueTypeName, final String projectName, final IssueRequestModelFieldsBuilder fieldsBuilder, final List<EntityProperty> properties) {
+    public IssueCreationRequestModel(String reporterEmail, String issueTypeName, String projectName, IssueRequestModelFieldsBuilder fieldsBuilder, List<EntityProperty> properties) {
         this.reporterEmail = reporterEmail;
         this.issueTypeName = issueTypeName;
         this.projectName = projectName;
@@ -61,4 +61,5 @@ public class IssueCreationRequestModel {
     public List<EntityProperty> getProperties() {
         return properties;
     }
+
 }

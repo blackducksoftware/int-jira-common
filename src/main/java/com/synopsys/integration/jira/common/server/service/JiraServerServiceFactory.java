@@ -53,9 +53,17 @@ public class JiraServerServiceFactory {
         return new ProjectService(createJiraService());
     }
 
-    //    public IssueService createIssueService() {
-    //        return new IssueService(jsonTransformer, createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
+    public IssueService createIssueService() {
+        return new IssueService(jsonTransformer, createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
+    }
+
+    //    public IssuePropertyService createIssuePropertyService() {
+    //        return new IssuePropertyService(gson, createJiraService());
     //    }
+
+    public IssueSearchService createIssueSearchService() {
+        return new IssueSearchService(createJiraService());
+    }
 
     public IssueTypeService createIssueTypeService() {
         return new IssueTypeService(createJiraService());

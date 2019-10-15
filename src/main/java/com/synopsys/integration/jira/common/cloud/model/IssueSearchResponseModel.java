@@ -20,12 +20,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.response;
+package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
-import com.synopsys.integration.jira.common.model.components.IssueComponent;
 import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {
@@ -39,7 +38,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return expand;
     }
 
-    public void setExpand(final String expand) {
+    public void setExpand(String expand) {
         this.expand = expand;
     }
 
@@ -47,7 +46,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return issues;
     }
 
-    public void setIssues(final List<IssueComponent> issues) {
+    public void setIssues(List<IssueComponent> issues) {
         this.issues = issues;
     }
 
@@ -55,7 +54,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return warningMessages;
     }
 
-    public void setWarningMessages(final List<String> warningMessages) {
+    public void setWarningMessages(List<String> warningMessages) {
         this.warningMessages = warningMessages;
     }
 
@@ -63,7 +62,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return names;
     }
 
-    public void setNames(final Object names) {
+    public void setNames(Object names) {
         this.names = names;
     }
 
@@ -71,7 +70,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return schema;
     }
 
-    public void setSchema(final SchemaComponent schema) {
+    public void setSchema(SchemaComponent schema) {
         this.schema = schema;
     }
 

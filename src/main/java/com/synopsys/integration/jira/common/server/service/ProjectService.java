@@ -48,7 +48,7 @@ public class ProjectService {
         // TODO gavink - I could not find a way to query for projects through the API, so we may have issues handling large collections of results.
         return getProjects()
                    .stream()
-                   .filter(project -> project.getName().contains(projectName))
+                   .filter(project -> project.getName().equals(projectName))
                    .collect(Collectors.toList());
     }
 

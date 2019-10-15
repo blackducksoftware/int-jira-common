@@ -20,19 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.service;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+package com.synopsys.integration.jira.common.server.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.model.IssueSearchRequestModel;
-import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
-import com.synopsys.integration.jira.common.enumeration.ExpandableTypes;
-import com.synopsys.integration.jira.common.enumeration.QueryValidationStrategy;
 import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.server.model.IssueSearchRequestModel;
+import com.synopsys.integration.jira.common.server.model.IssueSearchResponseModel;
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
@@ -58,11 +51,7 @@ public class IssueSearchService {
     }
 
     public IssueSearchResponseModel queryForIssuePage(String jql, Integer startAt, Integer maxResults) throws IntegrationException {
-        List<ExpandableTypes> typesToExpand = new ArrayList<>();
-        typesToExpand.addAll(Arrays.asList(ExpandableTypes.values()));
-        List<String> properties = Collections.emptyList();
-
-        IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, startAt, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
+        IssueSearchRequestModel requestModel = IssueSearchRequestModel.paged(jql, startAt, maxResults);
         return findIssues(requestModel);
     }
 
