@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {

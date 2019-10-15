@@ -24,8 +24,9 @@ package com.synopsys.integration.jira.common.server.service;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
@@ -57,9 +58,9 @@ public class JiraServerServiceFactory {
         return new IssueService(jsonTransformer, createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
-    //    public IssuePropertyService createIssuePropertyService() {
-    //        return new IssuePropertyService(gson, createJiraService());
-    //    }
+    public IssuePropertyService createIssuePropertyService() {
+        return new IssuePropertyService(gson, createJiraService());
+    }
 
     public IssueSearchService createIssueSearchService() {
         return new IssueSearchService(createJiraService());

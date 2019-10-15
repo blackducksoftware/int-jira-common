@@ -24,8 +24,9 @@ package com.synopsys.integration.jira.common.cloud.service;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;

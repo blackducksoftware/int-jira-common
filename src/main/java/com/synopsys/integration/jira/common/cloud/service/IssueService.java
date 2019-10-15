@@ -40,8 +40,8 @@ import com.synopsys.integration.jira.common.model.response.IssueTypeResponseMode
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
-import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;

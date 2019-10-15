@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest;
+package com.synopsys.integration.jira.common.rest.service;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,6 +34,8 @@ import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.JiraResponse;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.request.JiraRequestModel;
+import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;

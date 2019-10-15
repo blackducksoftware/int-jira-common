@@ -1,4 +1,4 @@
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +14,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.cloud.service.IssueService;
+import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTest;
+import com.synopsys.integration.jira.common.cloud.service.ProjectService;
+import com.synopsys.integration.jira.common.cloud.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.IssuePropertyKeyComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
@@ -22,6 +27,7 @@ import com.synopsys.integration.jira.common.model.response.IssuePropertyResponse
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 
 public class IssuePropertyServiceTest extends JiraCloudServiceTest {

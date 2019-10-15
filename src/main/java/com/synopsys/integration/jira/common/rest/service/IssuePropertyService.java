@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.rest.service;
 
 import java.io.Serializable;
 
@@ -29,7 +29,6 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
-import com.synopsys.integration.jira.common.rest.JiraService;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
@@ -38,11 +37,11 @@ public class IssuePropertyService {
     public static final String API_PATH_PROPERTIES_PIECE = "/properties";
 
     private Gson gson;
-    private JiraService jiraCloudService;
+    private JiraService jiraService;
 
-    public IssuePropertyService(Gson gson, JiraService jiraCloudService) {
+    public IssuePropertyService(Gson gson, JiraService jiraService) {
         this.gson = gson;
-        this.jiraCloudService = jiraCloudService;
+        this.jiraService = jiraService;
     }
 
     public IssuePropertyKeysResponseModel getPropertyKeys(String issueKey) throws IntegrationException {
@@ -50,7 +49,7 @@ public class IssuePropertyService {
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)
                               .build();
-        return jiraCloudService.get(request, IssuePropertyKeysResponseModel.class);
+        return jiraService.get(request, IssuePropertyKeysResponseModel.class);
     }
 
     public IssuePropertyResponseModel getProperty(String issueKey, String propertyKey) throws IntegrationException {
@@ -58,7 +57,7 @@ public class IssuePropertyService {
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
                               .uri(uri)
                               .build();
-        return jiraCloudService.get(request, IssuePropertyResponseModel.class);
+        return jiraService.get(request, IssuePropertyResponseModel.class);
     }
 
     public Response setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
@@ -68,7 +67,7 @@ public class IssuePropertyService {
 
     public Response setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
         String uri = createApiUriWithKey(issueKey, propertyKey);
-        return jiraCloudService.put(jsonPropertyValue, uri);
+        return jiraService.put(jsonPropertyValue, uri);
     }
 
     private String createApiUriWithKey(String issueKey, String propertyKey) {
@@ -76,7 +75,7 @@ public class IssuePropertyService {
     }
 
     private String createApiUri(String issueKey) {
-        return jiraCloudService.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
+        return jiraService.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
     }
 
 }

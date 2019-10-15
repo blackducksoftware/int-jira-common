@@ -60,7 +60,7 @@ public class IssueSearchRequestModel extends JiraRequestModel {
      *                      If you specify a value that is higher than this number, your search results will be truncated. Default: 50.
      * @param validateQuery Whether to validate the JQL query. Default: true.
      * @param fields        The list of fields to return for each issue. Default: [{@value #NAVIGABLE_FIELDS_OPTION}] (i.e. "*navigable").
-     * @param expand        A comma-separated list of the parameters to expand. Default: {@value #NAVIGABLE_FIELDS_OPTION}.
+     * @param expand        The list of the parameters to expand. Default: {@value #NAVIGABLE_FIELDS_OPTION}.
      */
     public IssueSearchRequestModel(String jql, Integer startAt, Integer maxResults, Boolean validateQuery, List<String> fields, List<String> expand) {
         this.jql = jql;

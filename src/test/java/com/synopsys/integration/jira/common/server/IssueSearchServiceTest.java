@@ -5,10 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueComponent;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
@@ -48,6 +51,43 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
         }
     }
 
+    @Disabled
+    @Test
+    public void findIssueByPropertyTest() throws IntegrationException {
+        validateConfiguration();
+
+        JiraServerServiceFactory serviceFactory = createServiceFactory();
+        IssueService issueService = serviceFactory.createIssueService();
+        IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
+        IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
+
+        String projectName = "Other Project";
+        IssueResponseModel issue = createIssue(issueService, projectName, "Test description");
+
+        Gson gson = new Gson();
+        TestPropertyClass testPropertyClass = new TestPropertyClass("innerValue");
+        String testPropertyClassString = gson.toJson(testPropertyClass);
+
+        String issuePropertyKey = "test-property-key";
+        try {
+            issuePropertyService.setProperty(issue.getKey(), issuePropertyKey, testPropertyClassString);
+
+            String jql = "project = '" + projectName + "' AND issue.property[" + issuePropertyKey + "]." + TestPropertyClass.THING_TO_SEARCH_FOR + " = '" + testPropertyClass.getThingToSearchFor() + "'";
+            IssueSearchResponseModel issueSearchResponseModel = issueSearchService.queryForIssues(jql);
+
+            List<IssueComponent> issues = issueSearchResponseModel.getIssues();
+            assertEquals(1, issues.size());
+            String foundIssueKey = issueSearchResponseModel.getIssues()
+                                       .stream()
+                                       .findFirst()
+                                       .map(IssueComponent::getKey)
+                                       .orElse(null);
+            assertEquals(issue.getKey(), foundIssueKey);
+        } finally {
+            issueService.deleteIssue(issue.getId());
+        }
+    }
+
     private IssueResponseModel createIssue(IssueService issueService, String projectName, String description) throws IntegrationException {
         String reporter = "admin";
         String issueTypeName = "Task";
@@ -58,6 +98,21 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
         return issueService.createIssue(issueCreationRequestModel);
+    }
+
+    private static final class TestPropertyClass {
+        public static final String THING_TO_SEARCH_FOR = "thingToSearchFor";
+
+        private String thingToSearchFor;
+
+        public TestPropertyClass(String thingToSearchFor) {
+            this.thingToSearchFor = thingToSearchFor;
+        }
+
+        public String getThingToSearchFor() {
+            return thingToSearchFor;
+        }
+
     }
 
 }

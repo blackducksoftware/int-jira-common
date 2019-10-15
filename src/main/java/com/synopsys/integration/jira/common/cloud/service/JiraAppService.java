@@ -33,7 +33,7 @@ import com.synopsys.integration.jira.common.model.request.AppUploadRequestModel;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;

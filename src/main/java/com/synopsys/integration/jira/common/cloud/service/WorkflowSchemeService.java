@@ -28,7 +28,7 @@ import com.synopsys.integration.jira.common.model.request.WorkflowIssueTypeMappi
 import com.synopsys.integration.jira.common.model.request.WorkflowSchemeRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMappingResponseModel;
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
-import com.synopsys.integration.jira.common.rest.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
