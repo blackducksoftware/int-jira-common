@@ -23,7 +23,6 @@
 package com.synopsys.integration.jira.common.cloud.configuration;
 
 import java.net.URL;
-import java.util.function.BiConsumer;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.builder.Buildable;
@@ -65,12 +64,6 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
 
     public JiraCloudServiceFactory createJiraCloudServiceFactory(IntLogger logger) {
         return new JiraCloudServiceFactory(logger, createJiraHttpClient(logger), gson);
-    }
-
-    public void populateEnvironmentVariables(BiConsumer<String, String> pairsConsumer) {
-        pairsConsumer.accept(JiraCloudRestConfigBuilder.URL_KEY.getKey(), jiraUrl.toString());
-        pairsConsumer.accept(JiraCloudRestConfigBuilder.AUTH_USER_EMAIL.getKey(), authUserEmail);
-        pairsConsumer.accept(JiraCloudRestConfigBuilder.ACCESS_TOKEN_KEY.getKey(), apiToken);
     }
 
     public URL getJiraUrl() {
