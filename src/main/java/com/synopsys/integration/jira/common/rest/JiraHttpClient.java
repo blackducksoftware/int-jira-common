@@ -22,71 +22,25 @@
  */
 package com.synopsys.integration.jira.common.rest;
 
-import java.util.Base64;
-
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.HttpClientBuilder;
-
-import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.log.IntLogger;
-import com.synopsys.integration.rest.RestConstants;
-import com.synopsys.integration.rest.client.AuthenticatingIntHttpClient;
+import com.synopsys.integration.rest.client.BasicAuthHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
-import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraHttpClient extends AuthenticatingIntHttpClient {
-    private static final String AUTHORIZATION_TYPE = "Basic";
-
-    private final AuthenticationSupport authenticationSupport;
+public class JiraHttpClient extends BasicAuthHttpClient {
     private final String baseUrl;
-    private final String userEmail;
-    private final String apiToken;
 
-    public JiraHttpClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken) {
-        super(logger, timeout, alwaysTrustServerCertificate, proxyInfo);
-        this.authenticationSupport = authenticationSupport;
+    public static final JiraHttpClient cloud(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
+        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), authUserEmail, apiToken);
+    }
+
+    public static final JiraHttpClient server(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
+        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), username, password);
+    }
+
+    public JiraHttpClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, AuthenticationSupport authenticationSupport, String username, String password) {
+        super(logger, timeout, alwaysTrustServerCertificate, proxyInfo, authenticationSupport, username, password);
         this.baseUrl = baseUrl;
-
-        this.userEmail = authUserEmail;
-        this.apiToken = apiToken;
-    }
-
-    @Override
-    public void populateHttpClientBuilder(HttpClientBuilder httpClientBuilder, RequestConfig.Builder defaultRequestConfigBuilder) {
-        httpClientBuilder.setDefaultCookieStore(new BasicCookieStore());
-        defaultRequestConfigBuilder.setCookieSpec(CookieSpecs.DEFAULT);
-    }
-
-    @Override
-    public void handleErrorResponse(HttpUriRequest request, Response response) {
-        super.handleErrorResponse(request, response);
-
-        authenticationSupport.handleErrorResponse(this, request, response, RestConstants.X_CSRF_TOKEN);
-    }
-
-    @Override
-    public boolean isAlreadyAuthenticated(HttpUriRequest request) {
-        return request.containsHeader(AuthenticationSupport.AUTHORIZATION_HEADER);
-    }
-
-    @Override
-    protected void completeAuthenticationRequest(HttpUriRequest request, Response responseIgnored) {
-        final Base64.Encoder encoder = Base64.getEncoder();
-        final String unencodedAuthPair = String.format("%s:%s", userEmail, apiToken);
-        final String encodedAuthPair = encoder.encodeToString(unencodedAuthPair.getBytes());
-        final String encodedHeaderValue = String.format("%s %s", AUTHORIZATION_TYPE, encodedAuthPair);
-
-        authenticationSupport.addAuthenticationHeader(this, request, AuthenticationSupport.AUTHORIZATION_HEADER, encodedHeaderValue);
-    }
-
-    @Override
-    public final Response attemptAuthentication() throws IntegrationException {
-        // Nothing to do because only Basic Auth is used.
-        return null;
     }
 
     public String getBaseUrl() {
