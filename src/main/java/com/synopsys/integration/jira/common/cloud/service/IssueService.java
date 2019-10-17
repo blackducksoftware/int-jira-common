@@ -155,11 +155,11 @@ public class IssueService {
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
         if (!issueObject.has("fields")) {
-            throw new IntegrationException(String.format("The fields are missing from the IssueResponseModel. %s", json));
+            throw new IntegrationException(String.format("The fields are missing from the IssueComponent. %s", json));
         }
         JsonObject fieldsObject = issueObject.getAsJsonObject("fields");
         if (!fieldsObject.has("status")) {
-            throw new IntegrationException(String.format("The status is missing from the fields in the IssueResponseModel. %s", json));
+            throw new IntegrationException(String.format("The status is missing from the fields in the IssueComponent. %s", json));
         }
         JsonObject statusObject = fieldsObject.getAsJsonObject("status");
         StatusDetailsComponent statusDetailsComponent = intJsonTransformer.getComponentAs(statusObject, StatusDetailsComponent.class);

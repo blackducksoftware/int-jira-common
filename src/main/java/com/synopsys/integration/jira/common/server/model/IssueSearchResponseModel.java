@@ -32,12 +32,12 @@ import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
-    private List<IssueComponent> issues;
+    private List<IssueSearchIssueComponent> issues;
 
     public IssueSearchResponseModel() {
     }
 
-    public IssueSearchResponseModel(String expand, List<IssueComponent> issues) {
+    public IssueSearchResponseModel(String expand, List<IssueSearchIssueComponent> issues) {
         this.expand = expand;
         this.issues = issues;
     }
@@ -54,7 +54,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         return Collections.emptyList();
     }
 
-    public List<IssueComponent> getIssues() {
+    public List<IssueSearchIssueComponent> getIssues() {
         return issues;
     }
 

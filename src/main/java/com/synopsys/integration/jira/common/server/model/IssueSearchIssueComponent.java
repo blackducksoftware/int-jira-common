@@ -30,13 +30,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class IssueComponent extends IntRestComponent {
+public class IssueSearchIssueComponent extends IntRestComponent {
     private String expand;
     private String id;
     private String key;
     private IssueSearchIssueFieldsComponent fields;
 
-    public IssueComponent() {
+    public IssueSearchIssueComponent() {
     }
 
     public String getExpand() {

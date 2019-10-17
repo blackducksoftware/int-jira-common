@@ -13,8 +13,8 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
-import com.synopsys.integration.jira.common.server.model.IssueComponent;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.server.model.IssueSearchIssueComponent;
 import com.synopsys.integration.jira.common.server.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.server.service.IssueSearchService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
@@ -38,12 +38,12 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
             String jql = "project = '" + projectName + "' AND description ~ '" + searchTerm + "'";
             IssueSearchResponseModel issueSearchResponseModel = issueSearchService.queryForIssues(jql);
 
-            List<IssueComponent> issues = issueSearchResponseModel.getIssues();
+            List<IssueSearchIssueComponent> issues = issueSearchResponseModel.getIssues();
             assertEquals(1, issues.size());
             String foundIssueKey = issues
                                        .stream()
                                        .findFirst()
-                                       .map(IssueComponent::getKey)
+                                       .map(IssueSearchIssueComponent::getKey)
                                        .orElse(null);
             assertEquals(issue.getKey(), foundIssueKey);
         } finally {
@@ -75,12 +75,12 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
             String jql = "project = '" + projectName + "' AND issue.property[" + issuePropertyKey + "]." + TestPropertyClass.THING_TO_SEARCH_FOR + " = '" + testPropertyClass.getThingToSearchFor() + "'";
             IssueSearchResponseModel issueSearchResponseModel = issueSearchService.queryForIssues(jql);
 
-            List<IssueComponent> issues = issueSearchResponseModel.getIssues();
+            List<IssueSearchIssueComponent> issues = issueSearchResponseModel.getIssues();
             assertEquals(1, issues.size());
             String foundIssueKey = issueSearchResponseModel.getIssues()
                                        .stream()
                                        .findFirst()
-                                       .map(IssueComponent::getKey)
+                                       .map(IssueSearchIssueComponent::getKey)
                                        .orElse(null);
             assertEquals(issue.getKey(), foundIssueKey);
         } finally {

@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.jira.common.cloud.model.IssueComponent;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.model.EntityProperty;
@@ -53,7 +52,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         IssueSearchResponseModel foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
 
         assertEquals(1, foundIssues.getIssues().size());
-        IssueComponent foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        IssueResponseModel foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(createdIssue.getId(), foundIssue.getId());
     }
 
@@ -95,7 +94,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
-        IssueComponent foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        IssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 
@@ -146,7 +145,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
-        IssueComponent foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        IssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 

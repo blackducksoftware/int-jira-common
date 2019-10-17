@@ -26,10 +26,11 @@ import java.util.List;
 
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.components.SchemaComponent;
+import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
-    private List<IssueComponent> issues;
+    private List<IssueResponseModel> issues;
     private List<String> warningMessages;
     private Object names; // TODO create a bean for this object
     private SchemaComponent schema;
@@ -42,11 +43,11 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         this.expand = expand;
     }
 
-    public List<IssueComponent> getIssues() {
+    public List<IssueResponseModel> getIssues() {
         return issues;
     }
 
-    public void setIssues(List<IssueComponent> issues) {
+    public void setIssues(List<IssueResponseModel> issues) {
         this.issues = issues;
     }
 
