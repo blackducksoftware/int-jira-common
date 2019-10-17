@@ -29,7 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IssueRequestModelFieldsBuilder {
+import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
+
+public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder {
     public static final String SUMMARY = "summary";
     public static final String ISSUE_TYPE = "issuetype";
     public static final String COMPONENTS = "components";
@@ -52,93 +54,95 @@ public class IssueRequestModelFieldsBuilder {
         this.issueFields = new HashMap<>();
     }
 
-    public IssueRequestModelFieldsBuilder copyFields(final IssueRequestModelFieldsBuilder original) {
+    @Override
+    public IssueRequestModelFieldsBuilder copyFields(IssueRequestModelFieldsMapBuilder original) {
         Map<String, Object> originalFields = original.build();
         issueFields.putAll(originalFields);
         return this;
     }
 
+    @Override
     public Map<String, Object> build() {
         return Collections.unmodifiableMap(issueFields);
     }
 
-    public IssueRequestModelFieldsBuilder setSummary(final String summary) {
+    public IssueRequestModelFieldsBuilder setSummary(String summary) {
         issueFields.put(SUMMARY, summary);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setIssueType(final String issueTypeId) {
+    public IssueRequestModelFieldsBuilder setIssueType(String issueTypeId) {
         return setField(ISSUE_TYPE, issueTypeId);
     }
 
-    public IssueRequestModelFieldsBuilder setComponents(final Collection<String> componentIds) {
+    public IssueRequestModelFieldsBuilder setComponents(Collection<String> componentIds) {
         return setFields(COMPONENTS, componentIds);
     }
 
-    public IssueRequestModelFieldsBuilder setProject(final String projectId) {
+    public IssueRequestModelFieldsBuilder setProject(String projectId) {
         return setField(PROJECT, projectId);
     }
 
-    public IssueRequestModelFieldsBuilder setDescription(final String description) {
+    public IssueRequestModelFieldsBuilder setDescription(String description) {
         issueFields.put(DESCRIPTION, description);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setReporter(final String reporterId) {
+    public IssueRequestModelFieldsBuilder setReporter(String reporterId) {
         return setField(REPORTER, reporterId);
     }
 
-    public IssueRequestModelFieldsBuilder setFixVersions(final Collection<String> versionIds) {
+    public IssueRequestModelFieldsBuilder setFixVersions(Collection<String> versionIds) {
         return setFields(FIX_VERSIONS, versionIds);
     }
 
-    public IssueRequestModelFieldsBuilder setPriority(final String priorityId) {
+    public IssueRequestModelFieldsBuilder setPriority(String priorityId) {
         return setField(PRIORITY, priorityId);
     }
 
-    public IssueRequestModelFieldsBuilder setLabels(final Collection<String> labels) {
+    public IssueRequestModelFieldsBuilder setLabels(Collection<String> labels) {
         issueFields.put(LABELS, labels);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setTimeTracking(final String remainingEstimate, final String originalEstimate) {
-        final Map<String, String> timeTrackingMap = new HashMap<>();
+    public IssueRequestModelFieldsBuilder setTimeTracking(String remainingEstimate, String originalEstimate) {
+        Map<String, String> timeTrackingMap = new HashMap<>();
         timeTrackingMap.put("remainingEstimate", remainingEstimate);
         timeTrackingMap.put("originalEstimate", originalEstimate);
         issueFields.put(TIME_TRACKING, timeTrackingMap);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setSecurity(final String securityId) {
+    public IssueRequestModelFieldsBuilder setSecurity(String securityId) {
         return setField(SECURITY, securityId);
     }
 
-    public IssueRequestModelFieldsBuilder setEnvironment(final String environment) {
+    public IssueRequestModelFieldsBuilder setEnvironment(String environment) {
         issueFields.put(ENVIRONMENT, environment);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setVersions(final Collection<String> versionIds) {
+    public IssueRequestModelFieldsBuilder setVersions(Collection<String> versionIds) {
         return setFields(VERSIONS, versionIds);
     }
 
-    public IssueRequestModelFieldsBuilder setDueDate(final String dueDate) {
+    public IssueRequestModelFieldsBuilder setDueDate(String dueDate) {
         issueFields.put(DUE_DATE, dueDate);
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setAssignee(final String assigneeId) {
+    public IssueRequestModelFieldsBuilder setAssignee(String assigneeId) {
         return setField(ASSIGNEE, assigneeId);
     }
 
-    private IssueRequestModelFieldsBuilder setField(final String key, final String value) {
-        final ObjectWithId issueTypeObject = new ObjectWithId(value);
+    private IssueRequestModelFieldsBuilder setField(String key, String value) {
+        ObjectWithId issueTypeObject = new ObjectWithId(value);
         issueFields.put(key, issueTypeObject);
         return this;
     }
 
-    private IssueRequestModelFieldsBuilder setFields(final String key, final Collection<String> values) {
-        final List<ObjectWithId> newObjects = new ArrayList<>();
+    private IssueRequestModelFieldsBuilder setFields(String key, Collection<String> values) {
+        List<ObjectWithId> newObjects = new ArrayList<>();
         values
             .stream()
             .map(ObjectWithId::new)
@@ -150,7 +154,7 @@ public class IssueRequestModelFieldsBuilder {
     private class ObjectWithId {
         private final String id;
 
-        public ObjectWithId(final String id) {
+        public ObjectWithId(String id) {
             this.id = id;
         }
 

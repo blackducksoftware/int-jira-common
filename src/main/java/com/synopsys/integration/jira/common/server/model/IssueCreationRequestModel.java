@@ -22,15 +22,15 @@
  */
 package com.synopsys.integration.jira.common.server.model;
 
-import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 
 public class IssueCreationRequestModel {
     private final String reporterUsername;
     private final String issueTypeName;
     private final String projectName;
-    private final IssueRequestModelFieldsBuilder fieldsBuilder;
+    private final IssueRequestModelFieldsMapBuilder fieldsBuilder;
 
-    public IssueCreationRequestModel(String reporterUsername, String issueTypeName, String projectName, IssueRequestModelFieldsBuilder fieldsBuilder) {
+    public IssueCreationRequestModel(String reporterUsername, String issueTypeName, String projectName, IssueRequestModelFieldsMapBuilder fieldsBuilder) {
         this.reporterUsername = reporterUsername;
         this.issueTypeName = issueTypeName;
         this.projectName = projectName;
@@ -49,7 +49,7 @@ public class IssueCreationRequestModel {
         return projectName;
     }
 
-    public IssueRequestModelFieldsBuilder getFieldsBuilder() {
+    public IssueRequestModelFieldsMapBuilder getFieldsBuilder() {
         return fieldsBuilder;
     }
 

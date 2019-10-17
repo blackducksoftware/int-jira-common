@@ -28,7 +28,7 @@ import java.util.Map;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.IdComponent;
-import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
+import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 
 public class IssueRequestModel extends JiraRequestModel {
     private final String issueIdOrKey;
@@ -38,11 +38,11 @@ public class IssueRequestModel extends JiraRequestModel {
     private final List<EntityProperty> properties;
 
     // used to create a new issue because the id and transition are optional
-    public IssueRequestModel(IssueRequestModelFieldsBuilder fieldsBuilder, Map<String, List<FieldUpdateOperationComponent>> update, List<EntityProperty> properties) {
+    public IssueRequestModel(IssueRequestModelFieldsMapBuilder fieldsBuilder, Map<String, List<FieldUpdateOperationComponent>> update, List<EntityProperty> properties) {
         this(null, null, fieldsBuilder, update, properties);
     }
 
-    public IssueRequestModel(String issueIdOrKey, IdComponent transition, IssueRequestModelFieldsBuilder fieldsBuilder, Map<String, List<FieldUpdateOperationComponent>> update,
+    public IssueRequestModel(String issueIdOrKey, IdComponent transition, IssueRequestModelFieldsMapBuilder fieldsBuilder, Map<String, List<FieldUpdateOperationComponent>> update,
         List<EntityProperty> properties) {
         this.issueIdOrKey = issueIdOrKey;
         this.transition = transition;

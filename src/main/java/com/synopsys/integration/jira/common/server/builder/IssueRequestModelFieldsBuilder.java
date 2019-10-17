@@ -29,7 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IssueRequestModelFieldsBuilder {
+import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
+
+public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder {
     public static final String SUMMARY = "summary";
     public static final String ISSUE_TYPE = "issuetype";
     public static final String COMPONENTS = "components";
@@ -52,12 +54,14 @@ public class IssueRequestModelFieldsBuilder {
         this.issueFields = new HashMap<>();
     }
 
-    public IssueRequestModelFieldsBuilder copyFields(IssueRequestModelFieldsBuilder original) {
+    @Override
+    public IssueRequestModelFieldsBuilder copyFields(IssueRequestModelFieldsMapBuilder original) {
         Map<String, Object> originalFields = original.build();
         issueFields.putAll(originalFields);
         return this;
     }
 
+    @Override
     public Map<String, Object> build() {
         return Collections.unmodifiableMap(issueFields);
     }
