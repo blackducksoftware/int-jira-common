@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.rest.service;
 
 import java.util.Optional;
 
@@ -33,14 +33,13 @@ import com.synopsys.integration.jira.common.model.request.AppUploadRequestModel;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
-public class JiraAppService {
+public class PluginManagerService {
     public static final String API_PATH = "/rest/plugins/1.0/";
 
     private static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
@@ -58,12 +57,12 @@ public class JiraAppService {
 
     private Gson gson;
     private JiraHttpClient httpClient;
-    private JiraService jiraCloudService;
+    private JiraService jiraService;
 
-    public JiraAppService(Gson gson, JiraHttpClient httpClient, JiraService jiraCloudService) {
+    public PluginManagerService(Gson gson, JiraHttpClient httpClient, JiraService jiraService) {
         this.gson = gson;
         this.httpClient = httpClient;
-        this.jiraCloudService = jiraCloudService;
+        this.jiraService = jiraService;
     }
 
     public Optional<PluginResponseModel> getInstalledApp(String username, String accessToken, String appKey) throws IntegrationException {
@@ -74,7 +73,7 @@ public class JiraAppService {
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
 
         try {
-            PluginResponseModel pluginComponent = jiraCloudService.get(requestBuilder.build(), PluginResponseModel.class);
+            PluginResponseModel pluginComponent = jiraService.get(requestBuilder.build(), PluginResponseModel.class);
             return Optional.of(pluginComponent);
         } catch (IntegrationRestException e) {
             if (404 != e.getHttpStatusCode()) {
@@ -90,7 +89,7 @@ public class JiraAppService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_INSTALLED);
 
-        return jiraCloudService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
+        return jiraService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
 
     public Response installMarketplaceApp(String addonKey, String username, String accessToken) throws IntegrationException {
@@ -169,7 +168,7 @@ public class JiraAppService {
     }
 
     private String getBaseUrl() {
-        String url = jiraCloudService.getBaseUrl();
+        String url = jiraService.getBaseUrl();
         if (url.endsWith("/")) {
             return url.substring(0, url.length() - 1);
         }
