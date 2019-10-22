@@ -17,9 +17,10 @@ import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.rest.request.Response;
 
-public class PluginManagerServiceTest extends JiraServerServiceTest {
+public class JiraServerAppServiceTest extends JiraServerServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_SERVER_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraServerApp/1.0.0/atlassian-plugin.xml";
+    private static final String APP_SLACK_KEY = "com.atlassian.jira.plugins.jira-slack-server-integration-plugin";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
@@ -30,25 +31,25 @@ public class PluginManagerServiceTest extends JiraServerServiceTest {
     public void installServerAppTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        PluginManagerService pluginManagerService = serviceFactory.createAppService();
 
         String username = getEnvUsername();
         String password = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installServerApp("Test", APP_SERVER_URI, username, password);
+        Response installResponse = pluginManagerService.installApp(APP_SLACK_KEY, username, password);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, username, password);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
 
     @Test
     @Disabled
     // Disabled because development mode will likely not be turned on most of the time.
-    public void installCloudDevelopmentAppTest() throws Exception {
+    public void installServerDevelopmentAppTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        PluginManagerService pluginManagerService = serviceFactory.createAppService();
 
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
@@ -69,7 +70,7 @@ public class PluginManagerServiceTest extends JiraServerServiceTest {
     public void getInstalledAppsTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        PluginManagerService pluginManagerService = serviceFactory.createAppService();
 
         String username = getEnvUsername();
         String password = getEnvPassword();
@@ -77,7 +78,7 @@ public class PluginManagerServiceTest extends JiraServerServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installServerApp("Test", APP_SERVER_URI, username, password);
+        Response installResponse = pluginManagerService.installApp(APP_SLACK_KEY, username, password);
         installResponse.throwExceptionForError();
         Thread.sleep(1000);
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
@@ -89,7 +90,7 @@ public class PluginManagerServiceTest extends JiraServerServiceTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, username, password);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
         uninstallResponse.throwExceptionForError();
     }
 

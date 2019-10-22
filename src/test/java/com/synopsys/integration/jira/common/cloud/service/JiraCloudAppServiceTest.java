@@ -17,7 +17,7 @@ import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.rest.request.Response;
 
-public class PluginManagerServiceTest extends JiraCloudServiceTest {
+public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
@@ -30,12 +30,12 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     public void installMarketplaceAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        JiraCloudAppService pluginManagerService = serviceFactory.createAppService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installApp(APP_KEY, userEmail, apiToken);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
@@ -53,7 +53,7 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     public void installCloudDevelopmentAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        PluginManagerService pluginManagerService = serviceFactory.createAppService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
@@ -74,7 +74,7 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     public void getInstalledAppsTest() throws IntegrationException {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+        JiraCloudAppService pluginManagerService = serviceFactory.createAppService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
@@ -82,7 +82,7 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installApp(APP_KEY, userEmail, apiToken);
         installResponse.throwExceptionForError();
 
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(userEmail, apiToken);
