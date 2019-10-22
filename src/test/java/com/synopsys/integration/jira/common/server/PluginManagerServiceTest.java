@@ -1,4 +1,4 @@
-package com.synopsys.integration.jira.common.cloud.service;
+package com.synopsys.integration.jira.common.server;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,15 +11,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
+import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.rest.request.Response;
 
-public class PluginManagerServiceTest extends JiraCloudServiceTest {
+public class PluginManagerServiceTest extends JiraServerServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
-    private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
+    private static final String APP_SERVER_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraServerApp/1.0.0/atlassian-plugin.xml";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
@@ -27,24 +27,19 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     }
 
     @Test
-    public void installMarketplaceAppTest() throws Exception {
+    public void installServerAppTest() throws Exception {
         validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = createServiceFactory();
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String username = getEnvUsername();
+        String password = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installServerApp("Test", APP_SERVER_URI, username, password);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, username, password);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
-    }
-
-    @Test
-    public void installServerAppTest() throws Exception {
-
     }
 
     @Test
@@ -52,15 +47,15 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     // Disabled because development mode will likely not be turned on most of the time.
     public void installCloudDevelopmentAppTest() throws Exception {
         validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = createServiceFactory();
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String userEmail = getEnvUsername();
+        String apiToken = getEnvPassword();
 
         Response installResponse = pluginManagerService.installDevelopmentApp(
             "Test",
-            APP_CLOUD_URI,
+            APP_SERVER_URI,
             userEmail,
             apiToken
         );
@@ -71,21 +66,22 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
     }
 
     @Test
-    public void getInstalledAppsTest() throws IntegrationException {
+    public void getInstalledAppsTest() throws Exception {
         validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = createServiceFactory();
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String username = getEnvUsername();
+        String password = getEnvPassword();
 
-        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
+        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installServerApp("Test", APP_SERVER_URI, username, password);
         installResponse.throwExceptionForError();
+        Thread.sleep(1000);
+        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
 
-        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(userEmail, apiToken);
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();
         List<PluginResponseModel> userInstalledPlugins = allInstalledPlugins
                                                              .stream()
@@ -93,7 +89,7 @@ public class PluginManagerServiceTest extends JiraCloudServiceTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, username, password);
         uninstallResponse.throwExceptionForError();
     }
 

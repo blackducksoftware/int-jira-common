@@ -99,6 +99,13 @@ public class PluginManagerService {
         return httpClient.execute(request);
     }
 
+    public Response installServerApp(String pluginName, String pluginUri, String username, String password) throws IntegrationException {
+        String apiUri = getBaseUrl() + API_PATH;
+        String pluginToken = retrievePluginToken(username, password, apiUri);
+        Request request = createAppUploadRequest(apiUri, username, password, pluginToken, pluginName, pluginUri);
+        return httpClient.execute(request);
+    }
+
     public Response installDevelopmentApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
         String apiUri = getBaseUrl() + API_PATH;
         String pluginToken = retrievePluginToken(username, accessToken);
@@ -114,6 +121,10 @@ public class PluginManagerService {
     }
 
     public String retrievePluginToken(String username, String accessToken) throws IntegrationException {
+        return retrievePluginToken(username, accessToken, getBaseUrl() + API_PATH);
+    }
+
+    public String retrievePluginToken(String username, String accessToken, String path) throws IntegrationException {
         Request.Builder requestBuilder = createBasicRequestBuilder(getBaseUrl() + API_PATH, username, accessToken);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
