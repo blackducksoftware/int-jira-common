@@ -30,6 +30,7 @@ import org.apache.commons.codec.binary.Base64;
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.AppUploadRequestModel;
+import com.synopsys.integration.jira.common.model.response.AvailableAppResponseModel;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -39,7 +40,7 @@ import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 
-public abstract class PluginManagerService {
+public class PluginManagerService {
     public static final String API_PATH = "/rest/plugins/1.0/";
 
     public static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
@@ -66,13 +67,9 @@ public abstract class PluginManagerService {
         this.jiraService = jiraService;
     }
 
-    protected abstract String createBaseRequestUrl();
-
-    public abstract Response installApp(String addonKey, String username, String password) throws IntegrationException;
-
-    public Optional<PluginResponseModel> getInstalledApp(String username, String accessToken, String appKey) throws IntegrationException {
+    public Optional<PluginResponseModel> getInstalledApp(String username, String accessTokenOrPassword, String appKey) throws IntegrationException {
         String apiUri = createBaseRequestUrl() + appKey + "-key";
-        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessTokenOrPassword);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
@@ -88,8 +85,8 @@ public abstract class PluginManagerService {
         return Optional.empty();
     }
 
-    public InstalledAppsResponseModel getInstalledApps(String username, String accessToken) throws IntegrationException {
-        Request.Builder requestBuilder = createBasicRequestBuilder(createBaseRequestUrl(), username, accessToken);
+    public InstalledAppsResponseModel getInstalledApps(String username, String accessTokenOrPassword) throws IntegrationException {
+        Request.Builder requestBuilder = createBasicRequestBuilder(createBaseRequestUrl(), username, accessTokenOrPassword);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_INSTALLED);
@@ -97,22 +94,38 @@ public abstract class PluginManagerService {
         return jiraService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
 
-    public Response installDevelopmentApp(String pluginName, String pluginUri, String username, String accessToken) throws IntegrationException {
-        String apiUri = createBaseRequestUrl();
+    public Response installMarketplaceApp(String addonKey, String username, String accessToken) throws IntegrationException {
+        String apiUri = createBaseRequestUrl() + "apps/install-subscribe";
         String pluginToken = retrievePluginToken(username, accessToken);
-        Request request = createAppUploadRequest(apiUri, username, accessToken, pluginToken, pluginName, pluginUri);
+        Request request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
         return httpClient.execute(request);
     }
 
-    public Response uninstallApp(String appKey, String username, String accessToken) throws IntegrationException {
+    public Response installServerApp(String addonKey, String username, String password) throws IntegrationException {
         String apiUri = createBaseRequestUrl();
-        String pluginToken = retrievePluginToken(username, accessToken);
-        Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessToken, pluginToken);
+        String pluginToken = retrievePluginToken(username, password);
+        AvailableAppResponseModel availableApp = getAvailableApp(apiUri, username, password, addonKey);
+        String pluginUri = availableApp.getBinaryLink().orElse("");
+        Request request = createAppUploadRequest(apiUri, username, password, pluginToken, availableApp.getName(), pluginUri);
         return httpClient.execute(request);
     }
 
-    public String retrievePluginToken(String username, String accessToken) throws IntegrationException {
-        Request.Builder requestBuilder = createBasicRequestBuilder(createBaseRequestUrl(), username, accessToken);
+    public Response installDevelopmentApp(String pluginName, String pluginUri, String username, String accessTokenOrPassword) throws IntegrationException {
+        String apiUri = createBaseRequestUrl();
+        String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
+        Request request = createAppUploadRequest(apiUri, username, accessTokenOrPassword, pluginToken, pluginName, pluginUri);
+        return httpClient.execute(request);
+    }
+
+    public Response uninstallApp(String appKey, String username, String accessTokenOrPassword) throws IntegrationException {
+        String apiUri = createBaseRequestUrl();
+        String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
+        Request request = createDeleteRequest(apiUri + appKey + "-key", username, accessTokenOrPassword, pluginToken);
+        return httpClient.execute(request);
+    }
+
+    public String retrievePluginToken(String username, String accessTokenOrPassword) throws IntegrationException {
+        Request.Builder requestBuilder = createBasicRequestBuilder(createBaseRequestUrl(), username, accessTokenOrPassword);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_INSTALLED);
@@ -120,8 +133,26 @@ public abstract class PluginManagerService {
         return response.getHeaderValue("upm-token");
     }
 
-    protected Request createAppUploadRequest(String apiUri, String username, String accessToken, String pluginToken, String pluginName, String pluginUri) {
+    private AvailableAppResponseModel getAvailableApp(String path, String username, String password, String appKey) throws IntegrationException {
+        String apiUri = path + "available/" + appKey + "-key";
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, password);
+        requestBuilder.method(HttpMethod.GET);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_AVAILABLE);
+        return jiraService.get(requestBuilder.build(), AvailableAppResponseModel.class);
+    }
+
+    private Request createMarketplaceInstallRequest(String apiUri, String username, String accessToken, String pluginToken, String addonKey) {
         Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
+        requestBuilder.addQueryParameter("addonKey", addonKey);
+        requestBuilder.addQueryParameter("token", pluginToken);
+        requestBuilder.method(HttpMethod.POST);
+        requestBuilder.addAdditionalHeader("Content-Type", PluginManagerService.MEDIA_TYPE_REMOTE_INSTALL);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_WILDCARD);
+        return requestBuilder.build();
+    }
+
+    private Request createAppUploadRequest(String apiUri, String username, String accessTokenOrPassword, String pluginToken, String pluginName, String pluginUri) {
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessTokenOrPassword);
         requestBuilder.addQueryParameter("token", pluginToken);
         requestBuilder.method(HttpMethod.POST);
         requestBuilder.addAdditionalHeader("Content-Type", MEDIA_TYPE_INSTALL_URI);
@@ -130,8 +161,8 @@ public abstract class PluginManagerService {
         return requestBuilder.build();
     }
 
-    private Request createDeleteRequest(String apiUri, String username, String accessToken, String pluginToken) {
-        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessToken);
+    private Request createDeleteRequest(String apiUri, String username, String accessTokenOrPassword, String pluginToken) {
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessTokenOrPassword);
         requestBuilder.addQueryParameter("token", pluginToken);
         requestBuilder.method(HttpMethod.DELETE);
         requestBuilder.addAdditionalHeader("Content-Type", MEDIA_TYPE_DEFAULT);
@@ -139,23 +170,23 @@ public abstract class PluginManagerService {
         return requestBuilder.build();
     }
 
-    protected final Request.Builder createBasicRequestBuilder(String apiUri, String username, String accessToken) {
+    private Request.Builder createBasicRequestBuilder(String apiUri, String username, String accessTokenOrPassword) {
         Request.Builder requestBuilder = Request.newBuilder();
 
         requestBuilder.uri(apiUri);
-        byte[] authorizationBytes = String.format("%s:%s", username, accessToken).getBytes(Charsets.UTF_8);
+        byte[] authorizationBytes = String.format("%s:%s", username, accessTokenOrPassword).getBytes(Charsets.UTF_8);
         String authorization = String.format("Basic %s", Base64.encodeBase64String(authorizationBytes));
         requestBuilder.addAdditionalHeader("authorization", authorization);
         return requestBuilder;
     }
 
-    protected final StringBodyContent createBodyContent(String pluginName, String pluginUri) {
+    private StringBodyContent createBodyContent(String pluginName, String pluginUri) {
         AppUploadRequestModel uploadRequestModel = new AppUploadRequestModel(pluginUri, pluginName);
         String uploadRequestJson = gson.toJson(uploadRequestModel);
         return new StringBodyContent(uploadRequestJson);
     }
 
-    protected final String getBaseUrl() {
+    private String getBaseUrl() {
         String url = jiraService.getBaseUrl();
         if (url.endsWith("/")) {
             return url.substring(0, url.length() - 1);
@@ -163,15 +194,7 @@ public abstract class PluginManagerService {
         return url;
     }
 
-    public Gson getGson() {
-        return gson;
-    }
-
-    public JiraHttpClient getHttpClient() {
-        return httpClient;
-    }
-
-    public JiraService getJiraService() {
-        return jiraService;
+    private String createBaseRequestUrl() {
+        return getBaseUrl() + PluginManagerService.API_PATH;
     }
 }

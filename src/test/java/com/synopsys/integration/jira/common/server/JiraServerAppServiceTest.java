@@ -31,14 +31,14 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
     public void installServerAppTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String username = getEnvUsername();
         String password = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installApp(APP_SLACK_KEY, username, password);
+        Response installResponse = pluginManagerService.installServerApp(APP_SLACK_KEY, username, password);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
@@ -49,7 +49,7 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
     public void installServerDevelopmentAppTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
@@ -61,7 +61,7 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
             apiToken
         );
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
@@ -70,7 +70,7 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
     public void getInstalledAppsTest() throws Exception {
         validateConfiguration();
         JiraServerServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String username = getEnvUsername();
         String password = getEnvPassword();
@@ -78,9 +78,9 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installApp(APP_SLACK_KEY, username, password);
+        Response installResponse = pluginManagerService.installServerApp(APP_SLACK_KEY, username, password);
         installResponse.throwExceptionForError();
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
 
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();

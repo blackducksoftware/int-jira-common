@@ -30,12 +30,12 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     public void installMarketplaceAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        JiraCloudAppService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        Response installResponse = pluginManagerService.installApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
@@ -53,7 +53,7 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     public void installCloudDevelopmentAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        PluginManagerService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
@@ -74,7 +74,7 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     public void getInstalledAppsTest() throws IntegrationException {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        JiraCloudAppService pluginManagerService = serviceFactory.createAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
@@ -82,7 +82,7 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
         installResponse.throwExceptionForError();
 
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(userEmail, apiToken);

@@ -27,6 +27,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
@@ -82,8 +83,8 @@ public class JiraCloudServiceFactory {
         return new ProjectService(createJiraService());
     }
 
-    public JiraCloudAppService createAppService() {
-        return new JiraCloudAppService(gson, httpClient, createJiraService());
+    public PluginManagerService createPluginManagerService() {
+        return new PluginManagerService(gson, httpClient, createJiraService());
     }
 
     public IntLogger getLogger() {
