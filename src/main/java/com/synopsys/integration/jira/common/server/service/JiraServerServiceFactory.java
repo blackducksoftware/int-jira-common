@@ -24,30 +24,13 @@ package com.synopsys.integration.jira.common.server.service;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
-import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.log.IntLogger;
-import com.synopsys.integration.rest.service.IntJsonTransformer;
-import com.synopsys.integration.rest.service.IntResponseTransformer;
 
-public class JiraServerServiceFactory {
-    private final IntLogger logger;
-    private final JiraHttpClient httpClient;
-    private final Gson gson;
-    private final IntResponseTransformer responseTransformer;
-    private final IntJsonTransformer jsonTransformer;
+public class JiraServerServiceFactory extends CommonServiceFactory {
 
     public JiraServerServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
-        this.logger = logger;
-        this.httpClient = httpClient;
-        this.gson = gson;
-        this.jsonTransformer = new IntJsonTransformer(gson, logger);
-        this.responseTransformer = new IntResponseTransformer(httpClient, jsonTransformer);
-    }
-
-    public JiraService createJiraService() {
-        return new JiraService(gson, httpClient, responseTransformer, jsonTransformer);
+        super(logger, httpClient, gson);
     }
 
     public ProjectService createProjectService() {
@@ -55,34 +38,15 @@ public class JiraServerServiceFactory {
     }
 
     public IssueService createIssueService() {
-        return new IssueService(jsonTransformer, createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
-    }
-
-    public IssuePropertyService createIssuePropertyService() {
-        return new IssuePropertyService(gson, createJiraService());
+        return new IssueService(getJsonTransformer(), createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public IssueSearchService createIssueSearchService() {
         return new IssueSearchService(createJiraService());
     }
 
-    public IssueTypeService createIssueTypeService() {
-        return new IssueTypeService(createJiraService());
-    }
-
     public UserSearchService createUserSearchService() {
         return new UserSearchService(createJiraService());
     }
 
-    public IntLogger getLogger() {
-        return logger;
-    }
-
-    public JiraHttpClient getHttpClient() {
-        return httpClient;
-    }
-
-    public Gson getGson() {
-        return gson;
-    }
 }

@@ -14,11 +14,12 @@ import org.junit.jupiter.api.Test;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
+import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.rest.request.Response;
 
-public class JiraAppServiceTest extends JiraCloudServiceTest {
+public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
-    private static final String APP_URI = "https://blackducksoftware.github.io/blackduck-alert/JiraCloudApp/1.0.0/atlassian-connect.json";
+    private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
@@ -29,38 +30,38 @@ public class JiraAppServiceTest extends JiraCloudServiceTest {
     public void installMarketplaceAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        JiraAppService jiraAppService = serviceFactory.createJiraAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        Response installResponse = jiraAppService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
-        Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
 
     @Test
     @Disabled
     // Disabled because development mode will likely not be turned on most of the time.
-    public void installDevelopmentAppTest() throws Exception {
+    public void installCloudDevelopmentAppTest() throws Exception {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        JiraAppService jiraAppService = serviceFactory.createJiraAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        Response installResponse = jiraAppService.installDevelopmentApp(
+        Response installResponse = pluginManagerService.installDevelopmentApp(
             "Test",
-            APP_URI,
+            APP_CLOUD_URI,
             userEmail,
             apiToken
         );
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
-        Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
         assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
 
@@ -68,18 +69,18 @@ public class JiraAppServiceTest extends JiraCloudServiceTest {
     public void getInstalledAppsTest() throws IntegrationException {
         validateConfiguration();
         JiraCloudServiceFactory serviceFactory = createServiceFactory();
-        JiraAppService jiraAppService = serviceFactory.createJiraAppService();
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
 
-        Optional<PluginResponseModel> fakeApp = jiraAppService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
+        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = jiraAppService.installMarketplaceApp(APP_KEY, userEmail, apiToken);
+        Response installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
         installResponse.throwExceptionForError();
 
-        InstalledAppsResponseModel installedApps = jiraAppService.getInstalledApps(userEmail, apiToken);
+        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(userEmail, apiToken);
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();
         List<PluginResponseModel> userInstalledPlugins = allInstalledPlugins
                                                              .stream()
@@ -87,7 +88,7 @@ public class JiraAppServiceTest extends JiraCloudServiceTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        Response uninstallResponse = jiraAppService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
         uninstallResponse.throwExceptionForError();
     }
 
