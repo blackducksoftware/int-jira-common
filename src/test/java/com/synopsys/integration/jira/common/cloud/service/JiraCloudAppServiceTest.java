@@ -43,11 +43,6 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     }
 
     @Test
-    public void installServerAppTest() throws Exception {
-
-    }
-
-    @Test
     @Disabled
     // Disabled because development mode will likely not be turned on most of the time.
     public void installCloudDevelopmentAppTest() throws Exception {

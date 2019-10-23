@@ -43,19 +43,19 @@ import com.synopsys.integration.rest.request.Response;
 public class PluginManagerService {
     public static final String API_PATH = "/rest/plugins/1.0/";
 
-    public static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
-    public static final String QUERY_VALUE_OS_AUTH_TYPE = "basic";
+    private static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
+    private static final String QUERY_VALUE_OS_AUTH_TYPE = "basic";
 
-    public static final String MEDIA_TYPE_PREFIX = "application/vnd.atl.plugins";
-    public static final String MEDIA_TYPE_SUFFIX = "+json";
-    public static final String MEDIA_TYPE_DEFAULT = "application/json";
-    public static final String MEDIA_TYPE_WILDCARD = "*/*";
+    private static final String MEDIA_TYPE_PREFIX = "application/vnd.atl.plugins";
+    private static final String MEDIA_TYPE_SUFFIX = "+json";
+    private static final String MEDIA_TYPE_DEFAULT = "application/json";
+    private static final String MEDIA_TYPE_WILDCARD = "*/*";
 
-    public static final String MEDIA_TYPE_PLUGIN = MEDIA_TYPE_PREFIX + ".plugin" + MEDIA_TYPE_SUFFIX;
-    public static final String MEDIA_TYPE_INSTALLED = MEDIA_TYPE_PREFIX + ".installed" + MEDIA_TYPE_SUFFIX;
-    public static final String MEDIA_TYPE_REMOTE_INSTALL = MEDIA_TYPE_PREFIX + ".remote.install" + MEDIA_TYPE_SUFFIX;
-    public static final String MEDIA_TYPE_INSTALL_URI = MEDIA_TYPE_PREFIX + ".install.uri" + MEDIA_TYPE_SUFFIX;
-    public static final String MEDIA_TYPE_AVAILABLE = MEDIA_TYPE_PREFIX + ".available" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_PLUGIN = MEDIA_TYPE_PREFIX + ".plugin" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_INSTALLED = MEDIA_TYPE_PREFIX + ".installed" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_REMOTE_INSTALL = MEDIA_TYPE_PREFIX + ".remote.install" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_INSTALL_URI = MEDIA_TYPE_PREFIX + ".install.uri" + MEDIA_TYPE_SUFFIX;
+    private static final String MEDIA_TYPE_AVAILABLE = MEDIA_TYPE_PREFIX + ".available" + MEDIA_TYPE_SUFFIX;
 
     private Gson gson;
     private JiraHttpClient httpClient;
