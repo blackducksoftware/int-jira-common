@@ -94,14 +94,14 @@ public class PluginManagerService {
         return jiraService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
 
-    public Response installMarketplaceApp(String addonKey, String username, String accessToken) throws IntegrationException {
+    public Response installMarketplaceCloudApp(String addonKey, String username, String accessToken) throws IntegrationException {
         String apiUri = createBaseRequestUrl() + "apps/install-subscribe";
         String pluginToken = retrievePluginToken(username, accessToken);
         Request request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
         return httpClient.execute(request);
     }
 
-    public Response installServerApp(String addonKey, String username, String password) throws IntegrationException {
+    public Response installMarketplaceServerApp(String addonKey, String username, String password) throws IntegrationException {
         String apiUri = createBaseRequestUrl();
         String pluginToken = retrievePluginToken(username, password);
         AvailableAppResponseModel availableApp = getAvailableApp(apiUri, username, password, addonKey);

@@ -36,7 +36,7 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         String username = getEnvUsername();
         String password = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installServerApp(APP_SLACK_KEY, username, password);
+        Response installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
         assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(3000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
@@ -78,7 +78,7 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installServerApp(APP_SLACK_KEY, username, password);
+        Response installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
         installResponse.throwExceptionForError();
         Thread.sleep(3000);
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
