@@ -98,22 +98,22 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraServerRe
     @Override
     protected void validate(BuilderStatus builderStatus) {
         if (StringUtils.isBlank(getUrl())) {
-            builderStatus.addErrorMessage("The Jira Cloud url must be specified.");
+            builderStatus.addErrorMessage("The Jira server url must be specified.");
         } else {
             try {
                 URL blackDuckURL = new URL(getUrl());
                 blackDuckURL.toURI();
             } catch (MalformedURLException | URISyntaxException e) {
-                builderStatus.addErrorMessage(String.format("The provided Jira Cloud url (%s) is not a valid URL.", getUrl()));
+                builderStatus.addErrorMessage(String.format("The provided Jira server url (%s) is not a valid URL.", getUrl()));
             }
         }
 
         if (StringUtils.isBlank(getAuthUsername())) {
-            builderStatus.addErrorMessage("The Jira Cloud user name must be specified.");
+            builderStatus.addErrorMessage("The Jira server user name must be specified.");
         }
 
         if (StringUtils.isBlank(getAuthPassword())) {
-            builderStatus.addErrorMessage("The Jira Cloud access token must be specified.");
+            builderStatus.addErrorMessage("The Jira server access token must be specified.");
         }
 
         if (getTimeoutInSeconds() <= 0) {
