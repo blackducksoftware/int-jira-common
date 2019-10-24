@@ -113,7 +113,7 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraServerRe
         }
 
         if (StringUtils.isBlank(getAuthPassword())) {
-            builderStatus.addErrorMessage("The Jira server access token must be specified.");
+            builderStatus.addErrorMessage("The Jira server password must be specified.");
         }
 
         if (getTimeoutInSeconds() <= 0) {
