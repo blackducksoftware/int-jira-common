@@ -36,7 +36,7 @@ public class JiraCloudRequestFactory {
     public static final String OFFSET_PARAMETER = "offset";
     public static final int DEFAULT_LIMIT = 50;
     public static final int DEFAULT_OFFSET = 0;
-    public static String DEFAULT_MIME_TYPE = "application/json";
+    public static final String DEFAULT_MIME_TYPE = "application/json";
 
     public static final Request createDefaultGetRequest(final String requestUri) {
         return createDefaultBuilder()
