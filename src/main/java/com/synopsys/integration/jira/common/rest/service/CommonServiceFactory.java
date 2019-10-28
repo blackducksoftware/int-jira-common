@@ -59,6 +59,10 @@ public class CommonServiceFactory {
         return new PluginManagerService(gson, httpClient, createJiraService());
     }
 
+    public IssueMetaDataService createIssueMetadataService() {
+        return new IssueMetaDataService(createJiraService());
+    }
+
     public JiraHttpClient getHttpClient() {
         return httpClient;
     }
