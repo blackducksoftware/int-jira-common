@@ -66,6 +66,7 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         List<EntityProperty> properties = new LinkedList<>();
         PageOfProjectsResponseModel projects = projectService.getProjects();
         ProjectComponent validProject = projects.getProjects().stream()
+                                            .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                             .findFirst()
                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UserDetailsResponseModel validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
@@ -102,6 +103,7 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         ProjectComponent validProject = projects.getProjects().stream()
+                                            .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                             .findFirst()
                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UserDetailsResponseModel validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
@@ -248,6 +250,7 @@ public class IssueServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();

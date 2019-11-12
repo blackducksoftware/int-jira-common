@@ -44,6 +44,7 @@ public class IssuePropertyServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
@@ -84,6 +85,7 @@ public class IssuePropertyServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 

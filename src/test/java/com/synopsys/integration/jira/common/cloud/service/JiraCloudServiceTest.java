@@ -12,16 +12,19 @@ public abstract class JiraCloudServiceTest {
     public static final String ENV_BASE_URL = "JIRA_CLOUD_URL";
     public static final String ENV_USER_EMAIL = "JIRA_CLOUD_EMAIL";
     public static final String ENV_API_TOKEN = "JIRA_CLOUD_TOKEN";
+    public static final String TEST_PROJECT = "JIRA_CLOUD_TEST_PROJECT";
     public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
 
     public void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
+        String testProject = getTestProject();
 
         assumeTrue(null != baseUrl, "No Jira Cloud base url provided");
         assumeTrue(null != userEmail, "No Jira Cloud user email provided");
         assumeTrue(null != apiToken, "No Jira Cloud API Token provided");
+        assumeTrue(null != testProject, "No Jira Cloud Test project provided");
     }
 
     public JiraCloudRestConfig createJiraServerConfig() {
@@ -49,5 +52,9 @@ public abstract class JiraCloudServiceTest {
 
     public String getEnvApiToken() {
         return System.getenv(ENV_API_TOKEN);
+    }
+
+    public String getTestProject() {
+        return System.getenv(TEST_PROJECT);
     }
 }

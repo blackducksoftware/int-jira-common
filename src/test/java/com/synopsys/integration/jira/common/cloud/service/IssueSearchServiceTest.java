@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
@@ -34,6 +36,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
@@ -70,6 +73,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -112,6 +116,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -163,6 +168,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
+                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -171,7 +177,7 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
 
-        String issueType = "bug";
+        String issueType = "Task";
         String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
