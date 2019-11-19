@@ -62,7 +62,7 @@ public class ProjectServiceTest extends JiraServerServiceTest {
             String userName = foundUserDetails.getName();
             String projectId = atlassianTestProject.getId();
 
-            int offset = 950000;
+            int offset = 934000;
             while (offset > 0) {
                 List<Integer> range = IntStream.rangeClosed(offset - 999, offset).boxed().collect(Collectors.toList());
                 runParallel(range, issueService, issuePropertyService, issueTypeId, userName, projectId, errorIndexes);
