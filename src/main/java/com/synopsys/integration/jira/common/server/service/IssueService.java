@@ -36,6 +36,7 @@ import com.synopsys.integration.jira.common.model.components.StatusDetailsCompon
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
@@ -83,12 +84,17 @@ public class IssueService {
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
-        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
+        return createIssue(foundIssueType.getId(), foundUserDetails.getName(), foundProject.getId(), requestModel.getFieldsBuilder());
+    }
 
-        fieldsBuilder.setIssueType(foundIssueType.getId());
-        fieldsBuilder.setReporter(foundUserDetails.getName());
-        fieldsBuilder.setProject(foundProject.getId());
+    public IssueResponseModel createIssue(String issueTypeId, String reporterUserName, String projectId, IssueRequestModelFieldsMapBuilder issueRequestModelFieldsMapBuilder) throws IntegrationException {
+
+        IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
+        fieldsBuilder.copyFields(issueRequestModelFieldsMapBuilder);
+
+        fieldsBuilder.setIssueType(issueTypeId);
+        fieldsBuilder.setReporter(reporterUserName);
+        fieldsBuilder.setProject(projectId);
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
         IssueRequestModel issueRequestModel = new IssueRequestModel(fieldsBuilder, update, new ArrayList<>());
