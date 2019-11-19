@@ -66,6 +66,7 @@ public class ProjectServiceTest extends JiraServerServiceTest {
             while (offset > 0) {
                 List<Integer> range = IntStream.rangeClosed(offset - 999, offset).boxed().collect(Collectors.toList());
                 runParallel(range, issueService, issuePropertyService, issueTypeId, userName, projectId, errorIndexes);
+                System.out.println("Created issues " + (offset - 999) + " to " + offset);
                 serviceFactory = createServiceFactory();
                 issueService = serviceFactory.createIssueService();
                 issuePropertyService = serviceFactory.createIssuePropertyService();
@@ -90,7 +91,7 @@ public class ProjectServiceTest extends JiraServerServiceTest {
                 errorIndexes.add(index);
             } else {
                 if (addProperties(issuePropertyService, issue.getKey(), index)) {
-                    System.out.println("Successfully created issue #" + index);
+                    //   System.out.println("Successfully created issue #" + index);
                 } else {
                     errorIndexes.add(index);
                 }
