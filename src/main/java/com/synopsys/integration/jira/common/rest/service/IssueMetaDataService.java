@@ -22,11 +22,10 @@
  */
 package com.synopsys.integration.jira.common.rest.service;
 
-import java.util.Collection;
-
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponse;
 import com.synopsys.integration.rest.request.Request;
 
@@ -47,12 +46,24 @@ public class IssueMetaDataService {
 
     public boolean doesProjectContainIssueType(String projectName, String issueType) throws IntegrationException {
         IssueCreateMetadataResponse response = getCreateMetadata();
-        return response.getProjects().stream()
-                   .filter(project -> project.getName().equals(projectName))
-                   .map(ProjectIssueCreateMetadataResponse::getIssueTypes)
-                   .flatMap(Collection::stream)
-                   .anyMatch(issueTypes -> issueTypes.getName().equals(issueType));
 
+        ProjectIssueCreateMetadataResponse matchingProject = null;
+        for (ProjectIssueCreateMetadataResponse project : response.getProjects()) {
+            if (project.getKey().equals(projectName) || project.getName().equals(projectName)) {
+                matchingProject = project;
+            }
+        }
+
+        if (null == matchingProject) {
+            return false;
+        }
+
+        for (IssueTypeResponseModel issueTypeResponseModel : matchingProject.getIssueTypes()) {
+            if (issueTypeResponseModel.getName().equals(issueType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String createApiUri() {
