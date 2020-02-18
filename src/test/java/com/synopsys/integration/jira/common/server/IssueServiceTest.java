@@ -23,7 +23,7 @@ public class IssueServiceTest extends JiraServerServiceTest {
 
         String reporter = "admin";
         String issueTypeName = "Task";
-        String projectName = "Other Project";
+        String projectName = getTestProject();
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());

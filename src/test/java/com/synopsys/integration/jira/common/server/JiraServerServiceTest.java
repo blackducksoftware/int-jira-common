@@ -2,6 +2,7 @@ package com.synopsys.integration.jira.common.server;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import org.apache.commons.lang3.StringUtils;
 import org.opentest4j.TestAbortedException;
 
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfig;
@@ -19,15 +20,18 @@ public abstract class JiraServerServiceTest {
     public static final String ENV_BASE_URL = "JIRA_SERVER_URL";
     public static final String ENV_USERNAME = "JIRA_SERVER_USERNAME";
     public static final String ENV_PASSWORD = "JIRA_SERVER_PASSWORD";
+    public static final String TEST_PROJECT = "JIRA_SERVER_TEST_PROJECT";
 
     public void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
+        String testProject = getTestProject();
 
-        assumeTrue(null != baseUrl, "No Jira Server base url provided");
-        assumeTrue(null != userEmail, "No Jira Server user email provided");
-        assumeTrue(null != apiToken, "No Jira Server API Token provided");
+        assumeTrue(StringUtils.isNotBlank(baseUrl), "No Jira Server base url provided");
+        assumeTrue(StringUtils.isNotBlank(userEmail), "No Jira Server user email provided");
+        assumeTrue(StringUtils.isNotBlank(apiToken), "No Jira Server API Token provided");
+        assumeTrue(StringUtils.isNotBlank(apiToken), "No Jira Server test project provided");
 
         try {
             IntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.ERROR);
@@ -72,6 +76,11 @@ public abstract class JiraServerServiceTest {
     public String getEnvPassword() {
         String envPassword = System.getenv(ENV_PASSWORD);
         return envPassword != null ? envPassword : "admin";
+    }
+
+    public String getTestProject() {
+        String envTestProject = System.getenv(TEST_PROJECT);
+        return envTestProject != null ? envTestProject : "Test Project";
     }
 
 }

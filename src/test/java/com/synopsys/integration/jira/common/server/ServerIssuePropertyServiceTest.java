@@ -30,7 +30,7 @@ public class ServerIssuePropertyServiceTest extends JiraServerServiceTest {
 
         Gson gson = new Gson();
 
-        String projectName = "Other Project";
+        String projectName = getTestProject();
         IssueResponseModel issue = createIssue(issueService, projectName);
 
         String propertyKey = "examplePropertyKey";

@@ -28,7 +28,7 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
         JiraServerServiceFactory serviceFactory = createServiceFactory();
         IssueService issueService = serviceFactory.createIssueService();
 
-        String projectName = "Other Project";
+        String projectName = getTestProject();
         String searchTerm = "my_extra_special_word";
         String description = "Example description containing a special word to search on: " + searchTerm;
         IssueResponseModel issue = createIssue(issueService, projectName, description);
@@ -61,7 +61,7 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
-        String projectName = "Other Project";
+        String projectName = getTestProject();
         IssueResponseModel issue = createIssue(issueService, projectName, "Test description");
 
         Gson gson = new Gson();
