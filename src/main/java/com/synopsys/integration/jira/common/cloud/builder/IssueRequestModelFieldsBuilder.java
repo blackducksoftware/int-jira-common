@@ -88,7 +88,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setReporter(String reporterId) {
+    public IssueRequestModelFieldsBuilder setReporterId(String reporterId) {
         return setField(REPORTER, reporterId);
     }
 
@@ -131,7 +131,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setAssignee(String assigneeId) {
+    public IssueRequestModelFieldsBuilder setAssigneeId(String assigneeId) {
         return setField(ASSIGNEE, assigneeId);
     }
 

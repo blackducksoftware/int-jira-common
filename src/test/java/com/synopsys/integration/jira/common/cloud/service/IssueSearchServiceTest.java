@@ -6,10 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.model.EntityProperty;
@@ -18,7 +17,6 @@ import com.synopsys.integration.jira.common.model.request.IssueCommentRequestMod
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
-import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 
 public class IssueSearchServiceTest extends JiraCloudServiceTest {
 
