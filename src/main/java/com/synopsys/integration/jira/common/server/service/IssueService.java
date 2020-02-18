@@ -84,7 +84,7 @@ public class IssueService {
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
-        return createIssue(foundIssueType.getId(), foundUserDetails.getKey(), foundProject.getId(), requestModel.getFieldsBuilder());
+        return createIssue(foundIssueType.getId(), foundUserDetails.getName(), foundProject.getId(), requestModel.getFieldsBuilder());
     }
 
     public IssueResponseModel createIssue(String issueTypeId, String reporterUserName, String projectId, IssueRequestModelFieldsMapBuilder issueRequestModelFieldsMapBuilder) throws IntegrationException {
