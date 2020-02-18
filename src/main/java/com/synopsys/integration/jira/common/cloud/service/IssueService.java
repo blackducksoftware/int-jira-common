@@ -28,6 +28,7 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
@@ -43,7 +44,6 @@ import com.synopsys.integration.jira.common.model.response.TransitionsResponseMo
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
-import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.request.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
@@ -88,7 +88,7 @@ public class IssueService {
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
 
         fieldsBuilder.setIssueType(foundIssueType.getId());
-        fieldsBuilder.setReporter(foundUserDetails.getAccountId());
+        fieldsBuilder.setReporterId(foundUserDetails.getAccountId());
         fieldsBuilder.setProject(foundProject.getId());
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();

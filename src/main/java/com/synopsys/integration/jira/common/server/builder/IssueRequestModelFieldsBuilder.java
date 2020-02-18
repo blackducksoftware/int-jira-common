@@ -88,8 +88,8 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setReporter(String reporterId) {
-        return setNameField(REPORTER, reporterId);
+    public IssueRequestModelFieldsBuilder setReporterName(String reporterName) {
+        return setNameField(REPORTER, reporterName);
     }
 
     public IssueRequestModelFieldsBuilder setFixVersions(Collection<String> versionIds) {
@@ -131,8 +131,8 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return this;
     }
 
-    public IssueRequestModelFieldsBuilder setAssignee(String assigneeId) {
-        return setNameField(ASSIGNEE, assigneeId);
+    public IssueRequestModelFieldsBuilder setAssigneeName(String assigneeName) {
+        return setNameField(ASSIGNEE, assigneeName);
     }
 
     private IssueRequestModelFieldsBuilder setIdField(String key, String value) {

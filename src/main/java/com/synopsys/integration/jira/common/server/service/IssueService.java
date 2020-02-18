@@ -93,7 +93,7 @@ public class IssueService {
         fieldsBuilder.copyFields(issueRequestModelFieldsMapBuilder);
 
         fieldsBuilder.setIssueType(issueTypeId);
-        fieldsBuilder.setReporter(reporterUserName);
+        fieldsBuilder.setReporterName(reporterUserName);
         fieldsBuilder.setProject(projectId);
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
