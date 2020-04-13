@@ -45,7 +45,7 @@ import com.synopsys.integration.jira.common.model.response.UserDetailsResponseMo
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class IssueService {

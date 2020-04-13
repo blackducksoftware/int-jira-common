@@ -38,7 +38,7 @@ import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 
 public class PluginManagerService {
     public static final String API_PATH = "/rest/plugins/1.0/";

@@ -30,7 +30,7 @@ import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMap
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";

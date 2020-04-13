@@ -30,7 +30,7 @@ import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactor
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 
 public class IssuePropertyService {
     public static final String API_PATH = "/rest/api/2/issue";

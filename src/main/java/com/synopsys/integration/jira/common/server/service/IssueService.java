@@ -46,7 +46,7 @@ import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class IssueService {

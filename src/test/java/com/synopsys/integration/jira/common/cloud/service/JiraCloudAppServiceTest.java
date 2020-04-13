@@ -15,7 +15,7 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 
 public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
@@ -36,10 +36,10 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
         String apiToken = getEnvApiToken();
 
         Response installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
-        assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
+        assertTrue(installResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
-        assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
+        assertTrue(uninstallResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
 
     @Test
@@ -59,10 +59,10 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
             userEmail,
             apiToken
         );
-        assertTrue(installResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
+        assertTrue(installResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
         Thread.sleep(1000);
         Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
-        assertTrue(uninstallResponse.isStatusCodeOkay(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
+        assertTrue(uninstallResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
     }
 
     @Test

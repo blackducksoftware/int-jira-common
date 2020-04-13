@@ -12,7 +12,7 @@ import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
 public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
@@ -31,7 +31,7 @@ public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
         String requestUrl = baseUrl + RESTRICTED_ENDPOINT_SPEC;
         Request request = new Request.Builder(requestUrl).build();
         try (Response reponse = jiraCloudHttpClient.execute(request)) {
-            assertTrue(reponse.isStatusCodeOkay(), "Expected the request to be valid");
+            assertTrue(reponse.isStatusCodeSuccess(), "Expected the request to be valid");
         }
     }
 

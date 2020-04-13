@@ -37,7 +37,7 @@ import com.synopsys.integration.jira.common.model.request.JiraRequestModel;
 import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.request.Response;
+import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
 
