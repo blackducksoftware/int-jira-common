@@ -62,6 +62,10 @@ public class JiraService {
         return execute(request, responseClass);
     }
 
+    public Response get(Request request) throws IntegrationException {
+        return execute(request);
+    }
+
     public <R extends JiraResponse> List<R> getList(Request request, Class<R> responseClass) throws IntegrationException {
         try (Response response = httpClient.execute(request)) {
             response.throwExceptionForError();
