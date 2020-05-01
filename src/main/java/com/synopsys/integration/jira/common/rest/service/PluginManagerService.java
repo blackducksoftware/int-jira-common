@@ -35,6 +35,7 @@ import com.synopsys.integration.jira.common.model.response.InstalledAppsResponse
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
@@ -83,6 +84,22 @@ public class PluginManagerService {
             }
         }
         return Optional.empty();
+    }
+
+    public boolean isAppInstalled(String username, String accessTokenOrPassword, String appKey) throws IntegrationException {
+        String apiUri = createBaseRequestUrl() + appKey + "-key";
+        Request.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, accessTokenOrPassword);
+        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        requestBuilder.method(HttpMethod.GET);
+        requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
+
+        Response response = jiraService.get(requestBuilder.build());
+        // The response should be 404 if the App is not installed
+        if (response.isStatusCodeError() && RestConstants.NOT_FOUND_404 != response.getStatusCode()) {
+            httpClient.getLogger().debug(String.format("Got error when checking if the App '%s' is installed.", appKey));
+            httpClient.getLogger().debug(String.format("Error code: '%s'. Response: '%s'", response.getStatusCode(), response.getContentString()));
+        }
+        return response.isStatusCodeSuccess();
     }
 
     public InstalledAppsResponseModel getInstalledApps(String username, String accessTokenOrPassword) throws IntegrationException {
