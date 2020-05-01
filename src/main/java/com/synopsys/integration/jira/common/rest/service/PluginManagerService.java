@@ -35,6 +35,7 @@ import com.synopsys.integration.jira.common.model.response.InstalledAppsResponse
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
@@ -93,7 +94,8 @@ public class PluginManagerService {
         requestBuilder.addAdditionalHeader("Accept", MEDIA_TYPE_PLUGIN);
 
         Response response = jiraService.get(requestBuilder.build());
-        if (response.isStatusCodeError()) {
+        // The response should be 404 if the App is not installed
+        if (response.isStatusCodeError() && RestConstants.NOT_FOUND_404 != response.getStatusCode()) {
             httpClient.getLogger().debug(String.format("Got error when checking if the App '%s' is installed.", appKey));
             httpClient.getLogger().debug(String.format("Error code: '%s'. Response: '%s'", response.getStatusCode(), response.getContentString()));
         }
