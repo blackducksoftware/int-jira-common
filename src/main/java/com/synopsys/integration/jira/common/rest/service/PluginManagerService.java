@@ -98,6 +98,7 @@ public class PluginManagerService {
         if (response.isStatusCodeError() && RestConstants.NOT_FOUND_404 != response.getStatusCode()) {
             httpClient.getLogger().debug(String.format("Got error when checking if the App '%s' is installed.", appKey));
             httpClient.getLogger().debug(String.format("Error code: '%s'. Response: '%s'", response.getStatusCode(), response.getContentString()));
+            response.throwExceptionForError();
         }
         return response.isStatusCodeSuccess();
     }
