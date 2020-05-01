@@ -21,7 +21,7 @@ nexusStaging {
 }
 
 dependencies {
-    api 'com.synopsys.integration:integration-rest:1.0.4'
+    api 'com.synopsys.integration:integration-rest:1.0.5'
 
     testImplementation 'org.mockito:mockito-core:2.18.3'
 }
