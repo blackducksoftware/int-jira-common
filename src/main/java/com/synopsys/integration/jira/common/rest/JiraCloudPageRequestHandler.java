@@ -25,7 +25,7 @@ package com.synopsys.integration.jira.common.rest;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.exception.JiraIntegrationRuntimeException;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.component.IntRestResponse;
@@ -35,17 +35,17 @@ import com.synopsys.integration.rest.request.Request;
 public abstract class JiraCloudPageRequestHandler implements PageRequestHandler {
     private final IntLogger logger;
 
-    public JiraCloudPageRequestHandler(final IntLogger logger) {
+    public JiraCloudPageRequestHandler(IntLogger logger) {
         this.logger = logger;
     }
 
     @Override
     public Request createPageRequest(Request.Builder requestBuilder, int offset, int limit) {
-        final Request request = requestBuilder.build();
-        final Set<String> limitValue = new HashSet<>();
+        Request request = requestBuilder.build();
+        Set<String> limitValue = new HashSet<>();
         limitValue.add(String.valueOf(limit));
 
-        final Set<String> offsetValue = new HashSet<>();
+        Set<String> offsetValue = new HashSet<>();
         offsetValue.add(String.valueOf(offset));
 
         request.getQueryParameters().put("limit", limitValue);
@@ -71,8 +71,7 @@ public abstract class JiraCloudPageRequestHandler implements PageRequestHandler 
         } catch (ClassCastException e) {
             String errorMessage = "The response was not of type " + JiraPageResponseModel.class.getName();
             logger.error(errorMessage);
-            IntegrationException integrationException = new IntegrationException(errorMessage, e);
-            throw new RuntimeException(integrationException);
+            throw new JiraIntegrationRuntimeException(errorMessage, e);
         }
     }
 

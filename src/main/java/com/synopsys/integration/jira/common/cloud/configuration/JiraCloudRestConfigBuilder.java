@@ -90,6 +90,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         try {
             jiraUrl = new URL(getUrl());
         } catch (MalformedURLException e) {
+            // ignored exception
         }
 
         return new JiraCloudRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), isTrustCert(), gson, authenticationSupport, getAuthUserEmail(), getApiToken());
