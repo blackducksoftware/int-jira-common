@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class JiraHttpServiceFactory {
+    // Test comment
     public static final String JIRA_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
     public JiraHttpService createJiraHttpService(String jiraUrl, OAuthParameters oAuthParameters) {
