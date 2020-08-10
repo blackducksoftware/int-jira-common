@@ -91,6 +91,44 @@ public class JiraHttpService {
         }
     }
 
+    public HttpResponse put(String urlEndpoint, Object requestBodyObject) throws IOException {
+        GenericUrl url = new GenericUrl(baseUrl + urlEndpoint);
+        HttpRequest postRequest = buildPutRequest(url, requestBodyObject);
+        return postRequest.execute();
+    }
+
+    public <T> T put(String urlEndpoint, Object requestBodyObject, Class<T> responseClass) throws IntegrationException {
+        HttpResponse httpResponse = null;
+        try {
+            httpResponse = post(urlEndpoint, requestBodyObject);
+            if (!httpResponse.isSuccessStatusCode()) {
+                throw new IntegrationException(httpResponse.getStatusMessage());
+            }
+            return parseResponse(httpResponse, responseClass);
+        } catch (IOException e) {
+            throw new IntegrationException(e.getMessage());
+        } finally {
+            disconnectResponse(httpResponse);
+        }
+    }
+
+    public HttpResponse delete(String urlEndpoint) throws IntegrationException {
+        GenericUrl url = new GenericUrl(baseUrl + urlEndpoint);
+        HttpRequest httpRequest = null;
+        try {
+            httpRequest = httpRequestFactory.buildDeleteRequest(url);
+            return httpRequest.execute();
+        } catch (IOException e) {
+            throw new IntegrationException(e.getMessage());
+        }
+    }
+
+    protected HttpRequest buildPutRequest(GenericUrl url, Object requestBodyObject) throws IOException {
+        HttpContent requestContent = buildPostRequestContent(requestBodyObject);
+        HttpRequest putRequest = httpRequestFactory.buildPutRequest(url, requestContent);
+        return putRequest;
+    }
+
     protected HttpRequest buildPostRequest(GenericUrl url, Object requestBodyObject) throws IOException {
         HttpContent requestContent = buildPostRequestContent(requestBodyObject);
         HttpRequest postRequest = httpRequestFactory.buildPostRequest(url, requestContent);

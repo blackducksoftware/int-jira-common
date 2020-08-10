@@ -57,4 +57,10 @@ public abstract class JiraCloudServiceTest {
     public String getTestProject() {
         return System.getenv(TEST_PROJECT);
     }
+
+    public String getEnvVarAndAssumeTrue(String envVarName) {
+        String envVar = System.getenv(envVarName);
+        assumeTrue(null != envVar, "Missing value for " + envVarName);
+        return envVar;
+    }
 }
