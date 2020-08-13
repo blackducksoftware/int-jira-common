@@ -28,11 +28,12 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
-    private JiraService jiraCloudService;
+    private final JiraService jiraCloudService;
 
     public ProjectService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
@@ -49,15 +50,15 @@ public class ProjectService {
         }
 
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .uri(createApiUri())
+                              .url(createApiUri())
                               .addQueryParameter("query", projectName)
                               .addQueryParameter("orderBy", "name")
                               .build();
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 
-    private String createApiUri() {
-        return jiraCloudService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
     }
 
 }
