@@ -45,6 +45,7 @@ import com.synopsys.integration.rest.credentials.CredentialsBuilder;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.proxy.ProxyInfoBuilder;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
+import com.synopsys.integration.rest.support.UrlSupport;
 
 public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraServerRestConfig> {
     public static final BuilderPropertyKey URL_KEY = new BuilderPropertyKey("JIRA_URL");
@@ -64,7 +65,7 @@ public class JiraServerRestConfigBuilder extends IntegrationBuilder<JiraServerRe
     private final BuilderProperties builderProperties;
     private IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.INFO);
     private Gson gson = new Gson();
-    private AuthenticationSupport authenticationSupport = new AuthenticationSupport();
+    private AuthenticationSupport authenticationSupport = new AuthenticationSupport(new UrlSupport());
 
     public JiraServerRestConfigBuilder() {
         Set<BuilderPropertyKey> propertyKeys = new HashSet<>();

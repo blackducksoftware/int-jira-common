@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.request.Request;
 
@@ -38,9 +39,9 @@ public class JiraCloudRequestFactory {
     public static final int DEFAULT_OFFSET = 0;
     public static final String DEFAULT_MIME_TYPE = "application/json";
 
-    public static final Request createDefaultGetRequest(final String requestUri) {
+    public static final Request createDefaultGetRequest(HttpUrl requestUrl) {
         return createDefaultBuilder()
-                   .uri(requestUri)
+                   .url(requestUrl)
                    .build();
     }
 
@@ -48,11 +49,11 @@ public class JiraCloudRequestFactory {
         return populatePageRequestBuilder(createDefaultBuilder(), DEFAULT_LIMIT, DEFAULT_OFFSET);
     }
 
-    public static final Request.Builder createDefaultPageRequestBuilder(final int limit, final int offset) {
+    public static final Request.Builder createDefaultPageRequestBuilder(int limit, int offset) {
         return populatePageRequestBuilder(createDefaultBuilder(), limit, offset);
     }
 
-    public static final Request.Builder populatePageRequestBuilder(final Request.Builder requestBuilder, final int limit, final int offset) {
+    public static final Request.Builder populatePageRequestBuilder(Request.Builder requestBuilder, int limit, int offset) {
         Map<String, Set<String>> queryParameters = requestBuilder.getQueryParameters();
         if (null == queryParameters) {
             requestBuilder.queryParameters(new HashMap<>());

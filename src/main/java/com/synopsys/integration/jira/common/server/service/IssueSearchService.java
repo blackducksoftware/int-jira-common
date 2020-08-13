@@ -26,11 +26,12 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.jira.common.server.model.IssueSearchRequestModel;
 import com.synopsys.integration.jira.common.server.model.IssueSearchResponseModel;
+import com.synopsys.integration.rest.HttpUrl;
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
 
-    private JiraService jiraCloudService;
+    private final JiraService jiraCloudService;
 
     public IssueSearchService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
@@ -63,8 +64,8 @@ public class IssueSearchService {
         return String.format("project = %s AND issuetype = %s AND %s ~ '%s'", projectKey, issueType, fieldName, searchTerm);
     }
 
-    private String createApiUri() {
-        return jiraCloudService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
     }
 
 }

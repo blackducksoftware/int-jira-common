@@ -29,20 +29,22 @@ import com.synopsys.integration.jira.common.model.request.WorkflowSchemeRequestM
 import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMappingResponseModel;
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";
 
-    private JiraService jiraCloudService;
+    private final JiraService jiraCloudService;
 
     public WorkflowSchemeService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
     public WorkflowSchemeResponseModel updateScheme(WorkflowSchemeRequestModel requestModel) throws IntegrationException {
-        return jiraCloudService.put(requestModel, createApiUri(), WorkflowSchemeResponseModel.class);
+        HttpUrl httpUrl = new HttpUrl(createApiUri());
+        return jiraCloudService.put(requestModel, httpUrl, WorkflowSchemeResponseModel.class);
     }
 
     public WorkflowSchemeResponseModel getSchemeById(String schemeId) throws IntegrationException {
@@ -51,13 +53,13 @@ public class WorkflowSchemeService {
     }
 
     public IssueTypesWorkflowMappingResponseModel getIssueTypesForWorkflowInScheme(WorkflowIssueTypeMappingsRequestModel requestModel) throws IntegrationException {
-        String uri = createWorkflowApiUri(requestModel.getId());
+        HttpUrl uri = createWorkflowApiUri(requestModel.getId());
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraCloudService.get(request, IssueTypesWorkflowMappingResponseModel.class);
     }
 
     public WorkflowSchemeResponseModel setIssueTypesForWorkflowInScheme(WorkflowIssueTypeMappingsRequestModel requestModel) throws IntegrationException {
-        String uri = createWorkflowApiUri(requestModel.getId());
+        HttpUrl uri = createWorkflowApiUri(requestModel.getId());
         return jiraCloudService.put(requestModel, uri, WorkflowSchemeResponseModel.class);
     }
 
@@ -73,11 +75,11 @@ public class WorkflowSchemeService {
         return jiraCloudService.getBaseUrl() + API_PATH;
     }
 
-    private String createSchemeApiUri(String schemeId) {
-        return String.format("%s/%s", createApiUri(), schemeId);
+    private HttpUrl createSchemeApiUri(String schemeId) throws IntegrationException {
+        return new HttpUrl(String.format("%s/%s", createApiUri(), schemeId));
     }
 
-    private String createWorkflowApiUri(String schemeId) {
-        return String.format("%s/workflow", createSchemeApiUri(schemeId));
+    private HttpUrl createWorkflowApiUri(String schemeId) throws IntegrationException {
+        return new HttpUrl(String.format("%s/workflow", createSchemeApiUri(schemeId).string()));
     }
 }
