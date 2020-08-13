@@ -45,6 +45,7 @@ import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
@@ -53,6 +54,9 @@ public class IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
+
+    private static final String JSON_OBJECT_STATUS = "status";
+    private static final String JSON_OBJECT_FIELDS = "fields";
 
     private final IntJsonTransformer intJsonTransformer;
     private final JiraService jiraService;
@@ -102,11 +106,12 @@ public class IssueService {
     }
 
     private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
-        return jiraService.post(requestModel, createApiUri(), IssueResponseModel.class);
+        HttpUrl httpUrl = new HttpUrl(createApiUri());
+        return jiraService.post(requestModel, httpUrl, IssueResponseModel.class);
     }
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
-        String updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
+        HttpUrl updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
         Response response = jiraService.put(requestModel, updateUri);
 
         if (response.isStatusCodeError()) {
@@ -115,21 +120,21 @@ public class IssueService {
     }
 
     public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
-        String uri = createApiIssueUri(issueIdOrKey);
+        HttpUrl uri = createApiIssueUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .uri(uri)
+                              .url(uri)
                               .addQueryParameter("properties", "*all")
                               .build();
         return jiraService.get(request, IssueResponseModel.class);
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
-        String uri = createApiIssueUri(issueIdOrKey);
+        HttpUrl uri = createApiIssueUri(issueIdOrKey);
         jiraService.delete(uri);
     }
 
     public void transitionIssue(IssueRequestModel requestModel) throws IntegrationException {
-        String transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
+        HttpUrl transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
         Response response = jiraService.post(requestModel, transitionsUri);
 
         if (response.isStatusCodeError()) {
@@ -138,13 +143,13 @@ public class IssueService {
     }
 
     public TransitionsResponseModel getTransitions(String issueIdOrKey) throws IntegrationException {
-        String uri = createApiTransitionsUri(issueIdOrKey);
+        HttpUrl uri = createApiTransitionsUri(issueIdOrKey);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraService.get(request, TransitionsResponseModel.class);
     }
 
     public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
-        String commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
+        HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
         Response response = jiraService.post(requestModel, commentsUri);
 
         if (response.isStatusCodeError()) {
@@ -153,20 +158,20 @@ public class IssueService {
     }
 
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
-        String uri = createApiIssueQueryUri(issueIdOrKey, "status");
+        HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         IssueResponseModel issueResponseModel = jiraService.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
-        if (!issueObject.has("fields")) {
+        if (!issueObject.has(JSON_OBJECT_FIELDS)) {
             throw new IntegrationException(String.format("The fields are missing from the IssueResponseModel. %s", json));
         }
-        JsonObject fieldsObject = issueObject.getAsJsonObject("fields");
-        if (!fieldsObject.has("status")) {
+        JsonObject fieldsObject = issueObject.getAsJsonObject(JSON_OBJECT_FIELDS);
+        if (!fieldsObject.has(JSON_OBJECT_STATUS)) {
             throw new IntegrationException(String.format("The status is missing from the fields in the IssueResponseModel. %s", json));
         }
-        JsonObject statusObject = fieldsObject.getAsJsonObject("status");
+        JsonObject statusObject = fieldsObject.getAsJsonObject(JSON_OBJECT_STATUS);
         StatusDetailsComponent statusDetailsComponent = intJsonTransformer.getComponentAs(statusObject, StatusDetailsComponent.class);
 
         return statusDetailsComponent;
@@ -176,20 +181,20 @@ public class IssueService {
         return jiraService.getBaseUrl() + API_PATH;
     }
 
-    private String createApiIssueUri(String issueIdOrKey) {
-        return String.format("%s/%s", createApiUri(), issueIdOrKey);
+    private HttpUrl createApiIssueUri(String issueIdOrKey) throws IntegrationException {
+        return new HttpUrl(String.format("%s/%s", createApiUri(), issueIdOrKey));
     }
 
-    private String createApiIssueQueryUri(String issueIdOrKey, String queryField) {
-        return String.format("%s/%s?fields=%s", createApiUri(), issueIdOrKey, queryField);
+    private HttpUrl createApiIssueQueryUri(String issueIdOrKey, String queryField) throws IntegrationException {
+        return new HttpUrl(String.format("%s/%s?fields=%s", createApiUri(), issueIdOrKey, queryField));
     }
 
-    private String createApiTransitionsUri(String issueIdOrKey) {
-        return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_TRANSITIONS_SUFFIX);
+    private HttpUrl createApiTransitionsUri(String issueIdOrKey) throws IntegrationException {
+        return new HttpUrl(String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_TRANSITIONS_SUFFIX));
     }
 
-    private String createApiCommentsUri(String issueIdOrKey) {
-        return String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_COMMENTS_SUFFIX);
+    private HttpUrl createApiCommentsUri(String issueIdOrKey) throws IntegrationException {
+        return new HttpUrl(String.format("%s/%s/%s", createApiUri(), issueIdOrKey, API_PATH_COMMENTS_SUFFIX));
     }
 
 }

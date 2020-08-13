@@ -10,6 +10,7 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
@@ -28,7 +29,7 @@ public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
         JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
 
-        String requestUrl = baseUrl + RESTRICTED_ENDPOINT_SPEC;
+        HttpUrl requestUrl = new HttpUrl(baseUrl + RESTRICTED_ENDPOINT_SPEC);
         Request request = new Request.Builder(requestUrl).build();
         try (Response reponse = jiraCloudHttpClient.execute(request)) {
             assertTrue(reponse.isStatusCodeSuccess(), "Expected the request to be valid");

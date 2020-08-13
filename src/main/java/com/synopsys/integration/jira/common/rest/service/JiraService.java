@@ -36,6 +36,7 @@ import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactor
 import com.synopsys.integration.jira.common.model.request.JiraRequestModel;
 import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
@@ -93,58 +94,58 @@ public class JiraService {
         return responseTransformer.getResponses(requestBuilder, pageRequestHandler, responseClass, pageSize);
     }
 
-    public <R extends JiraResponse> R post(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R post(JiraRequestModel jiraRequestModel, HttpUrl url, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
                               .createCommonPostRequestBuilder(jsonRequestBody)
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request, responseClass);
     }
 
-    public Response post(JiraRequestModel jiraRequestModel, String uri) throws IntegrationException {
+    public Response post(JiraRequestModel jiraRequestModel, HttpUrl url) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
                               .createCommonPostRequestBuilder(jsonRequestBody)
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request);
     }
 
-    public <R extends JiraResponse> R put(JiraRequestModel jiraRequestModel, String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R put(JiraRequestModel jiraRequestModel, HttpUrl url, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
         Request request = JiraCloudRequestFactory
                               .createCommonPutRequestBuilder(jsonRequestBody)
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request, responseClass);
     }
 
-    public Response put(JiraRequestModel jiraRequestModel, String uri) throws IntegrationException {
+    public Response put(JiraRequestModel jiraRequestModel, HttpUrl url) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
-        return put(jsonRequestBody, uri);
+        return put(jsonRequestBody, url);
     }
 
-    public Response put(String jsonRequestBody, String uri) throws IntegrationException {
+    public Response put(String jsonRequestBody, HttpUrl url) throws IntegrationException {
         Request request = JiraCloudRequestFactory
                               .createCommonPutRequestBuilder(jsonRequestBody)
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request);
     }
 
-    public Response delete(String uri) throws IntegrationException {
+    public Response delete(HttpUrl url) throws IntegrationException {
         Request request = JiraCloudRequestFactory
                               .createCommonDeleteRequestBuilder()
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request);
     }
 
-    public <R extends JiraResponse> R delete(String uri, Class<R> responseClass) throws IntegrationException {
+    public <R extends JiraResponse> R delete(HttpUrl url, Class<R> responseClass) throws IntegrationException {
         Request request = JiraCloudRequestFactory
                               .createCommonDeleteRequestBuilder()
-                              .uri(uri)
+                              .url(url)
                               .build();
         return execute(request, responseClass);
     }

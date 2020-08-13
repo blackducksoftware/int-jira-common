@@ -28,6 +28,7 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.oauth.http.JiraHttpService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class OAuthProjectService {
@@ -48,11 +49,11 @@ public class OAuthProjectService {
         }
 
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .uri(API_PATH)
+                              .url(new HttpUrl(API_PATH))
                               .addQueryParameter("query", projectName)
                               .addQueryParameter("orderBy", "name")
                               .build();
-        return jiraCloudService.get(request.getUri(), PageOfProjectsResponseModel.class);
+        return jiraCloudService.get(request.getUrl().string(), PageOfProjectsResponseModel.class);
     }
 
 }

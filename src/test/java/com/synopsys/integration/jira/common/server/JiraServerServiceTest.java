@@ -12,6 +12,7 @@ import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.client.IntHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
@@ -37,8 +38,8 @@ public abstract class JiraServerServiceTest {
             IntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.ERROR);
             IntHttpClient intHttpClient = new IntHttpClient(intLogger, 60, true, ProxyInfo.NO_PROXY_INFO);
 
-            Request basicGetRequestToJiraServer = Request.newBuilder()
-                                                      .uri(baseUrl)
+            Request basicGetRequestToJiraServer = new Request.Builder()
+                                                      .url(new HttpUrl(baseUrl))
                                                       .method(HttpMethod.GET)
                                                       .build();
             intHttpClient.execute(basicGetRequestToJiraServer);

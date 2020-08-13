@@ -29,11 +29,12 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project";
-    private JiraService jiraService;
+    private final JiraService jiraService;
 
     public ProjectService(JiraService jiraService) {
         this.jiraService = jiraService;
@@ -52,8 +53,8 @@ public class ProjectService {
                    .collect(Collectors.toList());
     }
 
-    private String createApiUri() {
-        return jiraService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
     }
 
 }
