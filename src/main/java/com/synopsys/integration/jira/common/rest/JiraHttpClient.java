@@ -26,17 +26,16 @@ import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.client.BasicAuthHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
-import com.synopsys.integration.rest.support.UrlSupport;
 
 public class JiraHttpClient extends BasicAuthHttpClient {
     private final String baseUrl;
 
     public static final JiraHttpClient cloud(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
-        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(new UrlSupport()), authUserEmail, apiToken);
+        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), authUserEmail, apiToken);
     }
 
     public static final JiraHttpClient server(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
-        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(new UrlSupport()), username, password);
+        return new JiraHttpClient(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), username, password);
     }
 
     public JiraHttpClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, AuthenticationSupport authenticationSupport, String username, String password) {

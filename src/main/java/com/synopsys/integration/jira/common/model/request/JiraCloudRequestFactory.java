@@ -66,7 +66,7 @@ public class JiraCloudRequestFactory {
 
     public static final Request.Builder createDefaultBuilder() {
         return new Request.Builder()
-                   .mimeType(DEFAULT_MIME_TYPE)
+                   .acceptMimeType(DEFAULT_MIME_TYPE)
                    .method(HttpMethod.GET);
     }
 

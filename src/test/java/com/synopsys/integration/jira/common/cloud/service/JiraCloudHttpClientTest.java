@@ -15,7 +15,6 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
-import com.synopsys.integration.rest.support.UrlSupport;
 
 public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
     private static final String RESTRICTED_ENDPOINT_SPEC = "/rest/api/2/field";
@@ -28,7 +27,7 @@ public class JiraCloudHttpClientTest extends JiraCloudServiceTest {
         validateConfiguration();
 
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(new UrlSupport()), userEmail, apiToken);
+        JiraHttpClient jiraCloudHttpClient = new JiraHttpClient(intLogger, 120, true, ProxyInfo.NO_PROXY_INFO, baseUrl, new AuthenticationSupport(), userEmail, apiToken);
 
         HttpUrl requestUrl = new HttpUrl(baseUrl + RESTRICTED_ENDPOINT_SPEC);
         Request request = new Request.Builder(requestUrl).build();
