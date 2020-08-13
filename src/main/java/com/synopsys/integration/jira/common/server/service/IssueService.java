@@ -55,6 +55,9 @@ public class IssueService {
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
+    private static final String JSON_OBJECT_STATUS = "status";
+    private static final String JSON_OBJECT_FIELDS = "fields";
+
     private final IntJsonTransformer intJsonTransformer;
     private final JiraService jiraService;
     private final UserSearchService userSearchService;
@@ -155,20 +158,20 @@ public class IssueService {
     }
 
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
-        HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, "status");
+        HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         IssueResponseModel issueResponseModel = jiraService.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
-        if (!issueObject.has("fields")) {
+        if (!issueObject.has(JSON_OBJECT_FIELDS)) {
             throw new IntegrationException(String.format("The fields are missing from the IssueResponseModel. %s", json));
         }
-        JsonObject fieldsObject = issueObject.getAsJsonObject("fields");
-        if (!fieldsObject.has("status")) {
+        JsonObject fieldsObject = issueObject.getAsJsonObject(JSON_OBJECT_FIELDS);
+        if (!fieldsObject.has(JSON_OBJECT_STATUS)) {
             throw new IntegrationException(String.format("The status is missing from the fields in the IssueResponseModel. %s", json));
         }
-        JsonObject statusObject = fieldsObject.getAsJsonObject("status");
+        JsonObject statusObject = fieldsObject.getAsJsonObject(JSON_OBJECT_STATUS);
         StatusDetailsComponent statusDetailsComponent = intJsonTransformer.getComponentAs(statusObject, StatusDetailsComponent.class);
 
         return statusDetailsComponent;

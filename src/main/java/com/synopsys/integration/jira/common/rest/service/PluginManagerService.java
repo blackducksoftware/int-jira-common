@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.rest.service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
@@ -199,7 +199,7 @@ public class PluginManagerService {
         Request.Builder requestBuilder = new Request.Builder();
 
         requestBuilder.url(apiUri);
-        byte[] authorizationBytes = String.format("%s:%s", username, accessTokenOrPassword).getBytes(Charsets.UTF_8);
+        byte[] authorizationBytes = String.format("%s:%s", username, accessTokenOrPassword).getBytes(StandardCharsets.UTF_8);
         String authorization = String.format("Basic %s", Base64.encodeBase64String(authorizationBytes));
         requestBuilder.addHeader("authorization", authorization);
         return requestBuilder;
