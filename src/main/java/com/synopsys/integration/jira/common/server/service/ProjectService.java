@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project";
@@ -41,7 +41,7 @@ public class ProjectService {
     }
 
     public List<ProjectComponent> getProjects() throws IntegrationException {
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
         return jiraService.getList(request, ProjectComponent.class);
     }
 

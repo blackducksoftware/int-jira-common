@@ -23,12 +23,12 @@
 package com.synopsys.integration.jira.common.rest.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponse;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class IssueMetaDataService {
     public static final String API_PATH = "/rest/api/2/issue/createmeta";
@@ -41,7 +41,7 @@ public class IssueMetaDataService {
 
     public IssueCreateMetadataResponse getCreateMetadata() throws IntegrationException {
         HttpUrl uri = createApiUri();
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
         return jiraService.get(request, IssueCreateMetadataResponse.class);
     }
 

@@ -56,7 +56,7 @@ public class CommonServiceFactory {
     }
 
     public PluginManagerService createPluginManagerService() {
-        return new PluginManagerService(gson, httpClient, createJiraService());
+        return new PluginManagerService(gson, createJiraService());
     }
 
     public IssueMetaDataService createIssueMetadataService() {

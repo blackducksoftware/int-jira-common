@@ -27,33 +27,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.body.StringBodyContent;
-import com.synopsys.integration.rest.request.Request;
 
-public class JiraCloudRequestFactory {
+public class JiraRequestFactory {
     public static final String LIMIT_PARAMETER = "limit";
     public static final String OFFSET_PARAMETER = "offset";
     public static final int DEFAULT_LIMIT = 50;
     public static final int DEFAULT_OFFSET = 0;
     public static final String DEFAULT_MIME_TYPE = "application/json";
 
-    public static final Request createDefaultGetRequest(HttpUrl requestUrl) {
+    public static final JiraRequest createDefaultGetRequest(HttpUrl requestUrl) {
         return createDefaultBuilder()
                    .url(requestUrl)
                    .build();
     }
 
-    public static final Request.Builder createDefaultPageRequestBuilder() {
+    public static final JiraRequest.Builder createDefaultPageRequestBuilder() {
         return populatePageRequestBuilder(createDefaultBuilder(), DEFAULT_LIMIT, DEFAULT_OFFSET);
     }
 
-    public static final Request.Builder createDefaultPageRequestBuilder(int limit, int offset) {
+    public static final JiraRequest.Builder createDefaultPageRequestBuilder(int limit, int offset) {
         return populatePageRequestBuilder(createDefaultBuilder(), limit, offset);
     }
 
-    public static final Request.Builder populatePageRequestBuilder(Request.Builder requestBuilder, int limit, int offset) {
+    public static final JiraRequest.Builder populatePageRequestBuilder(JiraRequest.Builder requestBuilder, int limit, int offset) {
         Map<String, Set<String>> queryParameters = requestBuilder.getQueryParameters();
         if (null == queryParameters) {
             requestBuilder.queryParameters(new HashMap<>());
@@ -64,26 +63,26 @@ public class JiraCloudRequestFactory {
         return requestBuilder;
     }
 
-    public static final Request.Builder createDefaultBuilder() {
-        return new Request.Builder()
+    public static final JiraRequest.Builder createDefaultBuilder() {
+        return new JiraRequest.Builder()
                    .acceptMimeType(DEFAULT_MIME_TYPE)
                    .method(HttpMethod.GET);
     }
 
-    public static final Request.Builder createCommonPostRequestBuilder(String bodyContent) {
-        return new Request.Builder()
+    public static final JiraRequest.Builder createCommonPostRequestBuilder(String bodyContent) {
+        return new JiraRequest.Builder()
                    .method(HttpMethod.POST)
-                   .bodyContent(new StringBodyContent(bodyContent));
+                   .bodyContent(bodyContent);
     }
 
-    public static final Request.Builder createCommonPutRequestBuilder(String bodyContent) {
-        return new Request.Builder()
+    public static final JiraRequest.Builder createCommonPutRequestBuilder(String bodyContent) {
+        return new JiraRequest.Builder()
                    .method(HttpMethod.PUT)
-                   .bodyContent(new StringBodyContent(bodyContent));
+                   .bodyContent(bodyContent);
     }
 
-    public static final Request.Builder createCommonDeleteRequestBuilder() {
-        return new Request.Builder()
+    public static final JiraRequest.Builder createCommonDeleteRequestBuilder() {
+        return new JiraRequest.Builder()
                    .method(HttpMethod.DELETE);
     }
 

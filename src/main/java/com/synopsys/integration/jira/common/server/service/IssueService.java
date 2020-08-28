@@ -35,18 +35,18 @@ import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
@@ -121,10 +121,10 @@ public class IssueService {
 
     public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueUri(issueIdOrKey);
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(uri)
-                              .addQueryParameter("properties", "*all")
-                              .build();
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(uri)
+                                  .addQueryParameter("properties", "*all")
+                                  .build();
         return jiraService.get(request, IssueResponseModel.class);
     }
 
@@ -144,7 +144,7 @@ public class IssueService {
 
     public TransitionsResponseModel getTransitions(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiTransitionsUri(issueIdOrKey);
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
         return jiraService.get(request, TransitionsResponseModel.class);
     }
 
@@ -159,7 +159,7 @@ public class IssueService {
 
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
         IssueResponseModel issueResponseModel = jiraService.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();
 

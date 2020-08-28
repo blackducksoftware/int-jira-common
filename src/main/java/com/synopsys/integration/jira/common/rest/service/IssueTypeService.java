@@ -26,10 +26,10 @@ import java.util.List;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.IssueTypeRequestModel;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class IssueTypeService {
     private static final String API_PATH = "/rest/api/2/issuetype";
@@ -42,7 +42,7 @@ public class IssueTypeService {
 
     public List<IssueTypeResponseModel> getAllIssueTypes() throws IntegrationException {
         HttpUrl uri = createApiUri();
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
         return jiraService.getList(request, IssueTypeResponseModel.class);
     }
 

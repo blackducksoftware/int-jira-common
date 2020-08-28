@@ -25,11 +25,11 @@ package com.synopsys.integration.jira.common.cloud.service;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
@@ -40,7 +40,7 @@ public class ProjectService {
     }
 
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createApiUri());
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 
@@ -49,11 +49,11 @@ public class ProjectService {
             return new PageOfProjectsResponseModel();
         }
 
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(createApiUri())
-                              .addQueryParameter("query", projectName)
-                              .addQueryParameter("orderBy", "name")
-                              .build();
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(createApiUri())
+                                  .addQueryParameter("query", projectName)
+                                  .addQueryParameter("orderBy", "name")
+                                  .build();
         return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
     }
 

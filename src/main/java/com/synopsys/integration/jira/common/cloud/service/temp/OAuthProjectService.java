@@ -25,11 +25,11 @@ package com.synopsys.integration.jira.common.cloud.service.temp;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.oauth.http.JiraHttpService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class OAuthProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
@@ -48,11 +48,11 @@ public class OAuthProjectService {
             return new PageOfProjectsResponseModel();
         }
 
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(new HttpUrl(API_PATH))
-                              .addQueryParameter("query", projectName)
-                              .addQueryParameter("orderBy", "name")
-                              .build();
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(new HttpUrl(API_PATH))
+                                  .addQueryParameter("query", projectName)
+                                  .addQueryParameter("orderBy", "name")
+                                  .build();
         return jiraCloudService.get(request.getUrl().string(), PageOfProjectsResponseModel.class);
     }
 

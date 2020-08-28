@@ -28,11 +28,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user/search";
@@ -49,10 +49,10 @@ public class UserSearchService {
         }
 
         HttpUrl uri = createApiUri();
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(uri)
-                              .addQueryParameter("query", queryValue)
-                              .build();
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(uri)
+                                  .addQueryParameter("query", queryValue)
+                                  .build();
         return jiraCloudService.getList(request, UserDetailsResponseModel.class);
     }
 
