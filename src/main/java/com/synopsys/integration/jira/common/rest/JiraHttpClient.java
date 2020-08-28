@@ -25,11 +25,9 @@ package com.synopsys.integration.jira.common.rest;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.client.BasicAuthHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
-import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraHttpClient extends BasicAuthHttpClient implements JiraHttpClientInterface {
+public class JiraHttpClient extends BasicAuthHttpClient {
     private final String baseUrl;
 
     public static final JiraHttpClient cloud(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
@@ -45,14 +43,8 @@ public class JiraHttpClient extends BasicAuthHttpClient implements JiraHttpClien
         this.baseUrl = baseUrl;
     }
 
-    @Override
     public String getBaseUrl() {
         return baseUrl;
-    }
-
-    @Override
-    public Response executeRequest(Request request) {
-        return null;
     }
 
 }
