@@ -23,9 +23,9 @@
 package com.synopsys.integration.jira.common.model.response;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class WorkflowResponseModel extends JiraResponse {
+public class WorkflowResponseModel extends JiraResponseModel {
     private String name;
     private String description;
     private String lastModifiedDate;

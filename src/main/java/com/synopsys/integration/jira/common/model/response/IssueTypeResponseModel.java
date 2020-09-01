@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class IssueTypeResponseModel extends JiraResponse {
+public class IssueTypeResponseModel extends JiraResponseModel {
     private String self;
     private String id;
     private String description;

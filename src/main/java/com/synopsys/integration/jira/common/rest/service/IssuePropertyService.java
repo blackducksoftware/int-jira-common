@@ -31,7 +31,6 @@ import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResp
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.response.Response;
 
 public class IssuePropertyService {
     public static final String API_PATH = "/rest/api/2/issue";
@@ -62,14 +61,14 @@ public class IssuePropertyService {
         return jiraService.get(request, IssuePropertyResponseModel.class);
     }
 
-    public Response setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
+    public void setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
         String json = gson.toJson(propertyValue);
-        return setProperty(issueKey, propertyKey, json);
+        setProperty(issueKey, propertyKey, json);
     }
 
-    public Response setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
+    public void setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
         HttpUrl url = createApiUriWithKey(issueKey, propertyKey);
-        return jiraService.put(jsonPropertyValue, url);
+        jiraService.put(jsonPropertyValue, url);
     }
 
     private HttpUrl createApiUriWithKey(String issueKey, String propertyKey) throws IntegrationException {

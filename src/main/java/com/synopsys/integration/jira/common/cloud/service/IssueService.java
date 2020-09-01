@@ -43,10 +43,10 @@ import com.synopsys.integration.jira.common.model.response.PageOfProjectsRespons
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
+import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class IssueService {
@@ -107,7 +107,7 @@ public class IssueService {
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
-        Response response = jiraCloudService.put(requestModel, updateUri);
+        JiraResponse response = jiraCloudService.put(requestModel, updateUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error updating issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
@@ -130,7 +130,7 @@ public class IssueService {
 
     public void transitionIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
-        Response response = jiraCloudService.post(requestModel, transitionsUri);
+        JiraResponse response = jiraCloudService.post(requestModel, transitionsUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error transitioning issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
@@ -145,7 +145,7 @@ public class IssueService {
 
     public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
-        Response response = jiraCloudService.post(requestModel, commentsUri);
+        JiraResponse response = jiraCloudService.post(requestModel, commentsUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error commenting on issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));

@@ -24,16 +24,16 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class IssueCreateMetadataResponse extends JiraResponse {
+public class IssueCreateMetadataResponseModel extends JiraResponseModel {
     private String expand;
-    private List<ProjectIssueCreateMetadataResponse> projects;
+    private List<ProjectIssueCreateMetadataResponseModel> projects;
 
-    public IssueCreateMetadataResponse() {
+    public IssueCreateMetadataResponseModel() {
     }
 
-    public IssueCreateMetadataResponse(final String expand, final List<ProjectIssueCreateMetadataResponse> projects) {
+    public IssueCreateMetadataResponseModel(String expand, List<ProjectIssueCreateMetadataResponseModel> projects) {
         this.expand = expand;
         this.projects = projects;
     }
@@ -42,7 +42,7 @@ public class IssueCreateMetadataResponse extends JiraResponse {
         return expand;
     }
 
-    public List<ProjectIssueCreateMetadataResponse> getProjects() {
+    public List<ProjectIssueCreateMetadataResponseModel> getProjects() {
         return projects;
     }
 }

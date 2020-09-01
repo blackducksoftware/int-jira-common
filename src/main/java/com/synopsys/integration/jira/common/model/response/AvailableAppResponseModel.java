@@ -28,9 +28,9 @@ import java.util.Optional;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class AvailableAppResponseModel extends JiraResponse {
+public class AvailableAppResponseModel extends JiraResponseModel {
     private JsonObject links;
     private String key;
     private String name;

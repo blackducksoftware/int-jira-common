@@ -25,9 +25,9 @@ package com.synopsys.integration.jira.common.model.response;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class ProjectIssueCreateMetadataResponse extends JiraResponse {
+public class ProjectIssueCreateMetadataResponseModel extends JiraResponseModel {
     private String expand;
     private String self;
     private String id;
@@ -36,10 +36,10 @@ public class ProjectIssueCreateMetadataResponse extends JiraResponse {
     @SerializedName("issuetypes")
     private List<IssueTypeResponseModel> issueTypes;
 
-    public ProjectIssueCreateMetadataResponse() {
+    public ProjectIssueCreateMetadataResponseModel() {
     }
 
-    public ProjectIssueCreateMetadataResponse(String expand, String self, String id, String key, String name, List<IssueTypeResponseModel> issueTypes) {
+    public ProjectIssueCreateMetadataResponseModel(String expand, String self, String id, String key, String name, List<IssueTypeResponseModel> issueTypes) {
         this.expand = expand;
         this.self = self;
         this.id = id;

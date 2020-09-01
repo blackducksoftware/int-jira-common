@@ -24,10 +24,10 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.IssuePropertyKeyComponent;
 
-public class IssuePropertyKeysResponseModel extends JiraResponse {
+public class IssuePropertyKeysResponseModel extends JiraResponseModel {
     private List<IssuePropertyKeyComponent> keys;
 
     public IssuePropertyKeysResponseModel() {

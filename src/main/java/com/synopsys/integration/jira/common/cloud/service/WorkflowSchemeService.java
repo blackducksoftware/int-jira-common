@@ -29,9 +29,9 @@ import com.synopsys.integration.jira.common.model.request.WorkflowSchemeRequestM
 import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMappingResponseModel;
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
+import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.response.Response;
 
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";
@@ -64,7 +64,7 @@ public class WorkflowSchemeService {
     }
 
     public void deleteIssueTypesForWorkflowInScheme(String schemeId) throws IntegrationException {
-        Response response = jiraCloudService.delete(createWorkflowApiUri(schemeId));
+        JiraResponse response = jiraCloudService.delete(createWorkflowApiUri(schemeId));
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error deleting issue type mappings; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));

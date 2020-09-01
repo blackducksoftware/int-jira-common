@@ -25,9 +25,9 @@ package com.synopsys.integration.jira.common.model.response;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class InstalledAppsResponseModel extends JiraResponse {
+public class InstalledAppsResponseModel extends JiraResponseModel {
     private List<PluginResponseModel> plugins;
     private JsonObject links;
 

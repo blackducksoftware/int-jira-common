@@ -24,10 +24,10 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 
-public class FieldResponseModel extends JiraResponse {
+public class FieldResponseModel extends JiraResponseModel {
     private String id;
     private String key;
     private String name;

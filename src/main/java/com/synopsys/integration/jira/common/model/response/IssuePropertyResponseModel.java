@@ -23,9 +23,9 @@
 package com.synopsys.integration.jira.common.model.response;
 
 import com.google.gson.JsonObject;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class IssuePropertyResponseModel extends JiraResponse {
+public class IssuePropertyResponseModel extends JiraResponseModel {
     private String key;
     private JsonObject value;
 

@@ -22,16 +22,16 @@
  */
 package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class DefaultWorkflowResponseModel extends JiraResponse {
+public class DefaultWorkflowResponseModel extends JiraResponseModel {
     private String name;
     private Boolean updateDraftIfNeeded;
 
     public DefaultWorkflowResponseModel() {
     }
 
-    public DefaultWorkflowResponseModel(final String name, final Boolean updateDraftIfNeeded) {
+    public DefaultWorkflowResponseModel(String name, Boolean updateDraftIfNeeded) {
         this.name = name;
         this.updateDraftIfNeeded = updateDraftIfNeeded;
     }
