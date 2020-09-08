@@ -87,4 +87,8 @@ public class JiraCloudRequestFactory {
                    .method(HttpMethod.DELETE);
     }
 
+    private JiraCloudRequestFactory() {
+        // empty private constructor for utility class to prevent users from creating an instance of this class
+    }
+
 }

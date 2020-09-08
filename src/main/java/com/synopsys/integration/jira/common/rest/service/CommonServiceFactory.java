@@ -29,14 +29,12 @@ import com.synopsys.integration.rest.service.IntJsonTransformer;
 import com.synopsys.integration.rest.service.IntResponseTransformer;
 
 public class CommonServiceFactory {
-    private final IntLogger logger;
     private final JiraHttpClient httpClient;
     private final Gson gson;
     private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
     public CommonServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
-        this.logger = logger;
         this.httpClient = httpClient;
         this.gson = gson;
         this.jsonTransformer = new IntJsonTransformer(gson, logger);
