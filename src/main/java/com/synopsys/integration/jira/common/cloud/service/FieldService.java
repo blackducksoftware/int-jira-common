@@ -29,6 +29,7 @@ import com.synopsys.integration.jira.common.model.request.FieldRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.FieldResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class FieldService {
@@ -49,8 +50,8 @@ public class FieldService {
         return jiraCloudService.post(fieldModel, createApiUri(), FieldResponseModel.class);
     }
 
-    private String createApiUri() {
-        return jiraCloudService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
     }
 
 }

@@ -31,8 +31,8 @@ import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.component.IntRestResponse;
 
-public class IssueSerachPageResponseHandler extends JiraCloudPageRequestHandler {
-    public IssueSerachPageResponseHandler(IntLogger logger) {
+public class IssueSearchPageResponseHandler extends JiraCloudPageRequestHandler {
+    public IssueSearchPageResponseHandler(IntLogger logger) {
         super(logger);
     }
 

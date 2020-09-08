@@ -27,19 +27,20 @@ import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactor
 import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponse;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponse;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class IssueMetaDataService {
     public static final String API_PATH = "/rest/api/2/issue/createmeta";
 
-    private JiraService jiraService;
+    private final JiraService jiraService;
 
     public IssueMetaDataService(JiraService jiraService) {
         this.jiraService = jiraService;
     }
 
     public IssueCreateMetadataResponse getCreateMetadata() throws IntegrationException {
-        String uri = createApiUri();
+        HttpUrl uri = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraService.get(request, IssueCreateMetadataResponse.class);
     }
@@ -66,7 +67,7 @@ public class IssueMetaDataService {
         return false;
     }
 
-    private String createApiUri() {
-        return jiraService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
     }
 }

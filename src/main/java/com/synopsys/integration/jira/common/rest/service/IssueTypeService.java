@@ -28,30 +28,31 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.IssueTypeRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class IssueTypeService {
     private static final String API_PATH = "/rest/api/2/issuetype";
 
-    private JiraService jiraService;
+    private final JiraService jiraService;
 
     public IssueTypeService(JiraService jiraService) {
         this.jiraService = jiraService;
     }
 
     public List<IssueTypeResponseModel> getAllIssueTypes() throws IntegrationException {
-        String uri = createApiUri();
+        HttpUrl uri = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
         return jiraService.getList(request, IssueTypeResponseModel.class);
     }
 
     public IssueTypeResponseModel createIssueType(IssueTypeRequestModel issueTypeRequestModel) throws IntegrationException {
-        String uri = createApiUri();
+        HttpUrl uri = createApiUri();
         return jiraService.post(issueTypeRequestModel, uri, IssueTypeResponseModel.class);
     }
 
-    private String createApiUri() {
-        return jiraService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
     }
 
 }

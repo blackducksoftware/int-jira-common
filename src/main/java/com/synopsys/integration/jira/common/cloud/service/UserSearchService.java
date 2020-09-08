@@ -31,12 +31,13 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user/search";
 
-    private JiraService jiraCloudService;
+    private final JiraService jiraCloudService;
 
     public UserSearchService(JiraService jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
@@ -47,15 +48,15 @@ public class UserSearchService {
             return Collections.emptyList();
         }
 
-        String uri = createApiUri();
+        HttpUrl uri = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .uri(uri)
+                              .url(uri)
                               .addQueryParameter("query", queryValue)
                               .build();
         return jiraCloudService.getList(request, UserDetailsResponseModel.class);
     }
 
-    private String createApiUri() {
-        return jiraCloudService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
     }
 }

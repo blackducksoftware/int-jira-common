@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.request.Request;
 
@@ -38,9 +39,9 @@ public class JiraCloudRequestFactory {
     public static final int DEFAULT_OFFSET = 0;
     public static final String DEFAULT_MIME_TYPE = "application/json";
 
-    public static final Request createDefaultGetRequest(String requestUri) {
+    public static final Request createDefaultGetRequest(HttpUrl requestUrl) {
         return createDefaultBuilder()
-                   .uri(requestUri)
+                   .url(requestUrl)
                    .build();
     }
 
@@ -65,7 +66,7 @@ public class JiraCloudRequestFactory {
 
     public static final Request.Builder createDefaultBuilder() {
         return new Request.Builder()
-                   .mimeType(DEFAULT_MIME_TYPE)
+                   .acceptMimeType(DEFAULT_MIME_TYPE)
                    .method(HttpMethod.GET);
     }
 

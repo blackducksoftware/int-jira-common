@@ -23,6 +23,7 @@ public class IssueMetaDataServiceTest {
         JiraService jiraService = Mockito.mock(JiraService.class);
         IssueCreateMetadataResponse response = createResponse();
         Mockito.when(jiraService.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponse.class))).thenReturn(response);
+        Mockito.when(jiraService.getBaseUrl()).thenReturn("https://host");
         IssueMetaDataService service = new IssueMetaDataService(jiraService);
 
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_1"));

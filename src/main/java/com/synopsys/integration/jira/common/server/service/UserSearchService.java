@@ -30,13 +30,14 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.rest.request.Request;
 
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user";
 
-    private JiraService jiraService;
+    private final JiraService jiraService;
 
     public UserSearchService(JiraService jiraService) {
         this.jiraService = jiraService;
@@ -55,9 +56,9 @@ public class UserSearchService {
             return Optional.empty();
         }
 
-        String uri = createApiUri();
+        HttpUrl url = createApiUri();
         Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .uri(uri)
+                              .url(url)
                               .addQueryParameter(queryKey, queryValue)
                               .build();
         try {
@@ -71,8 +72,8 @@ public class UserSearchService {
         return Optional.empty();
     }
 
-    private String createApiUri() {
-        return jiraService.getBaseUrl() + API_PATH;
+    private HttpUrl createApiUri() throws IntegrationException {
+        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
     }
 
 }
