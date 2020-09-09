@@ -8,16 +8,23 @@ import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthParameters;
+import com.google.gson.Gson;
+import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTest;
-import com.synopsys.integration.jira.common.cloud.service.temp.OAuthProjectService;
+import com.synopsys.integration.jira.common.cloud.service.ProjectService;
 import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
-import com.synopsys.integration.jira.common.rest.oauth.http.JiraHttpService;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.oauth.http.JiraHttpServiceFactory;
+import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
+import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.log.Slf4jIntLogger;
 
 public class AuthenticateOAuthTest extends JiraCloudServiceTest {
     public static final String CONSUMER_KEY = "JIRA_OAUTH_CONSUMER_KEY";
@@ -90,9 +97,19 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
         OAuthParameters oAuthParameters = jiraOAuthService.createOAuthParameters(oAuthCredentialsData);
 
         JiraHttpServiceFactory jiraHttpServiceFactory = new JiraHttpServiceFactory();
-        JiraHttpService jiraHttpService = jiraHttpServiceFactory.createJiraHttpService(jiraUrl, oAuthParameters);
+        JiraHttpClient jiraHttpService = jiraHttpServiceFactory.createJiraHttpService(jiraUrl, oAuthParameters);
+        assertProjectsFound(jiraHttpService);
 
-        OAuthProjectService oAuthProjectService = new OAuthProjectService(jiraHttpService);
+        Logger logger = LoggerFactory.getLogger(AuthenticateOAuthTest.class);
+        JiraHttpClient jiraCredentialClient = createJiraServerConfig().createJiraHttpClient(new Slf4jIntLogger(logger));
+        assertProjectsFound(jiraCredentialClient);
+    }
+
+    private void assertProjectsFound(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        CommonServiceFactory commonServiceFactory = new CommonServiceFactory(null, jiraHttpClient, new Gson());
+        JiraService jiraService = commonServiceFactory.createJiraService();
+
+        ProjectService oAuthProjectService = new ProjectService(jiraService);
         PageOfProjectsResponseModel projects = oAuthProjectService.getProjects();
 
         assertTrue(projects.getTotal() > 0);

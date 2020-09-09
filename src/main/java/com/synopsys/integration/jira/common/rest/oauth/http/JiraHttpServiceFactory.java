@@ -25,24 +25,17 @@ package com.synopsys.integration.jira.common.rest.oauth.http;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
 public class JiraHttpServiceFactory {
     public static final String JIRA_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
-    public JiraHttpService createJiraHttpService(String jiraUrl, OAuthParameters oAuthParameters) {
-        return new JiraHttpService(jiraUrl, createHttpRequestFactory(oAuthParameters), createDefaultGson());
+    public JiraHttpClient createJiraHttpService(String jiraUrl, OAuthParameters oAuthParameters) {
+        return new JiraOAuthHttpClient(jiraUrl, createHttpRequestFactory(oAuthParameters));
     }
 
     private HttpRequestFactory createHttpRequestFactory(OAuthParameters oAuthParameters) {
         return new NetHttpTransport().createRequestFactory(oAuthParameters);
-    }
-
-    private Gson createDefaultGson() {
-        return new GsonBuilder()
-                   .setDateFormat(JiraHttpServiceFactory.JIRA_DATE_FORMAT)
-                   .create();
     }
 
 }

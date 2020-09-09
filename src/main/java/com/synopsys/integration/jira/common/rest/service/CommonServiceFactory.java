@@ -26,19 +26,16 @@ import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
-import com.synopsys.integration.rest.service.IntResponseTransformer;
 
 public class CommonServiceFactory {
     private final JiraHttpClient httpClient;
     private final Gson gson;
-    private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
     public CommonServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
         this.httpClient = httpClient;
         this.gson = gson;
         this.jsonTransformer = new IntJsonTransformer(gson, logger);
-        this.responseTransformer = new IntResponseTransformer(httpClient, jsonTransformer);
     }
 
     public JiraService createJiraService() {
@@ -67,10 +64,6 @@ public class CommonServiceFactory {
 
     public Gson getGson() {
         return gson;
-    }
-
-    public IntResponseTransformer getResponseTransformer() {
-        return responseTransformer;
     }
 
     public IntJsonTransformer getJsonTransformer() {
