@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.jira.common.rest.model;
 
+import java.util.Map;
+
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.util.Stringable;
 
@@ -29,11 +31,13 @@ public class JiraResponse extends Stringable {
     private final int statusCode;
     private final String statusMessage;
     private final String content;
+    private final Map<String, String> headers;
 
-    public JiraResponse(int statusCode, String statusMessage, String content) {
+    public JiraResponse(int statusCode, String statusMessage, String content, Map<String, String> headers) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.content = content;
+        this.headers = headers;
     }
 
     public int getStatusCode() {
@@ -46,6 +50,10 @@ public class JiraResponse extends Stringable {
 
     public String getContent() {
         return content;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
     public boolean isStatusCodeSuccess() {

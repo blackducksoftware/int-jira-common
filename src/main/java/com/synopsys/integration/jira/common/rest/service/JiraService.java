@@ -22,11 +22,12 @@
  */
 package com.synopsys.integration.jira.common.rest.service;
 
-import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,29 +39,24 @@ import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.request.JiraRequestModel;
-import com.synopsys.integration.jira.common.rest.JiraCloudPageRequestHandler;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.body.StringBodyContent;
+import com.synopsys.integration.rest.component.IntRestComponent;
 import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
-import com.synopsys.integration.rest.service.IntResponseTransformer;
 
-// FIXME verify all methods close their results.
 public class JiraService {
     private final Gson gson;
     private final JiraHttpClient httpClient;
-    private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
 
-    public JiraService(Gson gson, JiraHttpClient httpClient, IntResponseTransformer responseTransformer, IntJsonTransformer jsonTransformer) {
+    public JiraService(Gson gson, JiraHttpClient httpClient, IntJsonTransformer jsonTransformer) {
         this.gson = gson;
         this.httpClient = httpClient;
-        this.responseTransformer = responseTransformer;
         this.jsonTransformer = jsonTransformer;
     }
 
@@ -69,61 +65,61 @@ public class JiraService {
     }
 
     public <R extends JiraResponseModel> R get(JiraRequest jiraRequest, Class<R> responseClass) throws IntegrationException {
-        Request request = convertToRequest(jiraRequest);
-        return execute(request, responseClass);
+        return execute(jiraRequest, responseClass);
     }
 
     public JiraResponse get(JiraRequest jiraRequest) throws IntegrationException {
-        Request request = convertToRequest(jiraRequest);
-        Response response = execute(request);
-        return convertToJiraResponse(response);
+        return execute(jiraRequest);
     }
 
     public <R extends JiraResponseModel> List<R> getList(JiraRequest jiraRequest, Class<R> responseClass) throws IntegrationException {
-        Request request = convertToRequest(jiraRequest);
-        try (Response response = httpClient.execute(request)) {
-            response.throwExceptionForError();
-            String responseJson = response.getContentString();
-
-            JsonArray arrayResponse = gson.fromJson(responseJson, JsonArray.class);
-            List<R> responseList = new LinkedList<>();
-            for (JsonElement jsonElement : arrayResponse) {
-                if (jsonElement.isJsonObject()) {
-                    R responseElement = jsonTransformer.getComponentAs(jsonElement.getAsJsonObject(), responseClass);
-                    responseList.add(responseElement);
-                }
+        JiraResponse response = httpClient.execute(jiraRequest);
+        JsonArray arrayResponse = gson.fromJson(response.getContent(), JsonArray.class);
+        List<R> responseList = new LinkedList<>();
+        for (JsonElement jsonElement : arrayResponse) {
+            if (jsonElement.isJsonObject()) {
+                R responseElement = jsonTransformer.getComponentAs(jsonElement.getAsJsonObject(), responseClass);
+                responseList.add(responseElement);
             }
-            return responseList;
-        } catch (IOException e) {
-            throw new IntegrationException(e.getMessage(), e);
         }
+        return responseList;
     }
 
-    public <R extends JiraPageResponseModel> R getAll(JiraRequest jiraRequest, JiraCloudPageRequestHandler pageRequestHandler, Class<R> responseClass) throws IntegrationException {
-        return getAll(jiraRequest, pageRequestHandler, responseClass, JiraRequestFactory.DEFAULT_LIMIT);
+    public <R extends JiraPageResponseModel> R getPage(JiraRequest jiraRequest, Class<R> responseClass, int offset) throws IntegrationException {
+        return getPage(jiraRequest, responseClass, offset, JiraRequestFactory.DEFAULT_LIMIT);
     }
 
-    public <R extends JiraPageResponseModel> R getAll(JiraRequest jiraRequest, JiraCloudPageRequestHandler pageRequestHandler, Class<R> responseClass, int pageSize) throws IntegrationException {
-        Request.Builder requestBuilder = convertToRequestBuilder(jiraRequest);
-        return responseTransformer.getResponses(requestBuilder, pageRequestHandler, responseClass, pageSize);
+    public <R extends JiraPageResponseModel> R getPage(JiraRequest jiraRequest, Class<R> responseClass, int offset, int pageSize) throws IntegrationException {
+        Map<String, Set<String>> populatedQueryParameters = jiraRequest.getPopulatedQueryParameters();
+
+        Set<String> offsetValue = new HashSet<>();
+        offsetValue.add(String.valueOf(offset));
+        populatedQueryParameters.put("offset", offsetValue);
+
+        Set<String> limitValue = new HashSet<>();
+        limitValue.add(String.valueOf(pageSize));
+        populatedQueryParameters.put("limit", limitValue);
+
+        JiraResponse jiraResponse = httpClient.execute(jiraRequest);
+        String content = jiraResponse.getContent();
+        return gson.fromJson(content, responseClass);
     }
 
     public <R extends JiraResponseModel> R post(JiraRequestModel jiraRequestModel, HttpUrl url, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
-        Request request = createPostRequest(url, jsonRequestBody);
+        JiraRequest request = createPostRequest(url, jsonRequestBody);
         return execute(request, responseClass);
     }
 
     public JiraResponse post(JiraRequestModel jiraRequestModel, HttpUrl url) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
-        Request request = createPostRequest(url, jsonRequestBody);
-        Response response = execute(request);
-        return convertToJiraResponse(response);
+        JiraRequest request = createPostRequest(url, jsonRequestBody);
+        return execute(request);
     }
 
     public <R extends JiraResponseModel> R put(JiraRequestModel jiraRequestModel, HttpUrl url, Class<R> responseClass) throws IntegrationException {
         String jsonRequestBody = gson.toJson(jiraRequestModel);
-        Request request = createPutRequest(url, jsonRequestBody);
+        JiraRequest request = createPutRequest(url, jsonRequestBody);
         return execute(request, responseClass);
     }
 
@@ -133,47 +129,34 @@ public class JiraService {
     }
 
     public JiraResponse put(String jsonRequestBody, HttpUrl url) throws IntegrationException {
-        Request request = createPutRequest(url, jsonRequestBody);
-        Response response = execute(request);
-        return convertToJiraResponse(response);
+        JiraRequest request = createPutRequest(url, jsonRequestBody);
+        return execute(request);
     }
 
     public JiraResponse delete(HttpUrl url) throws IntegrationException {
-        Request request = createDeleteRequest(url);
-        Response response = execute(request);
-        return convertToJiraResponse(response);
+        JiraRequest request = createDeleteRequest(url);
+        return execute(request);
     }
 
     public <R extends JiraResponseModel> R delete(HttpUrl url, Class<R> responseClass) throws IntegrationException {
-        Request request = createDeleteRequest(url);
+        JiraRequest request = createDeleteRequest(url);
         return execute(request, responseClass);
     }
 
-    public int execute(JiraRequest jiraRequest) throws IntegrationException {
-        return executeAndClose(Response::getStatusCode, jiraRequest);
+    public int executeReturnStatus(JiraRequest jiraRequest) throws IntegrationException {
+        return execute(jiraRequest).getStatusCode();
     }
 
     public Map<String, String> getResponseHeaders(JiraRequest jiraRequest) throws IntegrationException {
-        return executeAndClose(Response::getHeaders, jiraRequest);
+        return execute(jiraRequest).getHeaders();
     }
 
-    private <I, R> R executeAndClose(Function<Response, R> retrieveValue, JiraRequest jiraRequest) throws IntegrationException {
-        Request request = convertToRequest(jiraRequest);
-        Response response = execute(request);
-        R value = retrieveValue.apply(response);
-        try {
-            response.close();
-        } catch (IOException e) {
-            throw new IntegrationException("Was unable to close response object: " + e.getCause(), e);
-        }
-        return value;
+    private <R extends JiraResponseModel> R execute(JiraRequest jiraRequest, Type type) throws IntegrationException {
+        JiraResponse jiraResponse = httpClient.execute(jiraRequest);
+        return parseResponse(jiraResponse, type);
     }
 
-    private <R extends JiraResponseModel> R execute(Request request, Class<R> responseClass) throws IntegrationException {
-        return responseTransformer.getResponse(request, responseClass);
-    }
-
-    private Response execute(Request request) throws IntegrationException {
+    private JiraResponse execute(JiraRequest request) throws IntegrationException {
         return httpClient.execute(request);
     }
 
@@ -196,31 +179,32 @@ public class JiraService {
         return convertToRequestBuilder(jiraRequest).build();
     }
 
-    private Request.Builder createRequestBuilder(HttpUrl url, HttpMethod httpMethod) {
-        return new Request.Builder()
+    private JiraRequest.Builder createRequestBuilder(HttpUrl url, HttpMethod httpMethod) {
+        return new JiraRequest.Builder()
                    .url(url)
                    .method(httpMethod);
     }
 
-    private Request createPostRequest(HttpUrl url, String bodyContent) {
+    private JiraRequest createPostRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.POST)
-                   .bodyContent(new StringBodyContent(bodyContent))
+                   .bodyContent(bodyContent)
                    .build();
     }
 
-    private Request createPutRequest(HttpUrl url, String bodyContent) {
+    private JiraRequest createPutRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.PUT)
-                   .bodyContent(new StringBodyContent(bodyContent))
+                   .bodyContent(bodyContent)
                    .build();
     }
 
-    private Request createDeleteRequest(HttpUrl url) {
+    private JiraRequest createDeleteRequest(HttpUrl url) {
         return createRequestBuilder(url, HttpMethod.DELETE)
                    .build();
     }
 
-    private JiraResponse convertToJiraResponse(Response response) throws IntegrationException {
-        return new JiraResponse(response.getStatusCode(), response.getStatusMessage(), response.getContentString());
+    private <R extends IntRestComponent> R parseResponse(JiraResponse jiraResponse, Type type) throws IntegrationException {
+        String content = jiraResponse.getContent();
+        return jsonTransformer.getComponentAs(content, type);
     }
 
 }

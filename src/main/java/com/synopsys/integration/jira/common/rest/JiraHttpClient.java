@@ -22,9 +22,19 @@
  */
 package com.synopsys.integration.jira.common.rest;
 
+import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
+import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.log.IntLogger;
+import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.client.BasicAuthHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
+import com.synopsys.integration.rest.request.Request;
+import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
 public class JiraHttpClient extends BasicAuthHttpClient {
@@ -45,6 +55,37 @@ public class JiraHttpClient extends BasicAuthHttpClient {
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException {
+        Request request = convertToRequest(jiraRequest);
+        Response response = execute(request);
+        JiraResponse jiraResponse = convertToJiraResponse(response);
+        try {
+            response.close();
+        } catch (IOException e) {
+            throw new IntegrationException("Was unable to close response object: " + e.getCause(), e);
+        }
+        return jiraResponse;
+    }
+
+    private Request convertToRequest(JiraRequest jiraRequest) {
+        Request.Builder builder = new Request.Builder()
+                                      .url(jiraRequest.getUrl())
+                                      .method(jiraRequest.getMethod())
+                                      .headers(jiraRequest.getHeaders())
+                                      .queryParameters(jiraRequest.getQueryParameters())
+                                      .acceptMimeType(jiraRequest.getAcceptMimeType());
+        if (StringUtils.isNotBlank(jiraRequest.getBodyContent())) {
+            builder
+                .bodyContent(new StringBodyContent(jiraRequest.getBodyContent()))
+                .bodyEncoding(jiraRequest.getBodyEncoding());
+        }
+        return builder.build();
+    }
+
+    private JiraResponse convertToJiraResponse(Response response) throws IntegrationException {
+        return new JiraResponse(response.getStatusCode(), response.getStatusMessage(), response.getContentString(), response.getHeaders());
     }
 
 }

@@ -117,7 +117,7 @@ public class PluginManagerService {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + "apps/install-subscribe");
         String pluginToken = retrievePluginToken(username, accessToken);
         JiraRequest request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
-        return jiraService.execute(request);
+        return jiraService.executeReturnStatus(request);
     }
 
     public int installMarketplaceServerApp(String addonKey, String username, String password) throws IntegrationException {
@@ -126,21 +126,21 @@ public class PluginManagerService {
         AvailableAppResponseModel availableApp = getAvailableApp(apiUri.string(), username, password, addonKey);
         String pluginUri = availableApp.getBinaryLink().orElse("");
         JiraRequest request = createAppUploadRequest(apiUri, username, password, pluginToken, availableApp.getName(), pluginUri);
-        return jiraService.execute(request);
+        return jiraService.executeReturnStatus(request);
     }
 
     public int installDevelopmentApp(String pluginName, String pluginUri, String username, String accessTokenOrPassword) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl());
         String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
         JiraRequest request = createAppUploadRequest(apiUri, username, accessTokenOrPassword, pluginToken, pluginName, pluginUri);
-        return jiraService.execute(request);
+        return jiraService.executeReturnStatus(request);
     }
 
     public int uninstallApp(String appKey, String username, String accessTokenOrPassword) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
         JiraRequest request = createDeleteRequest(apiUri, username, accessTokenOrPassword, pluginToken);
-        return jiraService.execute(request);
+        return jiraService.executeReturnStatus(request);
     }
 
     public String retrievePluginToken(String username, String accessTokenOrPassword) throws IntegrationException {

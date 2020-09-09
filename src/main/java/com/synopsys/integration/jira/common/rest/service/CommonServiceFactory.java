@@ -42,7 +42,7 @@ public class CommonServiceFactory {
     }
 
     public JiraService createJiraService() {
-        return new JiraService(gson, httpClient, responseTransformer, jsonTransformer);
+        return new JiraService(gson, httpClient, jsonTransformer);
     }
 
     public IssuePropertyService createIssuePropertyService() {
