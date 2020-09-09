@@ -1,4 +1,4 @@
-package com.synopsys.integration.jira.common.rest.oauth;
+package com.synopsys.integration.jira.common.rest.oauth1a;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;

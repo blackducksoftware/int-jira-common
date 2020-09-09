@@ -25,7 +25,7 @@ package com.synopsys.integration.jira.common.rest;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.synopsys.integration.jira.common.rest.oauth.JiraOAuthHttpClient;
+import com.synopsys.integration.jira.common.rest.oauth1a.JiraOAuthHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 

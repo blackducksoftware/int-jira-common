@@ -20,14 +20,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest.oauth;
+package com.synopsys.integration.jira.common.rest.oauth1a;
 
-import com.google.api.client.auth.oauth.OAuthGetAccessToken;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 
-public class JiraOAuthGetAccessToken extends OAuthGetAccessToken {
-    public JiraOAuthGetAccessToken(String accessTokenRequestUrl) {
-        super(accessTokenRequestUrl);
-        this.usePost = true;
+public class JiraOAuthServiceFactory {
+    public JiraOAuthService fromJiraServerUrl(String jiraServerUrl) throws NoSuchAlgorithmException {
+        KeyFactory rsaKeyFactory = KeyFactory.getInstance("RSA");
+        return new JiraOAuthService(jiraServerUrl, rsaKeyFactory);
     }
 
 }
+

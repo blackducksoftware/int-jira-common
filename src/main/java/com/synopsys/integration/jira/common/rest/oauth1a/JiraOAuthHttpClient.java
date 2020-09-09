@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest.oauth;
+package com.synopsys.integration.jira.common.rest.oauth1a;
 
 import java.io.IOException;
 import java.io.InputStream;
