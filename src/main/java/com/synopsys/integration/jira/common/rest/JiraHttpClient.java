@@ -60,6 +60,7 @@ public class JiraHttpClient extends BasicAuthHttpClient {
     public JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException {
         Request request = convertToRequest(jiraRequest);
         Response response = execute(request);
+        response.throwExceptionForError();
         JiraResponse jiraResponse = convertToJiraResponse(response);
         try {
             response.close();

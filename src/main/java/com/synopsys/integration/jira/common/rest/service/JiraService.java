@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -44,9 +42,7 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.component.IntRestComponent;
-import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class JiraService {
@@ -159,26 +155,7 @@ public class JiraService {
     private JiraResponse execute(JiraRequest request) throws IntegrationException {
         return httpClient.execute(request);
     }
-
-    private Request.Builder convertToRequestBuilder(JiraRequest jiraRequest) {
-        Request.Builder builder = new Request.Builder()
-                                      .url(jiraRequest.getUrl())
-                                      .method(jiraRequest.getMethod())
-                                      .headers(jiraRequest.getHeaders())
-                                      .queryParameters(jiraRequest.getQueryParameters())
-                                      .acceptMimeType(jiraRequest.getAcceptMimeType());
-        if (StringUtils.isNotBlank(jiraRequest.getBodyContent())) {
-            builder
-                .bodyContent(new StringBodyContent(jiraRequest.getBodyContent()))
-                .bodyEncoding(jiraRequest.getBodyEncoding());
-        }
-        return builder;
-    }
-
-    private Request convertToRequest(JiraRequest jiraRequest) {
-        return convertToRequestBuilder(jiraRequest).build();
-    }
-
+    
     private JiraRequest.Builder createRequestBuilder(HttpUrl url, HttpMethod httpMethod) {
         return new JiraRequest.Builder()
                    .url(url)
