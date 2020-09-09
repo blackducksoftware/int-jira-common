@@ -77,15 +77,16 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
-        try {
-            PluginResponseModel pluginComponent = jiraService.get(requestBuilder.build(), PluginResponseModel.class);
-            return Optional.of(pluginComponent);
-        } catch (IntegrationRestException e) {
-            if (404 != e.getHttpStatusCode()) {
-                throw e;
+        JiraResponse jiraResponse = jiraService.get(requestBuilder.build());
+        if (jiraResponse.isStatusCodeError()) {
+            if (404 == jiraResponse.getStatusCode()) {
+                return Optional.empty();
             }
+            // FIXME this class uses exception handling for flow control. There should be a better way to do this.
+            jiraResponse.throwExceptionForError();
         }
-        return Optional.empty();
+        PluginResponseModel pluginComponent = gson.fromJson(jiraResponse.getContent(), PluginResponseModel.class);
+        return Optional.of(pluginComponent);
     }
 
     public boolean isAppInstalled(String username, String accessTokenOrPassword, String appKey) throws IntegrationException {

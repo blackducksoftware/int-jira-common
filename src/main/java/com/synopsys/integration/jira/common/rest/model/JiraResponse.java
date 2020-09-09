@@ -22,9 +22,14 @@
  */
 package com.synopsys.integration.jira.common.rest.model;
 
+import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.impl.EnglishReasonPhraseCatalog;
+
 import com.synopsys.integration.rest.RestConstants;
+import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.util.Stringable;
 
 public class JiraResponse extends Stringable {
@@ -62,5 +67,23 @@ public class JiraResponse extends Stringable {
 
     public boolean isStatusCodeError() {
         return statusCode >= RestConstants.BAD_REQUEST_400;
+    }
+
+    public void throwExceptionForError() throws IntegrationRestException {
+        if (isStatusCodeError()) {
+            int statusCode = getStatusCode();
+            String statusMessage = getStatusMessage();
+
+            String statusCodeDescription = EnglishReasonPhraseCatalog.INSTANCE.getReason(statusCode, Locale.ENGLISH);
+
+            String reasonPhraseDescription = "";
+            if (StringUtils.isNotBlank(statusMessage)) {
+                reasonPhraseDescription = String.format(", reason phrase was %s", statusMessage);
+            }
+
+            String messageFormat = "There was a problem trying to request data, response was %s %s%s.";
+            String message = String.format(messageFormat, statusCode, statusCodeDescription, reasonPhraseDescription);
+            throw new IntegrationRestException(statusCode, statusMessage, getContent(), message);
+        }
     }
 }
