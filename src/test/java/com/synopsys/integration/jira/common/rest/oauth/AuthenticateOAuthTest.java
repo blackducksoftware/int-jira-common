@@ -21,7 +21,7 @@ import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.oauth.http.JiraHttpServiceFactory;
+import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraService;
 import com.synopsys.integration.log.Slf4jIntLogger;
@@ -96,8 +96,8 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
         OAuthCredentialsData oAuthCredentialsData = new OAuthCredentialsData(privateKey, consumerKey, accessToken);
         OAuthParameters oAuthParameters = jiraOAuthService.createOAuthParameters(oAuthCredentialsData);
 
-        JiraHttpServiceFactory jiraHttpServiceFactory = new JiraHttpServiceFactory();
-        JiraHttpClient jiraHttpService = jiraHttpServiceFactory.createJiraHttpService(jiraUrl, oAuthParameters);
+        JiraHttpClientFactory jiraHttpClientFactory = new JiraHttpClientFactory();
+        JiraHttpClient jiraHttpService = jiraHttpClientFactory.createJiraOAuthClient(jiraUrl, oAuthParameters);
         assertProjectsFound(jiraHttpService);
 
         Logger logger = LoggerFactory.getLogger(AuthenticateOAuthTest.class);

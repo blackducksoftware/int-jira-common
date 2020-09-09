@@ -20,18 +20,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest.oauth.http;
+package com.synopsys.integration.jira.common.rest;
 
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.oauth.JiraOAuthHttpClient;
+import com.synopsys.integration.log.IntLogger;
+import com.synopsys.integration.rest.proxy.ProxyInfo;
 
-public class JiraHttpServiceFactory {
+public class JiraHttpClientFactory {
     public static final String JIRA_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 
-    public JiraHttpClient createJiraHttpService(String jiraUrl, OAuthParameters oAuthParameters) {
+    public JiraHttpClient createJiraOAuthClient(String jiraUrl, OAuthParameters oAuthParameters) {
         return new JiraOAuthHttpClient(jiraUrl, createHttpRequestFactory(oAuthParameters));
+    }
+
+    public JiraHttpClient createJiraCloudCredentialClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
+        return JiraCredentialHttpClient.cloud(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, authUserEmail, apiToken);
+    }
+
+    public JiraHttpClient createJiraServerCredentialClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
+        return JiraCredentialHttpClient.server(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, username, password);
     }
 
     private HttpRequestFactory createHttpRequestFactory(OAuthParameters oAuthParameters) {
