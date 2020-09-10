@@ -29,20 +29,20 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project";
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public ProjectService(JiraService jiraService) {
-        this.jiraService = jiraService;
+    public ProjectService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
     public List<ProjectComponent> getProjects() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
-        return jiraService.getList(request, ProjectComponent.class);
+        return jiraApiClient.getList(request, ProjectComponent.class);
     }
 
     public List<ProjectComponent> getProjectsByName(String projectName) throws IntegrationException {
@@ -54,7 +54,7 @@ public class ProjectService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 
 }

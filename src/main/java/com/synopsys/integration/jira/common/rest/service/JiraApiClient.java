@@ -45,12 +45,13 @@ import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.component.IntRestComponent;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
-public class JiraService {
+public class JiraApiClient {
+    // TODO may want to replace all references to gson with jsonTransformer
     private final Gson gson;
     private final JiraHttpClient httpClient;
     private final IntJsonTransformer jsonTransformer;
 
-    public JiraService(Gson gson, JiraHttpClient httpClient, IntJsonTransformer jsonTransformer) {
+    public JiraApiClient(Gson gson, JiraHttpClient httpClient, IntJsonTransformer jsonTransformer) {
         this.gson = gson;
         this.httpClient = httpClient;
         this.jsonTransformer = jsonTransformer;
@@ -98,7 +99,7 @@ public class JiraService {
 
         JiraResponse jiraResponse = httpClient.execute(jiraRequest);
         String content = jiraResponse.getContent();
-        return gson.fromJson(content, responseClass);
+        return jsonTransformer.getComponentAs(content, responseClass);
     }
 
     public <R extends JiraResponseModel> R post(JiraRequestModel jiraRequestModel, HttpUrl url, Class<R> responseClass) throws IntegrationException {
@@ -155,7 +156,7 @@ public class JiraService {
     private JiraResponse execute(JiraRequest request) throws IntegrationException {
         return httpClient.execute(request);
     }
-    
+
     private JiraRequest.Builder createRequestBuilder(HttpUrl url, HttpMethod httpMethod) {
         return new JiraRequest.Builder()
                    .url(url)

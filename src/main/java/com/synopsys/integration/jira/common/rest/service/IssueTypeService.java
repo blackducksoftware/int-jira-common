@@ -34,25 +34,25 @@ import com.synopsys.integration.rest.HttpUrl;
 public class IssueTypeService {
     private static final String API_PATH = "/rest/api/2/issuetype";
 
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public IssueTypeService(JiraService jiraService) {
-        this.jiraService = jiraService;
+    public IssueTypeService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
     public List<IssueTypeResponseModel> getAllIssueTypes() throws IntegrationException {
         HttpUrl uri = createApiUri();
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
-        return jiraService.getList(request, IssueTypeResponseModel.class);
+        return jiraApiClient.getList(request, IssueTypeResponseModel.class);
     }
 
     public IssueTypeResponseModel createIssueType(IssueTypeRequestModel issueTypeRequestModel) throws IntegrationException {
         HttpUrl uri = createApiUri();
-        return jiraService.post(issueTypeRequestModel, uri, IssueTypeResponseModel.class);
+        return jiraApiClient.post(issueTypeRequestModel, uri, IssueTypeResponseModel.class);
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 
 }

@@ -63,11 +63,11 @@ public class PluginManagerService {
     private static final String MEDIA_TYPE_AVAILABLE = MEDIA_TYPE_PREFIX + ".available" + MEDIA_TYPE_SUFFIX;
 
     private final Gson gson;
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public PluginManagerService(Gson gson, JiraService jiraService) {
+    public PluginManagerService(Gson gson, JiraApiClient jiraApiClient) {
         this.gson = gson;
-        this.jiraService = jiraService;
+        this.jiraApiClient = jiraApiClient;
     }
 
     public Optional<PluginResponseModel> getInstalledApp(String username, String accessTokenOrPassword, String appKey) throws IntegrationException {
@@ -77,7 +77,7 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
-        JiraResponse jiraResponse = jiraService.get(requestBuilder.build());
+        JiraResponse jiraResponse = jiraApiClient.get(requestBuilder.build());
         if (jiraResponse.isStatusCodeError()) {
             if (404 == jiraResponse.getStatusCode()) {
                 return Optional.empty();
@@ -96,7 +96,7 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
-        JiraResponse response = jiraService.get(requestBuilder.build());
+        JiraResponse response = jiraApiClient.get(requestBuilder.build());
         // The response should be 404 if the App is not installed
         if (response.isStatusCodeError() && RestConstants.NOT_FOUND_404 != response.getStatusCode()) {
             throw new IntegrationRestException(response.getStatusCode(), response.getStatusMessage(), response.getContent(), "There was an error when checking if the app was installed.");
@@ -111,14 +111,14 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
 
-        return jiraService.get(requestBuilder.build(), InstalledAppsResponseModel.class);
+        return jiraApiClient.get(requestBuilder.build(), InstalledAppsResponseModel.class);
     }
 
     public int installMarketplaceCloudApp(String addonKey, String username, String accessToken) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + "apps/install-subscribe");
         String pluginToken = retrievePluginToken(username, accessToken);
         JiraRequest request = createMarketplaceInstallRequest(apiUri, username, accessToken, pluginToken, addonKey);
-        return jiraService.executeReturnStatus(request);
+        return jiraApiClient.executeReturnStatus(request);
     }
 
     public int installMarketplaceServerApp(String addonKey, String username, String password) throws IntegrationException {
@@ -127,21 +127,21 @@ public class PluginManagerService {
         AvailableAppResponseModel availableApp = getAvailableApp(apiUri.string(), username, password, addonKey);
         String pluginUri = availableApp.getBinaryLink().orElse("");
         JiraRequest request = createAppUploadRequest(apiUri, username, password, pluginToken, availableApp.getName(), pluginUri);
-        return jiraService.executeReturnStatus(request);
+        return jiraApiClient.executeReturnStatus(request);
     }
 
     public int installDevelopmentApp(String pluginName, String pluginUri, String username, String accessTokenOrPassword) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl());
         String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
         JiraRequest request = createAppUploadRequest(apiUri, username, accessTokenOrPassword, pluginToken, pluginName, pluginUri);
-        return jiraService.executeReturnStatus(request);
+        return jiraApiClient.executeReturnStatus(request);
     }
 
     public int uninstallApp(String appKey, String username, String accessTokenOrPassword) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         String pluginToken = retrievePluginToken(username, accessTokenOrPassword);
         JiraRequest request = createDeleteRequest(apiUri, username, accessTokenOrPassword, pluginToken);
-        return jiraService.executeReturnStatus(request);
+        return jiraApiClient.executeReturnStatus(request);
     }
 
     public String retrievePluginToken(String username, String accessTokenOrPassword) throws IntegrationException {
@@ -150,7 +150,7 @@ public class PluginManagerService {
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
-        Map<String, String> response = jiraService.getResponseHeaders(requestBuilder.build());
+        Map<String, String> response = jiraApiClient.getResponseHeaders(requestBuilder.build());
         return response.get("upm-token");
     }
 
@@ -159,7 +159,7 @@ public class PluginManagerService {
         JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri, username, password);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_AVAILABLE);
-        return jiraService.get(requestBuilder.build(), AvailableAppResponseModel.class);
+        return jiraApiClient.get(requestBuilder.build(), AvailableAppResponseModel.class);
     }
 
     private JiraRequest createMarketplaceInstallRequest(HttpUrl apiUri, String username, String accessToken, String pluginToken, String addonKey) {
@@ -208,7 +208,7 @@ public class PluginManagerService {
     }
 
     private String getBaseUrl() {
-        String url = jiraService.getBaseUrl();
+        String url = jiraApiClient.getBaseUrl();
         if (url.endsWith("/")) {
             return url.substring(0, url.length() - 1);
         }

@@ -14,17 +14,17 @@ import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataRe
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssueMetaDataService;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 
 public class IssueMetaDataServiceTest {
 
     @Test
     public void issueTypeInProjectTest() throws IntegrationException {
-        JiraService jiraService = Mockito.mock(JiraService.class);
+        JiraApiClient jiraApiClient = Mockito.mock(JiraApiClient.class);
         IssueCreateMetadataResponseModel response = createResponse();
-        Mockito.when(jiraService.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponseModel.class))).thenReturn(response);
-        Mockito.when(jiraService.getBaseUrl()).thenReturn("https://host");
-        IssueMetaDataService service = new IssueMetaDataService(jiraService);
+        Mockito.when(jiraApiClient.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponseModel.class))).thenReturn(response);
+        Mockito.when(jiraApiClient.getBaseUrl()).thenReturn("https://host");
+        IssueMetaDataService service = new IssueMetaDataService(jiraApiClient);
 
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_1"));
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_2"));

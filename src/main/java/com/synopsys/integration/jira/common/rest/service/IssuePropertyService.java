@@ -37,11 +37,11 @@ public class IssuePropertyService {
     public static final String API_PATH_PROPERTIES_PIECE = "/properties";
 
     private final Gson gson;
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public IssuePropertyService(Gson gson, JiraService jiraService) {
+    public IssuePropertyService(Gson gson, JiraApiClient jiraApiClient) {
         this.gson = gson;
-        this.jiraService = jiraService;
+        this.jiraApiClient = jiraApiClient;
     }
 
     public IssuePropertyKeysResponseModel getPropertyKeys(String issueKey) throws IntegrationException {
@@ -50,7 +50,7 @@ public class IssuePropertyService {
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(httpUrl)
                                   .build();
-        return jiraService.get(request, IssuePropertyKeysResponseModel.class);
+        return jiraApiClient.get(request, IssuePropertyKeysResponseModel.class);
     }
 
     public IssuePropertyResponseModel getProperty(String issueKey, String propertyKey) throws IntegrationException {
@@ -58,7 +58,7 @@ public class IssuePropertyService {
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(url)
                                   .build();
-        return jiraService.get(request, IssuePropertyResponseModel.class);
+        return jiraApiClient.get(request, IssuePropertyResponseModel.class);
     }
 
     public void setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
@@ -68,7 +68,7 @@ public class IssuePropertyService {
 
     public void setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
         HttpUrl url = createApiUriWithKey(issueKey, propertyKey);
-        jiraService.put(jsonPropertyValue, url);
+        jiraApiClient.put(jsonPropertyValue, url);
     }
 
     private HttpUrl createApiUriWithKey(String issueKey, String propertyKey) throws IntegrationException {
@@ -76,7 +76,7 @@ public class IssuePropertyService {
     }
 
     private String createApiUri(String issueKey) {
-        return jiraService.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
+        return jiraApiClient.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
     }
 
 }

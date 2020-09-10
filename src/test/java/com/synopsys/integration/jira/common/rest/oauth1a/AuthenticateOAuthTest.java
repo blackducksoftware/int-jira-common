@@ -23,7 +23,7 @@ import com.synopsys.integration.jira.common.model.response.PageOfProjectsRespons
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
 public class AuthenticateOAuthTest extends JiraCloudServiceTest {
@@ -107,9 +107,9 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
 
     private void assertProjectsFound(JiraHttpClient jiraHttpClient) throws IntegrationException {
         CommonServiceFactory commonServiceFactory = new CommonServiceFactory(null, jiraHttpClient, new Gson());
-        JiraService jiraService = commonServiceFactory.createJiraService();
+        JiraApiClient jiraApiClient = commonServiceFactory.getJiraApiClient();
 
-        ProjectService oAuthProjectService = new ProjectService(jiraService);
+        ProjectService oAuthProjectService = new ProjectService(jiraApiClient);
         PageOfProjectsResponseModel projects = oAuthProjectService.getProjects();
 
         assertTrue(projects.getTotal() > 0);

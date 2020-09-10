@@ -30,17 +30,17 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user";
 
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public UserSearchService(JiraService jiraService) {
-        this.jiraService = jiraService;
+    public UserSearchService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
     public Optional<UserDetailsResponseModel> findUserByUsername(String username) throws IntegrationException {
@@ -62,7 +62,7 @@ public class UserSearchService {
                                   .addQueryParameter(queryKey, queryValue)
                                   .build();
         try {
-            UserDetailsResponseModel userDetailsResponseModel = jiraService.get(request, UserDetailsResponseModel.class);
+            UserDetailsResponseModel userDetailsResponseModel = jiraApiClient.get(request, UserDetailsResponseModel.class);
             return Optional.of(userDetailsResponseModel);
         } catch (IntegrationRestException e) {
             if (404 != e.getHttpStatusCode()) {
@@ -73,7 +73,7 @@ public class UserSearchService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 
 }

@@ -44,7 +44,7 @@ import com.synopsys.integration.jira.common.model.response.UserDetailsResponseMo
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
 import com.synopsys.integration.rest.HttpUrl;
@@ -59,14 +59,14 @@ public class IssueService {
     private static final String JSON_OBJECT_FIELDS = "fields";
 
     private final IntJsonTransformer intJsonTransformer;
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
     private final UserSearchService userSearchService;
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(IntJsonTransformer intJsonTransformer, JiraService jiraService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+    public IssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraApiClient, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
         this.intJsonTransformer = intJsonTransformer;
-        this.jiraService = jiraService;
+        this.jiraApiClient = jiraApiClient;
         this.userSearchService = userSearchService;
         this.projectService = projectService;
         this.issueTypeService = issueTypeService;
@@ -107,12 +107,12 @@ public class IssueService {
 
     private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
-        return jiraService.post(requestModel, httpUrl, IssueResponseModel.class);
+        return jiraApiClient.post(requestModel, httpUrl, IssueResponseModel.class);
     }
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl updateUri = createApiIssueUri(requestModel.getIssueIdOrKey());
-        JiraResponse response = jiraService.put(requestModel, updateUri);
+        JiraResponse response = jiraApiClient.put(requestModel, updateUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error updating issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
@@ -125,17 +125,17 @@ public class IssueService {
                                   .url(uri)
                                   .addQueryParameter("properties", "*all")
                                   .build();
-        return jiraService.get(request, IssueResponseModel.class);
+        return jiraApiClient.get(request, IssueResponseModel.class);
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueUri(issueIdOrKey);
-        jiraService.delete(uri);
+        jiraApiClient.delete(uri);
     }
 
     public void transitionIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl transitionsUri = createApiTransitionsUri(requestModel.getIssueIdOrKey());
-        JiraResponse response = jiraService.post(requestModel, transitionsUri);
+        JiraResponse response = jiraApiClient.post(requestModel, transitionsUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error transitioning issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
@@ -145,12 +145,12 @@ public class IssueService {
     public TransitionsResponseModel getTransitions(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiTransitionsUri(issueIdOrKey);
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
-        return jiraService.get(request, TransitionsResponseModel.class);
+        return jiraApiClient.get(request, TransitionsResponseModel.class);
     }
 
     public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
-        JiraResponse response = jiraService.post(requestModel, commentsUri);
+        JiraResponse response = jiraApiClient.post(requestModel, commentsUri);
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error commenting on issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
@@ -160,7 +160,7 @@ public class IssueService {
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
-        IssueResponseModel issueResponseModel = jiraService.get(request, IssueResponseModel.class);
+        IssueResponseModel issueResponseModel = jiraApiClient.get(request, IssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
@@ -178,7 +178,7 @@ public class IssueService {
     }
 
     private String createApiUri() {
-        return jiraService.getBaseUrl() + API_PATH;
+        return jiraApiClient.getBaseUrl() + API_PATH;
     }
 
     private HttpUrl createApiIssueUri(String issueIdOrKey) throws IntegrationException {

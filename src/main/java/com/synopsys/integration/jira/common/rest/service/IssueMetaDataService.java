@@ -33,16 +33,16 @@ import com.synopsys.integration.rest.HttpUrl;
 public class IssueMetaDataService {
     public static final String API_PATH = "/rest/api/2/issue/createmeta";
 
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public IssueMetaDataService(JiraService jiraService) {
-        this.jiraService = jiraService;
+    public IssueMetaDataService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
     public IssueCreateMetadataResponseModel getCreateMetadata() throws IntegrationException {
         HttpUrl uri = createApiUri();
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
-        return jiraService.get(request, IssueCreateMetadataResponseModel.class);
+        return jiraApiClient.get(request, IssueCreateMetadataResponseModel.class);
     }
 
     public boolean doesProjectContainIssueType(String projectName, String issueType) throws IntegrationException {
@@ -68,6 +68,6 @@ public class IssueMetaDataService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 }

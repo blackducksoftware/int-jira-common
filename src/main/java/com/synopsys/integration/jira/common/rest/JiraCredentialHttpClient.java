@@ -61,14 +61,11 @@ public class JiraCredentialHttpClient extends BasicAuthHttpClient implements Jir
     @Override
     public JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException {
         Request request = convertToRequest(jiraRequest);
-        Response response = execute(request);
-        JiraResponse jiraResponse = convertToJiraResponse(response);
-        try {
-            response.close();
+        try (Response response = execute(request)) {
+            return convertToJiraResponse(response);
         } catch (IOException e) {
             throw new IntegrationException("Was unable to close response object: " + e.getCause(), e);
         }
-        return jiraResponse;
     }
 
     private Request convertToRequest(JiraRequest jiraRequest) {

@@ -45,7 +45,7 @@ import com.synopsys.integration.jira.common.model.response.UserDetailsResponseMo
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
@@ -58,12 +58,12 @@ public class IssueService {
     private static final String JSON_OBJECT_FIELDS = "fields";
 
     private final IntJsonTransformer intJsonTransformer;
-    private final JiraService jiraCloudService;
+    private final JiraApiClient jiraCloudService;
     private final UserSearchService userSearchService;
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(IntJsonTransformer intJsonTransformer, JiraService jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+    public IssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
         this.intJsonTransformer = intJsonTransformer;
         this.jiraCloudService = jiraCloudService;
         this.userSearchService = userSearchService;

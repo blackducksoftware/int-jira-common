@@ -30,15 +30,15 @@ import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMap
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";
 
-    private final JiraService jiraCloudService;
+    private final JiraApiClient jiraCloudService;
 
-    public WorkflowSchemeService(JiraService jiraCloudService) {
+    public WorkflowSchemeService(JiraApiClient jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 

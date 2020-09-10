@@ -31,31 +31,34 @@ public class CommonServiceFactory {
     private final JiraHttpClient httpClient;
     private final Gson gson;
     private final IntJsonTransformer jsonTransformer;
+    private final JiraApiClient jiraApiClient;
 
     public CommonServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
         this.httpClient = httpClient;
         this.gson = gson;
         this.jsonTransformer = new IntJsonTransformer(gson, logger);
-    }
 
-    public JiraService createJiraService() {
-        return new JiraService(gson, httpClient, jsonTransformer);
+        jiraApiClient = new JiraApiClient(gson, httpClient, jsonTransformer);
     }
 
     public IssuePropertyService createIssuePropertyService() {
-        return new IssuePropertyService(gson, createJiraService());
+        return new IssuePropertyService(gson, getJiraApiClient());
     }
 
     public IssueTypeService createIssueTypeService() {
-        return new IssueTypeService(createJiraService());
+        return new IssueTypeService(getJiraApiClient());
     }
 
     public PluginManagerService createPluginManagerService() {
-        return new PluginManagerService(gson, createJiraService());
+        return new PluginManagerService(gson, getJiraApiClient());
     }
 
     public IssueMetaDataService createIssueMetadataService() {
-        return new IssueMetaDataService(createJiraService());
+        return new IssueMetaDataService(getJiraApiClient());
+    }
+
+    public JiraApiClient getJiraApiClient() {
+        return jiraApiClient;
     }
 
     public JiraHttpClient getHttpClient() {
