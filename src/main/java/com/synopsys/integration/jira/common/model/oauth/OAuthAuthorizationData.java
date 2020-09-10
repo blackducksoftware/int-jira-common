@@ -20,14 +20,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest;
+package com.synopsys.integration.jira.common.model.oauth;
 
-import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+public class OAuthAuthorizationData {
+    private String authorizationUrl;
+    private String authorizationToken;
 
-public interface JiraHttpClient {
-    String getBaseUrl();
+    public OAuthAuthorizationData(String authorizationUrl, String authorizationToken) {
+        this.authorizationUrl = authorizationUrl;
+        this.authorizationToken = authorizationToken;
+    }
 
-    JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException;
+    public String getAuthorizationUrl() {
+        return authorizationUrl;
+    }
+
+    public String getAuthorizationToken() {
+        return authorizationToken;
+    }
+
 }
+

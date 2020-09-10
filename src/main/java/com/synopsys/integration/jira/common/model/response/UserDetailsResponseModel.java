@@ -22,10 +22,10 @@
  */
 package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.AvatarUrlsComponent;
 
-public class UserDetailsResponseModel extends JiraResponse {
+public class UserDetailsResponseModel extends JiraResponseModel {
     private String self;
     private String name;
     private String key;
@@ -40,8 +40,8 @@ public class UserDetailsResponseModel extends JiraResponse {
     public UserDetailsResponseModel() {
     }
 
-    public UserDetailsResponseModel(final String self, final String name, final String key, final String accountId, final String emailAddress, final AvatarUrlsComponent avatarUrls, final String displayName, final Boolean active,
-        final String timeZone, final String accountType) {
+    public UserDetailsResponseModel(String self, String name, String key, String accountId, String emailAddress, AvatarUrlsComponent avatarUrls, String displayName, Boolean active,
+        String timeZone, String accountType) {
         this.self = self;
         this.name = name;
         this.key = key;

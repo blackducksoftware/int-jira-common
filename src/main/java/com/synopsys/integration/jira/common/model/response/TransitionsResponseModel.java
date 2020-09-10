@@ -25,17 +25,17 @@ package com.synopsys.integration.jira.common.model.response;
 import java.util.List;
 import java.util.Optional;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.TransitionComponent;
 
-public class TransitionsResponseModel extends JiraResponse {
+public class TransitionsResponseModel extends JiraResponseModel {
     private String expand;
     private List<TransitionComponent> transitions;
 
     public TransitionsResponseModel() {
     }
 
-    public TransitionsResponseModel(final String expand, final List<TransitionComponent> transitions) {
+    public TransitionsResponseModel(String expand, List<TransitionComponent> transitions) {
         this.expand = expand;
         this.transitions = transitions;
     }
@@ -48,7 +48,7 @@ public class TransitionsResponseModel extends JiraResponse {
         return transitions;
     }
 
-    public final Optional<TransitionComponent> findFirstTransitionByName(final String name) {
+    public final Optional<TransitionComponent> findFirstTransitionByName(String name) {
         return getTransitions().stream()
                    .filter(transition -> name.equals(transition.getName()))
                    .findFirst();

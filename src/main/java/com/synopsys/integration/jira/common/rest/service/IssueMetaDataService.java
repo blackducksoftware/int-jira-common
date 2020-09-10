@@ -23,33 +23,33 @@
 package com.synopsys.integration.jira.common.rest.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
-import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
+import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
-import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 public class IssueMetaDataService {
     public static final String API_PATH = "/rest/api/2/issue/createmeta";
 
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public IssueMetaDataService(JiraService jiraService) {
-        this.jiraService = jiraService;
+    public IssueMetaDataService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
-    public IssueCreateMetadataResponse getCreateMetadata() throws IntegrationException {
+    public IssueCreateMetadataResponseModel getCreateMetadata() throws IntegrationException {
         HttpUrl uri = createApiUri();
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
-        return jiraService.get(request, IssueCreateMetadataResponse.class);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
+        return jiraApiClient.get(request, IssueCreateMetadataResponseModel.class);
     }
 
     public boolean doesProjectContainIssueType(String projectName, String issueType) throws IntegrationException {
-        IssueCreateMetadataResponse response = getCreateMetadata();
+        IssueCreateMetadataResponseModel response = getCreateMetadata();
 
-        ProjectIssueCreateMetadataResponse matchingProject = null;
-        for (ProjectIssueCreateMetadataResponse project : response.getProjects()) {
+        ProjectIssueCreateMetadataResponseModel matchingProject = null;
+        for (ProjectIssueCreateMetadataResponseModel project : response.getProjects()) {
             if (project.getKey().equals(projectName) || project.getName().equals(projectName)) {
                 matchingProject = project;
             }
@@ -68,6 +68,6 @@ public class IssueMetaDataService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 }

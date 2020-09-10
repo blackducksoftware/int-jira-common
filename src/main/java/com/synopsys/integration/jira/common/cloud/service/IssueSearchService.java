@@ -32,15 +32,15 @@ import com.synopsys.integration.jira.common.cloud.model.IssueSearchRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.enumeration.ExpandableTypes;
 import com.synopsys.integration.jira.common.enumeration.QueryValidationStrategy;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
 
-    private final JiraService jiraCloudService;
+    private final JiraApiClient jiraCloudService;
 
-    public IssueSearchService(JiraService jiraCloudService) {
+    public IssueSearchService(JiraApiClient jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 

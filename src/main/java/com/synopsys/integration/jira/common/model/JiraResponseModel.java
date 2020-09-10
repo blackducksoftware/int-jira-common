@@ -20,14 +20,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest;
+package com.synopsys.integration.jira.common.model;
 
-import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.synopsys.integration.rest.component.IntRestResponse;
 
-public interface JiraHttpClient {
-    String getBaseUrl();
+public class JiraResponseModel extends IntRestResponse {
 
-    JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException;
 }

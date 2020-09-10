@@ -26,39 +26,39 @@ import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
-import com.synopsys.integration.rest.service.IntResponseTransformer;
 
 public class CommonServiceFactory {
     private final JiraHttpClient httpClient;
     private final Gson gson;
-    private final IntResponseTransformer responseTransformer;
     private final IntJsonTransformer jsonTransformer;
+    private final JiraApiClient jiraApiClient;
 
     public CommonServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
         this.httpClient = httpClient;
         this.gson = gson;
         this.jsonTransformer = new IntJsonTransformer(gson, logger);
-        this.responseTransformer = new IntResponseTransformer(httpClient, jsonTransformer);
-    }
 
-    public JiraService createJiraService() {
-        return new JiraService(gson, httpClient, responseTransformer, jsonTransformer);
+        jiraApiClient = new JiraApiClient(gson, httpClient, jsonTransformer);
     }
 
     public IssuePropertyService createIssuePropertyService() {
-        return new IssuePropertyService(gson, createJiraService());
+        return new IssuePropertyService(gson, getJiraApiClient());
     }
 
     public IssueTypeService createIssueTypeService() {
-        return new IssueTypeService(createJiraService());
+        return new IssueTypeService(getJiraApiClient());
     }
 
     public PluginManagerService createPluginManagerService() {
-        return new PluginManagerService(gson, httpClient, createJiraService());
+        return new PluginManagerService(gson, getJiraApiClient());
     }
 
     public IssueMetaDataService createIssueMetadataService() {
-        return new IssueMetaDataService(createJiraService());
+        return new IssueMetaDataService(getJiraApiClient());
+    }
+
+    public JiraApiClient getJiraApiClient() {
+        return jiraApiClient;
     }
 
     public JiraHttpClient getHttpClient() {
@@ -67,10 +67,6 @@ public class CommonServiceFactory {
 
     public Gson getGson() {
         return gson;
-    }
-
-    public IntResponseTransformer getResponseTransformer() {
-        return responseTransformer;
     }
 
     public IntJsonTransformer getJsonTransformer() {

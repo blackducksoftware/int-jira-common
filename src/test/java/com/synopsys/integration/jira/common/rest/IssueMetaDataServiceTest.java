@@ -10,28 +10,28 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.model.response.IssueCreateMetadataResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
-import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponse;
+import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssueMetaDataService;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 
 public class IssueMetaDataServiceTest {
 
     @Test
     public void issueTypeInProjectTest() throws IntegrationException {
-        JiraService jiraService = Mockito.mock(JiraService.class);
-        IssueCreateMetadataResponse response = createResponse();
-        Mockito.when(jiraService.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponse.class))).thenReturn(response);
-        Mockito.when(jiraService.getBaseUrl()).thenReturn("https://host");
-        IssueMetaDataService service = new IssueMetaDataService(jiraService);
+        JiraApiClient jiraApiClient = Mockito.mock(JiraApiClient.class);
+        IssueCreateMetadataResponseModel response = createResponse();
+        Mockito.when(jiraApiClient.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponseModel.class))).thenReturn(response);
+        Mockito.when(jiraApiClient.getBaseUrl()).thenReturn("https://host");
+        IssueMetaDataService service = new IssueMetaDataService(jiraApiClient);
 
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_1"));
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_2"));
         assertFalse(service.doesProjectContainIssueType("TEST", "INVALID_TYPE"));
     }
 
-    private IssueCreateMetadataResponse createResponse() {
+    private IssueCreateMetadataResponseModel createResponse() {
         IssueTypeResponseModel issueTypeResponseModel = Mockito.mock(IssueTypeResponseModel.class);
         Mockito.when(issueTypeResponseModel.getName()).thenReturn("VALID_TYPE_1");
         List<IssueTypeResponseModel> issueTypes = new ArrayList<>();
@@ -40,11 +40,11 @@ public class IssueMetaDataServiceTest {
         Mockito.when(issueTypeResponseModel.getName()).thenReturn("VALID_TYPE_2");
         issueTypes.add(issueTypeResponseModel);
 
-        ProjectIssueCreateMetadataResponse project = new ProjectIssueCreateMetadataResponse("expand", "self", "1", "TEST", "TEST", issueTypes);
+        ProjectIssueCreateMetadataResponseModel project = new ProjectIssueCreateMetadataResponseModel("expand", "self", "1", "TEST", "TEST", issueTypes);
 
-        List<ProjectIssueCreateMetadataResponse> projects = new ArrayList<>();
+        List<ProjectIssueCreateMetadataResponseModel> projects = new ArrayList<>();
         projects.add(project);
-        IssueCreateMetadataResponse response = new IssueCreateMetadataResponse("projects", projects);
+        IssueCreateMetadataResponseModel response = new IssueCreateMetadataResponseModel("projects", projects);
         return response;
     }
 }

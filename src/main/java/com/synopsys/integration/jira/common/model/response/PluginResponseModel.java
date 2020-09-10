@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.model.response;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class PluginResponseModel extends JiraResponse {
+public class PluginResponseModel extends JiraResponseModel {
     private Boolean enabled;
     private JsonObject links;
     private String name;
@@ -45,9 +45,9 @@ public class PluginResponseModel extends JiraResponse {
     public PluginResponseModel() {
     }
 
-    public PluginResponseModel(final Boolean enabled, final JsonObject links, final String name, final String version, final Boolean userInstalled, final Boolean optional, final Boolean isStatic, final Boolean unloadable,
-        final String description, final String key, final Boolean usesLicensing,
-        final Boolean remotable, final JsonObject vendor) {
+    public PluginResponseModel(Boolean enabled, JsonObject links, String name, String version, Boolean userInstalled, Boolean optional, Boolean isStatic, Boolean unloadable,
+        String description, String key, Boolean usesLicensing,
+        Boolean remotable, JsonObject vendor) {
         this.enabled = enabled;
         this.links = links;
         this.name = name;

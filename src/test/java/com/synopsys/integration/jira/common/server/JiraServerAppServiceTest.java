@@ -15,7 +15,8 @@ import com.synopsys.integration.jira.common.model.response.InstalledAppsResponse
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
-import com.synopsys.integration.rest.response.Response;
+import com.synopsys.integration.rest.RestConstants;
+import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class JiraServerAppServiceTest extends JiraServerServiceTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
@@ -36,11 +37,11 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         String username = getEnvUsername();
         String password = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
-        assertTrue(installResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
+        assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
         Thread.sleep(3000);
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
-        assertTrue(uninstallResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
+        assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
     @Test
@@ -54,16 +55,16 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
 
-        Response installResponse = pluginManagerService.installDevelopmentApp(
+        int installResponse = pluginManagerService.installDevelopmentApp(
             "Test",
             APP_SERVER_URI,
             userEmail,
             apiToken
         );
-        assertTrue(installResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + installResponse.getStatusCode());
+        assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
         Thread.sleep(3000);
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
-        assertTrue(uninstallResponse.isStatusCodeSuccess(), "Expected a 2xx response code, but was: " + uninstallResponse.getStatusCode());
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
     @Test
@@ -78,8 +79,8 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        Response installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
-        installResponse.throwExceptionForError();
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
+        throwExceptionForError(installResponse);
         Thread.sleep(3000);
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
 
@@ -90,8 +91,22 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        Response uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
-        uninstallResponse.throwExceptionForError();
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
+        throwExceptionForError(uninstallResponse);
+    }
+
+    private boolean isStatusCodeSuccess(int status) {
+        return status >= RestConstants.OK_200 && status < RestConstants.MULT_CHOICE_300;
+    }
+
+    public boolean isStatusCodeError(int status) {
+        return status >= RestConstants.BAD_REQUEST_400;
+    }
+
+    public void throwExceptionForError(int status) throws IntegrationRestException {
+        if (isStatusCodeError(status)) {
+            throw new IntegrationRestException(status, "statusMessage", "Body", "message");
+        }
     }
 
 }

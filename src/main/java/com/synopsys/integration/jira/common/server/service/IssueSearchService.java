@@ -23,7 +23,7 @@
 package com.synopsys.integration.jira.common.server.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.jira.common.server.model.IssueSearchRequestModel;
 import com.synopsys.integration.jira.common.server.model.IssueSearchResponseModel;
 import com.synopsys.integration.rest.HttpUrl;
@@ -31,9 +31,9 @@ import com.synopsys.integration.rest.HttpUrl;
 public class IssueSearchService {
     public static final String API_PATH = "/rest/api/2/search";
 
-    private final JiraService jiraCloudService;
+    private final JiraApiClient jiraCloudService;
 
-    public IssueSearchService(JiraService jiraCloudService) {
+    public IssueSearchService(JiraApiClient jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 

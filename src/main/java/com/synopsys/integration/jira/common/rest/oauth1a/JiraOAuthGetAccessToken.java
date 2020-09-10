@@ -20,14 +20,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest;
+package com.synopsys.integration.jira.common.rest.oauth1a;
 
-import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.google.api.client.auth.oauth.OAuthGetAccessToken;
 
-public interface JiraHttpClient {
-    String getBaseUrl();
+public class JiraOAuthGetAccessToken extends OAuthGetAccessToken {
+    public JiraOAuthGetAccessToken(String accessTokenRequestUrl) {
+        super(accessTokenRequestUrl);
+        this.usePost = true;
+    }
 
-    JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException;
 }

@@ -24,9 +24,9 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.List;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class IssueTypesWorkflowMappingResponseModel extends JiraResponse {
+public class IssueTypesWorkflowMappingResponseModel extends JiraResponseModel {
     private String workflow;
     private List<String> issueTypes;
     private Boolean defaultMapping;
@@ -35,7 +35,7 @@ public class IssueTypesWorkflowMappingResponseModel extends JiraResponse {
     public IssueTypesWorkflowMappingResponseModel() {
     }
 
-    public IssueTypesWorkflowMappingResponseModel(final String workflow, final List<String> issueTypes, final Boolean defaultMapping, final Boolean updateDraftIfNeeded) {
+    public IssueTypesWorkflowMappingResponseModel(String workflow, List<String> issueTypes, Boolean defaultMapping, Boolean updateDraftIfNeeded) {
         this.workflow = workflow;
         this.issueTypes = issueTypes;
         this.defaultMapping = defaultMapping;

@@ -23,22 +23,22 @@
 package com.synopsys.integration.jira.common.cloud.service;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.request.WorkflowIssueTypeMappingsRequestModel;
 import com.synopsys.integration.jira.common.model.request.WorkflowSchemeRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypesWorkflowMappingResponseModel;
 import com.synopsys.integration.jira.common.model.response.WorkflowSchemeResponseModel;
-import com.synopsys.integration.jira.common.rest.service.JiraService;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
+import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.response.Response;
 
 public class WorkflowSchemeService {
     public static final String API_PATH = "/rest/api/2/workflowscheme";
 
-    private final JiraService jiraCloudService;
+    private final JiraApiClient jiraCloudService;
 
-    public WorkflowSchemeService(JiraService jiraCloudService) {
+    public WorkflowSchemeService(JiraApiClient jiraCloudService) {
         this.jiraCloudService = jiraCloudService;
     }
 
@@ -48,13 +48,13 @@ public class WorkflowSchemeService {
     }
 
     public WorkflowSchemeResponseModel getSchemeById(String schemeId) throws IntegrationException {
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(createSchemeApiUri(schemeId));
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createSchemeApiUri(schemeId));
         return jiraCloudService.get(request, WorkflowSchemeResponseModel.class);
     }
 
     public IssueTypesWorkflowMappingResponseModel getIssueTypesForWorkflowInScheme(WorkflowIssueTypeMappingsRequestModel requestModel) throws IntegrationException {
         HttpUrl uri = createWorkflowApiUri(requestModel.getId());
-        Request request = JiraCloudRequestFactory.createDefaultGetRequest(uri);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
         return jiraCloudService.get(request, IssueTypesWorkflowMappingResponseModel.class);
     }
 
@@ -64,7 +64,7 @@ public class WorkflowSchemeService {
     }
 
     public void deleteIssueTypesForWorkflowInScheme(String schemeId) throws IntegrationException {
-        Response response = jiraCloudService.delete(createWorkflowApiUri(schemeId));
+        JiraResponse response = jiraCloudService.delete(createWorkflowApiUri(schemeId));
 
         if (response.isStatusCodeError()) {
             throw new IntegrationException(String.format("Error deleting issue type mappings; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));

@@ -20,29 +20,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.response;
+package com.synopsys.integration.jira.common.rest.oauth1a;
 
-import java.util.List;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
-
-public class IssueCreateMetadataResponse extends JiraResponse {
-    private String expand;
-    private List<ProjectIssueCreateMetadataResponse> projects;
-
-    public IssueCreateMetadataResponse() {
+public class JiraOAuthServiceFactory {
+    public JiraOAuthService fromJiraServerUrl(String jiraServerUrl) throws NoSuchAlgorithmException {
+        KeyFactory rsaKeyFactory = KeyFactory.getInstance("RSA");
+        return new JiraOAuthService(jiraServerUrl, rsaKeyFactory);
     }
 
-    public IssueCreateMetadataResponse(final String expand, final List<ProjectIssueCreateMetadataResponse> projects) {
-        this.expand = expand;
-        this.projects = projects;
-    }
-
-    public String getExpand() {
-        return expand;
-    }
-
-    public List<ProjectIssueCreateMetadataResponse> getProjects() {
-        return projects;
-    }
 }
+

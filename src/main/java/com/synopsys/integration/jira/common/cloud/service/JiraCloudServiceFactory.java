@@ -34,27 +34,27 @@ public class JiraCloudServiceFactory extends CommonServiceFactory {
     }
 
     public FieldService createFieldService() {
-        return new FieldService(createJiraService());
+        return new FieldService(getJiraApiClient());
     }
 
     public IssueSearchService createIssueSearchService() {
-        return new IssueSearchService(createJiraService());
+        return new IssueSearchService(getJiraApiClient());
     }
 
     public IssueService createIssueService() {
-        return new IssueService(getJsonTransformer(), createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
+        return new IssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public UserSearchService createUserSearchService() {
-        return new UserSearchService(createJiraService());
+        return new UserSearchService(getJiraApiClient());
     }
 
     public WorkflowSchemeService createWorkflowSchemeService() {
-        return new WorkflowSchemeService(createJiraService());
+        return new WorkflowSchemeService(getJiraApiClient());
     }
 
     public ProjectService createProjectService() {
-        return new ProjectService(createJiraService());
+        return new ProjectService(getJiraApiClient());
     }
 
 }

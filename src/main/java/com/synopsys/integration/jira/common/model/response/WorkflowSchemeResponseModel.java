@@ -24,10 +24,10 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.UserDetailsComponent;
 
-public class WorkflowSchemeResponseModel extends JiraResponse {
+public class WorkflowSchemeResponseModel extends JiraResponseModel {
     private Integer id;
     private String self;
     private String name;
@@ -45,8 +45,8 @@ public class WorkflowSchemeResponseModel extends JiraResponse {
     public WorkflowSchemeResponseModel() {
     }
 
-    public WorkflowSchemeResponseModel(final Integer id, final String self, final String name, final String description, final String defaultWorkflow, final Map<String, Object> issueTypeMappings, final String originalDefaultWorkflow,
-        final Map<String, Object> originalIssueTypeMappings, final Boolean draft, final UserDetailsComponent lastModifiedUser, final String lastModified, final Boolean updateDraftIfNeeded, final Map<String, Object> issueTypes) {
+    public WorkflowSchemeResponseModel(Integer id, String self, String name, String description, String defaultWorkflow, Map<String, Object> issueTypeMappings, String originalDefaultWorkflow,
+        Map<String, Object> originalIssueTypeMappings, Boolean draft, UserDetailsComponent lastModifiedUser, String lastModified, Boolean updateDraftIfNeeded, Map<String, Object> issueTypes) {
         this.id = id;
         this.self = self;
         this.name = name;

@@ -27,6 +27,7 @@ import java.net.URL;
 import com.google.gson.Gson;
 import com.synopsys.integration.builder.Buildable;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceFactory;
+import com.synopsys.integration.jira.common.rest.JiraCredentialHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
@@ -59,7 +60,7 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
     }
 
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
+        return new JiraCredentialHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
     }
 
     public JiraCloudServiceFactory createJiraCloudServiceFactory(IntLogger logger) {

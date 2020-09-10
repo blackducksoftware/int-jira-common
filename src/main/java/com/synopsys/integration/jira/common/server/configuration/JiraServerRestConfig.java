@@ -27,6 +27,7 @@ import java.util.function.BiConsumer;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.builder.Buildable;
+import com.synopsys.integration.jira.common.rest.JiraCredentialHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.log.IntLogger;
@@ -60,7 +61,7 @@ public class JiraServerRestConfig extends Stringable implements Buildable {
     }
 
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUsername, authPassword);
+        return new JiraCredentialHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUsername, authPassword);
     }
 
     public JiraServerServiceFactory createJiraServerServiceFactory(IntLogger logger) {

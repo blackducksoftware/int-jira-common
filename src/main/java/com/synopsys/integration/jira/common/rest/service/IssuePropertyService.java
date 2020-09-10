@@ -26,50 +26,49 @@ import java.io.Serializable;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.request.JiraCloudRequestFactory;
+import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
+import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
-import com.synopsys.integration.rest.response.Response;
 
 public class IssuePropertyService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_PROPERTIES_PIECE = "/properties";
 
     private final Gson gson;
-    private final JiraService jiraService;
+    private final JiraApiClient jiraApiClient;
 
-    public IssuePropertyService(Gson gson, JiraService jiraService) {
+    public IssuePropertyService(Gson gson, JiraApiClient jiraApiClient) {
         this.gson = gson;
-        this.jiraService = jiraService;
+        this.jiraApiClient = jiraApiClient;
     }
 
     public IssuePropertyKeysResponseModel getPropertyKeys(String issueKey) throws IntegrationException {
         String url = createApiUri(issueKey);
         HttpUrl httpUrl = new HttpUrl(url);
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(httpUrl)
-                              .build();
-        return jiraService.get(request, IssuePropertyKeysResponseModel.class);
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(httpUrl)
+                                  .build();
+        return jiraApiClient.get(request, IssuePropertyKeysResponseModel.class);
     }
 
     public IssuePropertyResponseModel getProperty(String issueKey, String propertyKey) throws IntegrationException {
         HttpUrl url = createApiUriWithKey(issueKey, propertyKey);
-        Request request = JiraCloudRequestFactory.createDefaultBuilder()
-                              .url(url)
-                              .build();
-        return jiraService.get(request, IssuePropertyResponseModel.class);
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(url)
+                                  .build();
+        return jiraApiClient.get(request, IssuePropertyResponseModel.class);
     }
 
-    public Response setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
+    public void setProperty(String issueKey, String propertyKey, Serializable propertyValue) throws IntegrationException {
         String json = gson.toJson(propertyValue);
-        return setProperty(issueKey, propertyKey, json);
+        setProperty(issueKey, propertyKey, json);
     }
 
-    public Response setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
+    public void setProperty(String issueKey, String propertyKey, String jsonPropertyValue) throws IntegrationException {
         HttpUrl url = createApiUriWithKey(issueKey, propertyKey);
-        return jiraService.put(jsonPropertyValue, url);
+        jiraApiClient.put(jsonPropertyValue, url);
     }
 
     private HttpUrl createApiUriWithKey(String issueKey, String propertyKey) throws IntegrationException {
@@ -77,7 +76,7 @@ public class IssuePropertyService {
     }
 
     private String createApiUri(String issueKey) {
-        return jiraService.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
+        return jiraApiClient.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
     }
 
 }

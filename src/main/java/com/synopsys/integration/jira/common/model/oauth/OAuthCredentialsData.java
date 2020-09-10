@@ -20,45 +20,43 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.response;
+package com.synopsys.integration.jira.common.model.oauth;
 
-import com.synopsys.integration.jira.common.model.JiraResponseModel;
+public class OAuthCredentialsData {
+    private String privateKey;
+    private String consumerKey;
+    private String accessToken;
 
-public class IssueTypeResponseModel extends JiraResponseModel {
-    private String self;
-    private String id;
-    private String description;
-    private String iconUrl;
-    private String name;
-    private Boolean subtask;
-    private Integer avatarId;
-
-    public String getSelf() {
-        return self;
+    public OAuthCredentialsData() {
     }
 
-    public String getId() {
-        return id;
+    public OAuthCredentialsData(String privateKey, String consumerKey, String accessToken) {
+        this.privateKey = privateKey;
+        this.consumerKey = consumerKey;
+        this.accessToken = accessToken;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPrivateKey() {
+        return privateKey;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 
-    public String getName() {
-        return name;
+    public String getConsumerKey() {
+        return consumerKey;
     }
 
-    public Boolean getSubtask() {
-        return subtask;
+    public void setConsumerKey(String consumerKey) {
+        this.consumerKey = consumerKey;
     }
 
-    public Integer getAvatarId() {
-        return avatarId;
+    public String getAccessToken() {
+        return accessToken;
     }
 
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 }

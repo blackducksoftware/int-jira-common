@@ -25,14 +25,14 @@ package com.synopsys.integration.jira.common.model.response;
 import java.util.List;
 import java.util.Map;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.IdComponent;
 import com.synopsys.integration.jira.common.model.components.IssueFieldsComponent;
 import com.synopsys.integration.jira.common.model.components.IssueIncludedFieldsComponent;
 import com.synopsys.integration.jira.common.model.components.IssueUpdateMetadataComponent;
 import com.synopsys.integration.jira.common.model.components.OperationsComponent;
 
-public class IssueResponseModel extends JiraResponse {
+public class IssueResponseModel extends JiraResponseModel {
     private String expand;
     private String id;
     private String self;

@@ -20,10 +20,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model;
+package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.rest.component.IntRestResponse;
+import java.util.List;
 
-public class JiraResponse extends IntRestResponse {
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
+public class IssueCreateMetadataResponseModel extends JiraResponseModel {
+    private String expand;
+    private List<ProjectIssueCreateMetadataResponseModel> projects;
+
+    public IssueCreateMetadataResponseModel() {
+    }
+
+    public IssueCreateMetadataResponseModel(String expand, List<ProjectIssueCreateMetadataResponseModel> projects) {
+        this.expand = expand;
+        this.projects = projects;
+    }
+
+    public String getExpand() {
+        return expand;
+    }
+
+    public List<ProjectIssueCreateMetadataResponseModel> getProjects() {
+        return projects;
+    }
 }

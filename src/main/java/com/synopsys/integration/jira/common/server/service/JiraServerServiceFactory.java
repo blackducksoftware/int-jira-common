@@ -34,19 +34,19 @@ public class JiraServerServiceFactory extends CommonServiceFactory {
     }
 
     public ProjectService createProjectService() {
-        return new ProjectService(createJiraService());
+        return new ProjectService(getJiraApiClient());
     }
 
     public IssueService createIssueService() {
-        return new IssueService(getJsonTransformer(), createJiraService(), createUserSearchService(), createProjectService(), createIssueTypeService());
+        return new IssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public IssueSearchService createIssueSearchService() {
-        return new IssueSearchService(createJiraService());
+        return new IssueSearchService(getJiraApiClient());
     }
 
     public UserSearchService createUserSearchService() {
-        return new UserSearchService(createJiraService());
+        return new UserSearchService(getJiraApiClient());
     }
 
 }

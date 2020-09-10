@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.model.components;
 
-import com.synopsys.integration.jira.common.model.JiraResponse;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class ProjectComponent extends JiraResponse {
+public class ProjectComponent extends JiraResponseModel {
     private String self;
     private String id;
     private String key;
@@ -37,7 +37,7 @@ public class ProjectComponent extends JiraResponse {
     public ProjectComponent() {
     }
 
-    public ProjectComponent(final String self, final String id, final String key, final String name, final AvatarUrlsComponent avatarUrls, final ProjectCategoryComponent projectCategory, final Boolean simplified, final String style) {
+    public ProjectComponent(String self, String id, String key, String name, AvatarUrlsComponent avatarUrls, ProjectCategoryComponent projectCategory, Boolean simplified, String style) {
         this.self = self;
         this.id = id;
         this.key = key;
