@@ -15,7 +15,7 @@ import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTest;
+import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
 import com.synopsys.integration.jira.common.cloud.service.ProjectService;
 import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
@@ -26,7 +26,7 @@ import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
-public class AuthenticateOAuthTest extends JiraCloudServiceTest {
+public class AuthenticateOAuthTest {
     public static final String CONSUMER_KEY = "JIRA_OAUTH_CONSUMER_KEY";
     public static final String PRIVATE_KEY = "JIRA_OAUTH_PRIVATE_KEY";
     public static final String TEMPORARY_TOKEN = "JIRA_OAUTH_TEMP_TOKEN";
@@ -45,11 +45,11 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
     @Ignore("Be sure you have all variables available before running")
     public void createAuthUrl() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = getEnvVarAndAssumeTrue(JiraCloudServiceTest.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
-        String consumerKey = getEnvVarAndAssumeTrue(CONSUMER_KEY);
-        String privateKey = getEnvVarAndAssumeTrue(PRIVATE_KEY);
+        String consumerKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(CONSUMER_KEY);
+        String privateKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(PRIVATE_KEY);
         OAuthAuthorizationData oAuthAuthorizationData = jiraOAuthService.createOAuthAuthorizationData(consumerKey, privateKey);
 
         String authorizationToken = oAuthAuthorizationData.getAuthorizationToken();
@@ -67,13 +67,13 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
     @Ignore("Be sure you have all variables available before running")
     public void createAuthenticationToken() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = getEnvVarAndAssumeTrue(JiraCloudServiceTest.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
-        String temporaryToken = getEnvVarAndAssumeTrue(TEMPORARY_TOKEN);
-        String verificationCode = getEnvVarAndAssumeTrue(VERIFICATION_CODE);
-        String consumerKey = getEnvVarAndAssumeTrue(CONSUMER_KEY);
-        String privateKey = getEnvVarAndAssumeTrue(PRIVATE_KEY);
+        String temporaryToken = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(TEMPORARY_TOKEN);
+        String verificationCode = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(VERIFICATION_CODE);
+        String consumerKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(CONSUMER_KEY);
+        String privateKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(PRIVATE_KEY);
         JiraOAuthGetAccessToken jiraOAuthGetAccessToken = jiraOAuthService.getJiraOAuthGetAccessToken(temporaryToken, verificationCode, consumerKey, privateKey);
         OAuthCredentialsResponse oAuthCredentialsResponse = jiraOAuthGetAccessToken.execute();
 
@@ -84,15 +84,15 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
     }
 
     @Test
-    @Ignore("Be sure you have all variables available before running")
+    // This test will fail if you haven't set up a proper OAuth authentication with our Jira cloud instance.
     public void verifyConnection() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = getEnvVarAndAssumeTrue(JiraCloudServiceTest.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
-        String accessToken = getEnvVarAndAssumeTrue(ACCESS_TOKEN);
-        String consumerKey = getEnvVarAndAssumeTrue(CONSUMER_KEY);
-        String privateKey = getEnvVarAndAssumeTrue(PRIVATE_KEY);
+        String accessToken = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(ACCESS_TOKEN);
+        String consumerKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(CONSUMER_KEY);
+        String privateKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(PRIVATE_KEY);
         OAuthCredentialsData oAuthCredentialsData = new OAuthCredentialsData(privateKey, consumerKey, accessToken);
         OAuthParameters oAuthParameters = jiraOAuthService.createOAuthParameters(oAuthCredentialsData);
 
@@ -101,7 +101,7 @@ public class AuthenticateOAuthTest extends JiraCloudServiceTest {
         assertProjectsFound(jiraHttpService);
 
         Logger logger = LoggerFactory.getLogger(AuthenticateOAuthTest.class);
-        JiraHttpClient jiraCredentialClient = createJiraServerConfig().createJiraHttpClient(new Slf4jIntLogger(logger));
+        JiraHttpClient jiraCredentialClient = JiraCloudServiceTestUtility.createJiraServerConfig().createJiraHttpClient(new Slf4jIntLogger(logger));
         assertProjectsFound(jiraCredentialClient);
     }
 

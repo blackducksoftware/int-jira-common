@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel;
@@ -17,24 +19,26 @@ import com.synopsys.integration.jira.common.model.request.IssueCommentRequestMod
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
-public class IssueSearchServiceTest extends JiraCloudServiceTest {
+public class IssueSearchServiceTest extends JiraCloudParameterizedTest {
 
-    @Test
-    public void findIssuesByDescriptionTest() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void findIssuesByDescriptionTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
@@ -57,21 +61,22 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         assertEquals(createdIssue.getId(), foundIssue.getId());
     }
 
-    @Test
-    public void testSearchForIssueWithSingleComment() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testSearchForIssueWithSingleComment(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -100,21 +105,22 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 
-    @Test
-    public void testSearchForIssueWithMultipleComments() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testSearchForIssueWithMultipleComments(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -152,21 +158,22 @@ public class IssueSearchServiceTest extends JiraCloudServiceTest {
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 
-    @Test
-    public void testSearchForIssueByCommentNoMatches() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testSearchForIssueByCommentNoMatches(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();

@@ -2,20 +2,26 @@ package com.synopsys.integration.jira.common.cloud.service;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfig;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfigBuilder;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
+import com.synopsys.integration.log.Slf4jIntLogger;
 
-public abstract class JiraCloudServiceTest {
+public final class JiraCloudServiceTestUtility {
     public static final String ENV_BASE_URL = "JIRA_CLOUD_URL";
     public static final String ENV_USER_EMAIL = "JIRA_CLOUD_EMAIL";
     public static final String ENV_API_TOKEN = "JIRA_CLOUD_TOKEN";
     public static final String TEST_PROJECT = "JIRA_CLOUD_TEST_PROJECT";
     public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
 
-    public void validateConfiguration() {
+    public static void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
         String userEmail = getEnvUserEmail();
         String apiToken = getEnvApiToken();
@@ -27,7 +33,16 @@ public abstract class JiraCloudServiceTest {
         assumeTrue(null != testProject, "No Jira Cloud Test project provided");
     }
 
-    public JiraCloudRestConfig createJiraServerConfig() {
+    public static JiraHttpClient createJiraCredentialClient() {
+        Logger logger = LoggerFactory.getLogger(JiraCloudServiceTestUtility.class);
+        return createJiraCredentialClient(new Slf4jIntLogger(logger));
+    }
+
+    public static JiraHttpClient createJiraCredentialClient(IntLogger logger) {
+        return createJiraServerConfig().createJiraHttpClient(logger);
+    }
+
+    public static JiraCloudRestConfig createJiraServerConfig() {
         JiraCloudRestConfigBuilder builder = JiraCloudRestConfig.newBuilder();
 
         builder.setUrl(getEnvBaseUrl())
@@ -36,29 +51,34 @@ public abstract class JiraCloudServiceTest {
         return builder.build();
     }
 
-    public JiraCloudServiceFactory createServiceFactory() {
+    //    public static JiraCloudServiceFactory createServiceFactory() {
+    //        IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
+    //        JiraCloudRestConfig serverConfig = createJiraServerConfig();
+    //        return serverConfig.createJiraCloudServiceFactory(logger);
+    //    }
+
+    public static JiraCloudServiceFactory createServiceFactory(JiraHttpClient jiraHttpClient) {
         IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        JiraCloudRestConfig serverConfig = createJiraServerConfig();
-        return serverConfig.createJiraCloudServiceFactory(logger);
+        return new JiraCloudServiceFactory(logger, jiraHttpClient, new Gson());
     }
 
-    public String getEnvBaseUrl() {
+    public static String getEnvBaseUrl() {
         return System.getenv(ENV_BASE_URL);
     }
 
-    public String getEnvUserEmail() {
+    public static String getEnvUserEmail() {
         return System.getenv(ENV_USER_EMAIL);
     }
 
-    public String getEnvApiToken() {
+    public static String getEnvApiToken() {
         return System.getenv(ENV_API_TOKEN);
     }
 
-    public String getTestProject() {
+    public static String getTestProject() {
         return System.getenv(TEST_PROJECT);
     }
 
-    public String getEnvVarAndAssumeTrue(String envVarName) {
+    public static String getEnvVarAndAssumeTrue(String envVarName) {
         String envVar = System.getenv(envVarName);
         assumeTrue(null != envVar, "Missing value for " + envVarName);
         return envVar;
