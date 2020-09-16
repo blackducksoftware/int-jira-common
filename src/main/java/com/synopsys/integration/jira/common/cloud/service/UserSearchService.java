@@ -34,7 +34,6 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
-// TODO query param isn't found in server REST API
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user/search";
 

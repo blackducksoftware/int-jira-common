@@ -31,7 +31,6 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
-// TODO project search doesn't exist in server REST API
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
     private final JiraApiClient jiraCloudService;

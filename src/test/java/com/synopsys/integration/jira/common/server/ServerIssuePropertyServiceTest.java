@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -13,24 +14,26 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
-public class ServerIssuePropertyServiceTest extends JiraServerServiceTest {
-    @Test
-    public void setAndGetTest() throws IntegrationException {
-        validateConfiguration();
+public class ServerIssuePropertyServiceTest extends JiraServerParameterizedTest {
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void setAndGetTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
 
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
         Gson gson = new Gson();
 
-        String projectName = getTestProject();
+        String projectName = JiraServerServiceTestUtility.getTestProject();
         IssueResponseModel issue = createIssue(issueService, projectName);
 
         String propertyKey = "examplePropertyKey";
@@ -70,8 +73,8 @@ public class ServerIssuePropertyServiceTest extends JiraServerServiceTest {
     }
 
     private static final class TestPropertyClass {
-        private String propertyOne;
-        private String propertyTwo;
+        private final String propertyOne;
+        private final String propertyTwo;
 
         public TestPropertyClass(String propertyOne, String propertyTwo) {
             this.propertyOne = propertyOne;

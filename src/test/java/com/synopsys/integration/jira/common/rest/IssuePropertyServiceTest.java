@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.cloud.service.IssueService;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceFactory;

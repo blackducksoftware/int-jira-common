@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.synopsys.integration.jira.common.JiraTestConstants;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfig;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfigBuilder;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -15,11 +16,6 @@ import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
 public final class JiraCloudServiceTestUtility {
-    public static final String ENV_BASE_URL = "JIRA_CLOUD_URL";
-    public static final String ENV_USER_EMAIL = "JIRA_CLOUD_EMAIL";
-    public static final String ENV_API_TOKEN = "JIRA_CLOUD_TOKEN";
-    public static final String TEST_PROJECT = "JIRA_CLOUD_TEST_PROJECT";
-    public static final String TEST_PROPERTY_KEY = "custom.synopsys.test.property.key";
 
     public static void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
@@ -51,31 +47,25 @@ public final class JiraCloudServiceTestUtility {
         return builder.build();
     }
 
-    //    public static JiraCloudServiceFactory createServiceFactory() {
-    //        IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-    //        JiraCloudRestConfig serverConfig = createJiraServerConfig();
-    //        return serverConfig.createJiraCloudServiceFactory(logger);
-    //    }
-
     public static JiraCloudServiceFactory createServiceFactory(JiraHttpClient jiraHttpClient) {
         IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
         return new JiraCloudServiceFactory(logger, jiraHttpClient, new Gson());
     }
 
     public static String getEnvBaseUrl() {
-        return System.getenv(ENV_BASE_URL);
+        return System.getenv(JiraTestConstants.CLOUD_BASE_URL);
     }
 
     public static String getEnvUserEmail() {
-        return System.getenv(ENV_USER_EMAIL);
+        return System.getenv(JiraTestConstants.CLOUD_USER_EMAIL);
     }
 
     public static String getEnvApiToken() {
-        return System.getenv(ENV_API_TOKEN);
+        return System.getenv(JiraTestConstants.CLOUD_API_TOKEN);
     }
 
     public static String getTestProject() {
-        return System.getenv(TEST_PROJECT);
+        return System.getenv(JiraTestConstants.CLOUD_TEST_PROJECT);
     }
 
     public static String getEnvVarAndAssumeTrue(String envVarName) {

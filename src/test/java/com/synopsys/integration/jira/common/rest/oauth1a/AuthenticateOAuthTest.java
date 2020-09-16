@@ -15,6 +15,7 @@ import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.JiraTestConstants;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
 import com.synopsys.integration.jira.common.cloud.service.ProjectService;
 import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
@@ -45,7 +46,7 @@ public class AuthenticateOAuthTest {
     @Ignore("Be sure you have all variables available before running")
     public void createAuthUrl() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraTestConstants.CLOUD_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
         String consumerKey = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(CONSUMER_KEY);
@@ -67,7 +68,7 @@ public class AuthenticateOAuthTest {
     @Ignore("Be sure you have all variables available before running")
     public void createAuthenticationToken() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraTestConstants.CLOUD_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
         String temporaryToken = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(TEMPORARY_TOKEN);
@@ -87,7 +88,7 @@ public class AuthenticateOAuthTest {
     // This test will fail if you haven't set up a proper OAuth authentication with our Jira cloud instance.
     public void verifyConnection() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
+        String jiraUrl = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(JiraTestConstants.CLOUD_BASE_URL);
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl);
 
         String accessToken = JiraCloudServiceTestUtility.getEnvVarAndAssumeTrue(ACCESS_TOKEN);

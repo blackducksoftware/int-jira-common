@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
@@ -20,15 +22,16 @@ import com.synopsys.integration.jira.common.server.service.IssueSearchService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
-public class IssueSearchServiceTest extends JiraServerServiceTest {
-    @Test
-    public void queryForIssuesTest() throws IntegrationException {
-        validateConfiguration();
+public class IssueSearchServiceTest extends JiraServerParameterizedTest {
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void queryForIssuesTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
 
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
-        String projectName = getTestProject();
+        String projectName = JiraServerServiceTestUtility.getTestProject();
         String searchTerm = "my_extra_special_word";
         String description = "Example description containing a special word to search on: " + searchTerm;
         IssueResponseModel issue = createIssue(issueService, projectName, description);
@@ -52,16 +55,17 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
     }
 
     @Disabled
-    @Test
-    public void findIssueByPropertyTest() throws IntegrationException {
-        validateConfiguration();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void findIssueByPropertyTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
 
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
-        String projectName = getTestProject();
+        String projectName = JiraServerServiceTestUtility.getTestProject();
         IssueResponseModel issue = createIssue(issueService, projectName, "Test description");
 
         Gson gson = new Gson();
@@ -103,7 +107,7 @@ public class IssueSearchServiceTest extends JiraServerServiceTest {
     private static final class TestPropertyClass {
         public static final String THING_TO_SEARCH_FOR = "thingToSearchFor";
 
-        private String thingToSearchFor;
+        private final String thingToSearchFor;
 
         public TestPropertyClass(String thingToSearchFor) {
             this.thingToSearchFor = thingToSearchFor;

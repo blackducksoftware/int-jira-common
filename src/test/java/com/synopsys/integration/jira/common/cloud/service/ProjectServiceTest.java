@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 

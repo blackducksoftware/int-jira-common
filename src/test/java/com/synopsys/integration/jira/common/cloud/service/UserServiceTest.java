@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 

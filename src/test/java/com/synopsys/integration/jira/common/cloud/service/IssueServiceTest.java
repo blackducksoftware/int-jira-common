@@ -17,7 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.JiraTestConstants;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
@@ -52,8 +53,8 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
 
         assertEquals(createdIssue.getId(), foundIssue.getId());
         assertEquals(createdIssue.getKey(), foundIssue.getKey());
-        assertTrue(foundIssue.getProperties().containsKey(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
-        assertNotNull(foundIssue.getProperties().get(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
+        assertTrue(foundIssue.getProperties().containsKey(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
+        assertNotNull(foundIssue.getProperties().get(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
     }
 
     @ParameterizedTest
@@ -152,7 +153,7 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
 
         String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        properties.add(new EntityProperty(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY, propertyValue));
+        properties.add(new EntityProperty(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY, propertyValue));
         IssueRequestModel requestModel = new IssueRequestModel(foundIssue.getId(), null, fieldsBuilder, update, properties);
         issueService.updateIssue(requestModel);
         IssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
@@ -164,10 +165,10 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
         assertNull(foundIssue.getFields().getAssignee());
         assertNotNull(foundIssueWithAssignee.getFields().getAssignee());
         assertEquals(userDetails.getAccountId(), foundIssueWithAssignee.getFields().getAssignee().getAccountId());
-        assertTrue(foundIssueWithAssignee.getProperties().containsKey(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
-        assertNotEquals(foundIssue.getProperties().get(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY));
+        assertTrue(foundIssueWithAssignee.getProperties().containsKey(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
+        assertNotEquals(foundIssue.getProperties().get(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY));
     }
 
     @ParameterizedTest
@@ -271,7 +272,7 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
 
         String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        properties.add(new EntityProperty(JiraCloudServiceTestUtility.TEST_PROPERTY_KEY, propertyValue));
+        properties.add(new EntityProperty(JiraTestConstants.CLOUD_TEST_PROPERTY_KEY, propertyValue));
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
 
         // create an issue

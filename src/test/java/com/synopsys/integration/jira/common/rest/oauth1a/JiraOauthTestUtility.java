@@ -6,17 +6,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import com.google.api.client.auth.oauth.OAuthParameters;
-import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
+import com.synopsys.integration.jira.common.JiraTestConstants;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 
 public final class JiraOauthTestUtility {
-    public static final String CONSUMER_KEY = "JIRA_OAUTH_CONSUMER_KEY";
-    public static final String PRIVATE_KEY = "JIRA_OAUTH_PRIVATE_KEY";
-    public static final String TEMPORARY_TOKEN = "JIRA_OAUTH_TEMP_TOKEN";
-    public static final String ACCESS_TOKEN = "JIRA_OAUTH_ACCESS_TOKEN";
-    public static final String VERIFICATION_CODE = "JIRA_OAUTH_VERIFICATION_CODE";
 
     public static JiraHttpClient createOAuthClient() throws NoSuchAlgorithmException, InvalidKeySpecException {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
@@ -27,27 +22,27 @@ public final class JiraOauthTestUtility {
     }
 
     public static String getBaseUrl() {
-        return getEnvVarAndAssumeTrue(JiraCloudServiceTestUtility.ENV_BASE_URL);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.CLOUD_BASE_URL);
     }
 
     public static String getConsumerKey() {
-        return getEnvVarAndAssumeTrue(CONSUMER_KEY);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.CONSUMER_KEY);
     }
 
     public static String getPrivateKey() {
-        return getEnvVarAndAssumeTrue(PRIVATE_KEY);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.PRIVATE_KEY);
     }
 
     public static String getTemporaryToken() {
-        return getEnvVarAndAssumeTrue(TEMPORARY_TOKEN);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.TEMPORARY_TOKEN);
     }
 
     public static String getAccessToken() {
-        return getEnvVarAndAssumeTrue(ACCESS_TOKEN);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.ACCESS_TOKEN);
     }
 
     public static String getVerificationCode() {
-        return getEnvVarAndAssumeTrue(VERIFICATION_CODE);
+        return getEnvVarAndAssumeTrue(JiraTestConstants.VERIFICATION_CODE);
     }
 
     public static String getEnvVarAndAssumeTrue(String envVarName) {

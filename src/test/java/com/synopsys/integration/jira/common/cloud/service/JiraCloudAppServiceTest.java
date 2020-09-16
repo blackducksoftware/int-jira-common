@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -70,7 +70,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
         int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
-    
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {

@@ -5,19 +5,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.UserSearchService;
 
-public class UserSearchServiceTest extends JiraServerServiceTest {
-    @Test
-    public void findUsersByUsernameTest() throws IntegrationException {
-        validateConfiguration();
+public class UserSearchServiceTest extends JiraServerParameterizedTest {
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void findUsersByUsernameTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
 
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
         Optional<UserDetailsResponseModel> userMatchingName = userSearchService.findUserByUsername("admin");

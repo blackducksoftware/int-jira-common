@@ -9,16 +9,18 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class JiraServerAppServiceTest extends JiraServerServiceTest {
+public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_SERVER_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraServerApp/1.0.0/atlassian-plugin.xml";
     private static final String APP_SLACK_KEY = "com.atlassian.jira.plugins.jira-slack-server-integration-plugin";
@@ -28,14 +30,15 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         Thread.sleep(1000);
     }
 
-    @Test
-    public void installServerAppTest() throws Exception {
-        validateConfiguration();
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void installServerAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraServerServiceTestUtility.validateConfiguration();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String username = getEnvUsername();
-        String password = getEnvPassword();
+        String username = JiraServerServiceTestUtility.getEnvUsername();
+        String password = JiraServerServiceTestUtility.getEnvPassword();
 
         int installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
@@ -44,16 +47,17 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("getParameters")
     @Disabled
     // Disabled because development mode will likely not be turned on most of the time.
-    public void installServerDevelopmentAppTest() throws Exception {
-        validateConfiguration();
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+    public void installServerDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraServerServiceTestUtility.validateConfiguration();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUsername();
-        String apiToken = getEnvPassword();
+        String userEmail = JiraServerServiceTestUtility.getEnvUsername();
+        String apiToken = JiraServerServiceTestUtility.getEnvPassword();
 
         int installResponse = pluginManagerService.installDevelopmentApp(
             "Test",
@@ -67,14 +71,15 @@ public class JiraServerAppServiceTest extends JiraServerServiceTest {
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
-    @Test
-    public void getInstalledAppsTest() throws Exception {
-        validateConfiguration();
-        JiraServerServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraServerServiceTestUtility.validateConfiguration();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String username = getEnvUsername();
-        String password = getEnvPassword();
+        String username = JiraServerServiceTestUtility.getEnvUsername();
+        String password = JiraServerServiceTestUtility.getEnvPassword();
 
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
