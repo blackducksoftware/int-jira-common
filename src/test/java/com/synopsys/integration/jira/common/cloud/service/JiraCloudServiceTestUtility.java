@@ -68,9 +68,7 @@ public final class JiraCloudServiceTestUtility {
         return System.getenv(JiraTestConstants.CLOUD_TEST_PROJECT);
     }
 
-    public static String getEnvVarAndAssumeTrue(String envVarName) {
-        String envVar = System.getenv(envVarName);
-        assumeTrue(null != envVar, "Missing value for " + envVarName);
-        return envVar;
+    public static String getOAuthAccessToken() {
+        return System.getenv(JiraTestConstants.CLOUD_OAUTH_ACCESS_TOKEN);
     }
 }

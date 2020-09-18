@@ -41,12 +41,14 @@ import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.util.Charsets;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.function.ThrowingFunction;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class JiraOAuthHttpClient implements JiraHttpClient {
     private final String baseUrl;
@@ -81,6 +83,8 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
                 throw new IntegrationException(httpResponse.getStatusMessage());
             }
             return returnResponse.apply(httpResponse);
+        } catch (HttpResponseException e) {
+            throw new IntegrationRestException(e.getStatusCode(), e.getStatusMessage(), e.getContent(), e);
         } catch (IOException | URISyntaxException e) {
             throw new IntegrationException(e.getMessage());
         } finally {

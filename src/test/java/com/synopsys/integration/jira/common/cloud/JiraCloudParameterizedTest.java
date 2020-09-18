@@ -10,12 +10,12 @@ import com.synopsys.integration.jira.common.rest.oauth1a.JiraOauthTestUtility;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 
-public class JiraCloudParameterizedTest {
+public abstract class JiraCloudParameterizedTest {
     public static Collection getParameters() throws InvalidKeySpecException, NoSuchAlgorithmException {
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
 
         return Arrays.asList(
             JiraCloudServiceTestUtility.createJiraCredentialClient(intLogger),
-            JiraOauthTestUtility.createOAuthClient());
+            JiraOauthTestUtility.createOAuthClient(JiraCloudServiceTestUtility.getEnvBaseUrl(), JiraCloudServiceTestUtility.getOAuthAccessToken()));
     }
 }

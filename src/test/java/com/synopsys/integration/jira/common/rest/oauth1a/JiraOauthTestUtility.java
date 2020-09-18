@@ -13,16 +13,20 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 
 public final class JiraOauthTestUtility {
 
-    public static JiraHttpClient createOAuthClient() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
-        JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(getBaseUrl());
-        OAuthCredentialsData oAuthCredentialsData = new OAuthCredentialsData(getPrivateKey(), getConsumerKey(), getAccessToken());
-        OAuthParameters oAuthParameters = jiraOAuthService.createOAuthParameters(oAuthCredentialsData);
-        return new JiraHttpClientFactory().createJiraOAuthClient(getBaseUrl(), oAuthParameters);
+    public static JiraHttpClient createOAuthClient(String baseUrl, String accessToken) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return createOAuthClient(baseUrl, getPrivateKey(), getConsumerKey(), accessToken);
     }
 
-    public static String getBaseUrl() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.CLOUD_BASE_URL);
+    public static JiraHttpClient createOAuthClient(OAuthTestCredentials oAuthTestCredentials) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return createOAuthClient(oAuthTestCredentials.getBaseUrl(), oAuthTestCredentials.getPrivateKey(), oAuthTestCredentials.getConsumerKey(), oAuthTestCredentials.getAccessToken());
+    }
+
+    public static JiraHttpClient createOAuthClient(String baseUrl, String privateKey, String consumerKey, String accessToken) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
+        JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(baseUrl);
+        OAuthCredentialsData oAuthCredentialsData = new OAuthCredentialsData(privateKey, consumerKey, accessToken);
+        OAuthParameters oAuthParameters = jiraOAuthService.createOAuthParameters(oAuthCredentialsData);
+        return new JiraHttpClientFactory().createJiraOAuthClient(baseUrl, oAuthParameters);
     }
 
     public static String getConsumerKey() {
@@ -35,10 +39,6 @@ public final class JiraOauthTestUtility {
 
     public static String getTemporaryToken() {
         return getEnvVarAndAssumeTrue(JiraTestConstants.TEMPORARY_TOKEN);
-    }
-
-    public static String getAccessToken() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.ACCESS_TOKEN);
     }
 
     public static String getVerificationCode() {

@@ -86,4 +86,8 @@ public final class JiraServerServiceTestUtility {
         return envTestProject != null ? envTestProject : "Test Project";
     }
 
+    public static String getOAuthAccessToken() {
+        return System.getenv(JiraTestConstants.SERVER_OAUTH_ACCESS_TOKEN);
+    }
+
 }

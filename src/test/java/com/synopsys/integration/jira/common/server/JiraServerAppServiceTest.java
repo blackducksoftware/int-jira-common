@@ -23,7 +23,9 @@ import com.synopsys.integration.rest.exception.IntegrationRestException;
 public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_SERVER_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraServerApp/1.0.0/atlassian-plugin.xml";
-    private static final String APP_SLACK_KEY = "com.atlassian.jira.plugins.jira-slack-server-integration-plugin";
+
+    // If these tests start breaking, verify the 'Barcharts for Jira' plugin is still free and available.
+    private static final String APP_FREE_MARKETPLACE_KEY = "com.tngtech.gadgets.jira-barchart-gadget-plugin";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
@@ -40,10 +42,10 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
         String username = JiraServerServiceTestUtility.getEnvUsername();
         String password = JiraServerServiceTestUtility.getEnvPassword();
 
-        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY, username, password);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
         Thread.sleep(3000);
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY, username, password);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
@@ -84,7 +86,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_SLACK_KEY, username, password);
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY, username, password);
         throwExceptionForError(installResponse);
         Thread.sleep(3000);
         InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
@@ -96,7 +98,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_SLACK_KEY, username, password);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY, username, password);
         throwExceptionForError(uninstallResponse);
     }
 
