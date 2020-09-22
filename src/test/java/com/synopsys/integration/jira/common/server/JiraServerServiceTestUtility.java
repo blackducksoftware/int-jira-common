@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.opentest4j.TestAbortedException;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.jira.common.JiraTestConstants;
+import com.synopsys.integration.jira.common.JiraTestEnvVars;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfig;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfigBuilder;
@@ -67,27 +67,27 @@ public final class JiraServerServiceTestUtility {
     }
 
     public static String getEnvBaseUrl() {
-        String envBaseUrl = System.getenv(JiraTestConstants.SERVER_BASE_URL);
+        String envBaseUrl = System.getenv(JiraTestEnvVars.SERVER_BASE_URL);
         return envBaseUrl != null ? envBaseUrl : "http://localhost:2990/jira";
     }
 
     public static String getEnvUsername() {
-        String envUsername = System.getenv(JiraTestConstants.SERVER_USERNAME);
+        String envUsername = System.getenv(JiraTestEnvVars.SERVER_USERNAME);
         return envUsername != null ? envUsername : "admin";
     }
 
     public static String getEnvPassword() {
-        String envPassword = System.getenv(JiraTestConstants.SERVER_PASSWORD);
+        String envPassword = System.getenv(JiraTestEnvVars.SERVER_PASSWORD);
         return envPassword != null ? envPassword : "admin";
     }
 
     public static String getTestProject() {
-        String envTestProject = System.getenv(JiraTestConstants.SERVER_TEST_PROJECT);
+        String envTestProject = System.getenv(JiraTestEnvVars.SERVER_TEST_PROJECT);
         return envTestProject != null ? envTestProject : "Test Project";
     }
 
     public static String getOAuthAccessToken() {
-        return System.getenv(JiraTestConstants.SERVER_OAUTH_ACCESS_TOKEN);
+        return System.getenv(JiraTestEnvVars.SERVER_OAUTH_ACCESS_TOKEN);
     }
 
 }

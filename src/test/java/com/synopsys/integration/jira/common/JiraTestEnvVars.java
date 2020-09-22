@@ -1,7 +1,6 @@
 package com.synopsys.integration.jira.common;
 
-public final class JiraTestConstants {
-
+public final class JiraTestEnvVars {
     public static final String SERVER_BASE_URL = "JIRA_SERVER_URL";
     public static final String SERVER_USERNAME = "JIRA_SERVER_USERNAME";
     public static final String SERVER_PASSWORD = "JIRA_SERVER_PASSWORD";

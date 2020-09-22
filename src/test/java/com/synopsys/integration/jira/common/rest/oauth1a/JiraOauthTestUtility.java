@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import com.google.api.client.auth.oauth.OAuthParameters;
-import com.synopsys.integration.jira.common.JiraTestConstants;
+import com.synopsys.integration.jira.common.JiraTestEnvVars;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
@@ -30,19 +30,19 @@ public final class JiraOauthTestUtility {
     }
 
     public static String getConsumerKey() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.CONSUMER_KEY);
+        return getEnvVarAndAssumeTrue(JiraTestEnvVars.CONSUMER_KEY);
     }
 
     public static String getPrivateKey() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.PRIVATE_KEY);
+        return getEnvVarAndAssumeTrue(JiraTestEnvVars.PRIVATE_KEY);
     }
 
     public static String getTemporaryToken() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.TEMPORARY_TOKEN);
+        return getEnvVarAndAssumeTrue(JiraTestEnvVars.TEMPORARY_TOKEN);
     }
 
     public static String getVerificationCode() {
-        return getEnvVarAndAssumeTrue(JiraTestConstants.VERIFICATION_CODE);
+        return getEnvVarAndAssumeTrue(JiraTestEnvVars.VERIFICATION_CODE);
     }
 
     public static String getEnvVarAndAssumeTrue(String envVarName) {

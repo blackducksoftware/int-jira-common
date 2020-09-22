@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.jira.common.JiraTestConstants;
+import com.synopsys.integration.jira.common.JiraTestEnvVars;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfig;
 import com.synopsys.integration.jira.common.cloud.configuration.JiraCloudRestConfigBuilder;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -53,22 +53,22 @@ public final class JiraCloudServiceTestUtility {
     }
 
     public static String getEnvBaseUrl() {
-        return System.getenv(JiraTestConstants.CLOUD_BASE_URL);
+        return System.getenv(JiraTestEnvVars.CLOUD_BASE_URL);
     }
 
     public static String getEnvUserEmail() {
-        return System.getenv(JiraTestConstants.CLOUD_USER_EMAIL);
+        return System.getenv(JiraTestEnvVars.CLOUD_USER_EMAIL);
     }
 
     public static String getEnvApiToken() {
-        return System.getenv(JiraTestConstants.CLOUD_API_TOKEN);
+        return System.getenv(JiraTestEnvVars.CLOUD_API_TOKEN);
     }
 
     public static String getTestProject() {
-        return System.getenv(JiraTestConstants.CLOUD_TEST_PROJECT);
+        return System.getenv(JiraTestEnvVars.CLOUD_TEST_PROJECT);
     }
 
     public static String getOAuthAccessToken() {
-        return System.getenv(JiraTestConstants.CLOUD_OAUTH_ACCESS_TOKEN);
+        return System.getenv(JiraTestEnvVars.CLOUD_OAUTH_ACCESS_TOKEN);
     }
 }
