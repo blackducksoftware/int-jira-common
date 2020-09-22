@@ -13,9 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.JiraTestEnvVars;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
@@ -31,13 +34,15 @@ import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
-public class IssueServiceTest extends JiraCloudServiceTest {
+public class IssueServiceTest extends JiraCloudParameterizedTest {
 
-    @Test
-    public void testCreateIssue() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testCreateIssue(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
@@ -48,14 +53,15 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
         assertEquals(createdIssue.getId(), foundIssue.getId());
         assertEquals(createdIssue.getKey(), foundIssue.getKey());
-        assertTrue(foundIssue.getProperties().containsKey(TEST_PROPERTY_KEY));
-        assertNotNull(foundIssue.getProperties().get(TEST_PROPERTY_KEY));
+        assertTrue(foundIssue.getProperties().containsKey(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
+        assertNotNull(foundIssue.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
     }
 
-    @Test
-    public void testCreateNullFieldExceptions() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testCreateNullFieldExceptions(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
@@ -66,32 +72,31 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         List<EntityProperty> properties = new LinkedList<>();
         PageOfProjectsResponseModel projects = projectService.getProjects();
         ProjectComponent validProject = projects.getProjects().stream()
-                                            .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                            .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                             .findFirst()
                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
-        UserDetailsResponseModel validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                        .findFirst()
-                                                        .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+
+        String validEmailAddress = JiraCloudServiceTestUtility.getEnvUserEmail();
+        userSearchService.findUser(validEmailAddress).stream()
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         String validIssueType = "bug";
-        String validEmailAddress = validUserDetails.getEmailAddress();
         String validProjectName = validProject.getName();
 
-        IssueCreationRequestModel emailRequestModel = new IssueCreationRequestModel(null, validIssueType, validProjectName, fieldsBuilder, properties);
-        JiraPreconditionNotMetException emailException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(emailRequestModel));
         IssueCreationRequestModel issueTypeRequestModel = new IssueCreationRequestModel(validEmailAddress, null, validProjectName, fieldsBuilder, properties);
         JiraPreconditionNotMetException issueTypeException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(issueTypeRequestModel));
         IssueCreationRequestModel projectRequestModel = new IssueCreationRequestModel(validEmailAddress, validIssueType, null, fieldsBuilder, properties);
         JiraPreconditionNotMetException projectException = assertThrows(JiraPreconditionNotMetException.class, () -> issueService.createIssue(projectRequestModel));
 
-        assertTrue(emailException.getMessage().contains("Reporter user with email not found; email:"));
         assertTrue(issueTypeException.getMessage().contains("Issue type not found; issue type"));
         assertTrue(projectException.getMessage().contains("Project not found; project name:"));
     }
 
-    @Test
-    public void testCreateFieldsNotFoundExceptions() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testCreateFieldsNotFoundExceptions(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
@@ -103,10 +108,10 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
         ProjectComponent validProject = projects.getProjects().stream()
-                                            .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                            .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                             .findFirst()
                                             .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
-        UserDetailsResponseModel validUserDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel validUserDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                         .findFirst()
                                                         .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         String validIssueType = "bug";
@@ -126,14 +131,15 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
     }
 
-    @Test
-    public void testUpdateIssue() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testUpdateIssue(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         // create an issue
@@ -145,7 +151,7 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
         String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        properties.add(new EntityProperty(TEST_PROPERTY_KEY, propertyValue));
+        properties.add(new EntityProperty(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY, propertyValue));
         IssueRequestModel requestModel = new IssueRequestModel(foundIssue.getId(), null, fieldsBuilder, update, properties);
         issueService.updateIssue(requestModel);
         IssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
@@ -157,16 +163,17 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         assertNull(foundIssue.getFields().getAssignee());
         assertNotNull(foundIssueWithAssignee.getFields().getAssignee());
         assertEquals(userDetails.getAccountId(), foundIssueWithAssignee.getFields().getAssignee().getAccountId());
-        assertTrue(foundIssueWithAssignee.getProperties().containsKey(TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
-        assertNotEquals(foundIssue.getProperties().get(TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(TEST_PROPERTY_KEY));
+        assertTrue(foundIssueWithAssignee.getProperties().containsKey(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
+        assertNotEquals(foundIssue.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
     }
 
-    @Test
-    public void testAddComment() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testAddComment(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
@@ -186,32 +193,35 @@ public class IssueServiceTest extends JiraCloudServiceTest {
         assertEquals(uniqueId.toString(), foundIssueWithComments.getFields().getComment().getComments().get(0).getBody());
     }
 
-    @Test
-    public void testGetStatus() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testGetStatus(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
         IssueResponseModel createdIssue = createIssue(serviceFactory);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        String issueId = createdIssue.getId();
+        IssueResponseModel foundIssue = issueService.getIssue(issueId);
 
         StatusDetailsComponent status = issueService.getStatus(foundIssue.getId());
         // delete the issue
-        issueService.deleteIssue(createdIssue.getId());
+        issueService.deleteIssue(issueId);
 
-        assertEquals(createdIssue.getId(), foundIssue.getId());
+        assertEquals(issueId, foundIssue.getId());
         assertEquals("Open", status.getName());
     }
 
-    @Test
-    public void testTransitionIssue() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testTransitionIssue(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
 
@@ -243,14 +253,11 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
     private IssueResponseModel createIssue(JiraCloudServiceFactory serviceFactory) throws IntegrationException {
         IssueService issueService = serviceFactory.createIssueService();
-        UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(getEnvUserEmail()).stream()
-                                                   .findFirst()
-                                                   .orElseThrow(() -> new IllegalStateException("Jira User not found"));
+        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -261,8 +268,8 @@ public class IssueServiceTest extends JiraCloudServiceTest {
 
         String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        properties.add(new EntityProperty(TEST_PROPERTY_KEY, propertyValue));
-        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), "bug", project.getName(), fieldsBuilder, properties);
+        properties.add(new EntityProperty(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY, propertyValue));
+        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userEmail, "bug", project.getName(), fieldsBuilder, properties);
 
         // create an issue
         return issueService.createIssue(requestModel);

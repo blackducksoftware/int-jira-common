@@ -31,18 +31,17 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
-// TODO project search doesn't exist in server REST API
 public class ProjectService {
     public static final String API_PATH = "/rest/api/2/project/search";
-    private final JiraApiClient jiraCloudService;
+    private final JiraApiClient jiraApiClient;
 
-    public ProjectService(JiraApiClient jiraCloudService) {
-        this.jiraCloudService = jiraCloudService;
+    public ProjectService(JiraApiClient jiraApiClient) {
+        this.jiraApiClient = jiraApiClient;
     }
 
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
-        return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
+        return jiraApiClient.get(request, PageOfProjectsResponseModel.class);
     }
 
     public PageOfProjectsResponseModel getProjectsByName(String projectName) throws IntegrationException {
@@ -55,11 +54,11 @@ public class ProjectService {
                                   .addQueryParameter("query", projectName)
                                   .addQueryParameter("orderBy", "name")
                                   .build();
-        return jiraCloudService.get(request, PageOfProjectsResponseModel.class);
+        return jiraApiClient.get(request, PageOfProjectsResponseModel.class);
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
     }
 
 }

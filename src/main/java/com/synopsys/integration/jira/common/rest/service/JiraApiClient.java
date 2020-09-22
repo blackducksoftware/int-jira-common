@@ -165,12 +165,14 @@ public class JiraApiClient {
 
     private JiraRequest createPostRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.POST)
+                   .addHeader("Content-Type", "application/json")
                    .bodyContent(bodyContent)
                    .build();
     }
 
     private JiraRequest createPutRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.PUT)
+                   .addHeader("Content-Type", "application/json")
                    .bodyContent(bodyContent)
                    .build();
     }

@@ -34,7 +34,10 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
-// TODO query param isn't found in server REST API
+/*
+ * Brian Mandel: There is an existing issue with OAuth returning a User object with the email field always blank.
+ * Waiting on Atlassian support to get back to us about why this is the case.
+ */
 public class UserSearchService {
     public static final String API_PATH = "/rest/api/2/user/search";
 

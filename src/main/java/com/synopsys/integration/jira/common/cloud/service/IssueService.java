@@ -26,6 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
@@ -80,9 +84,6 @@ public class IssueService {
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
                                                     .findFirst()
                                                     .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
-        UserDetailsResponseModel foundUserDetails = userSearchService.findUser(reporterEmail).stream()
-                                                        .findFirst()
-                                                        .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = pageOfProjects.getProjects().stream()
                                             .findFirst()
@@ -92,12 +93,22 @@ public class IssueService {
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
 
         fieldsBuilder.setIssueType(foundIssueType.getId());
-        fieldsBuilder.setReporterId(foundUserDetails.getAccountId());
+        if (StringUtils.isNotBlank(reporterEmail)) {
+            String accountId = retrieveUserAccountId(reporterEmail);
+            fieldsBuilder.setReporterId(accountId);
+        }
         fieldsBuilder.setProject(foundProject.getId());
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
         IssueRequestModel issueRequestModel = new IssueRequestModel(fieldsBuilder, update, requestModel.getProperties());
         return createIssue(issueRequestModel);
+    }
+
+    private String retrieveUserAccountId(@Nullable String reporterEmail) throws IntegrationException {
+        return userSearchService.findUser(reporterEmail).stream()
+                   .findFirst()
+                   .map(UserDetailsResponseModel::getAccountId)
+                   .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
     }
 
     private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {

@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import org.apache.commons.lang3.StringUtils;
 import org.opentest4j.TestAbortedException;
 
+import com.google.gson.Gson;
+import com.synopsys.integration.jira.common.JiraTestEnvVars;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfig;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfigBuilder;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
@@ -17,13 +20,9 @@ import com.synopsys.integration.rest.client.IntHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
 
-public abstract class JiraServerServiceTest {
-    public static final String ENV_BASE_URL = "JIRA_SERVER_URL";
-    public static final String ENV_USERNAME = "JIRA_SERVER_USERNAME";
-    public static final String ENV_PASSWORD = "JIRA_SERVER_PASSWORD";
-    public static final String TEST_PROJECT = "JIRA_SERVER_TEST_PROJECT";
+public final class JiraServerServiceTestUtility {
 
-    public void validateConfiguration() {
+    public static void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
@@ -48,7 +47,7 @@ public abstract class JiraServerServiceTest {
         }
     }
 
-    public JiraServerRestConfig createJiraServerConfig() {
+    public static JiraServerRestConfig createJiraServerConfig() {
         JiraServerRestConfigBuilder builder = JiraServerRestConfig.newBuilder();
 
         builder
@@ -58,30 +57,37 @@ public abstract class JiraServerServiceTest {
         return builder.build();
     }
 
-    public JiraServerServiceFactory createServiceFactory() {
-        IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        JiraServerRestConfig serverConfig = createJiraServerConfig();
-        return serverConfig.createJiraServerServiceFactory(logger);
+    public static JiraHttpClient createJiraCredentialClient(IntLogger logger) {
+        return createJiraServerConfig().createJiraHttpClient(logger);
     }
 
-    public String getEnvBaseUrl() {
-        String envBaseUrl = System.getenv(ENV_BASE_URL);
+    public static JiraServerServiceFactory createServiceFactory(JiraHttpClient jiraHttpClient) {
+        IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
+        return new JiraServerServiceFactory(logger, jiraHttpClient, new Gson());
+    }
+
+    public static String getEnvBaseUrl() {
+        String envBaseUrl = System.getenv(JiraTestEnvVars.SERVER_BASE_URL);
         return envBaseUrl != null ? envBaseUrl : "http://localhost:2990/jira";
     }
 
-    public String getEnvUsername() {
-        String envUsername = System.getenv(ENV_USERNAME);
+    public static String getEnvUsername() {
+        String envUsername = System.getenv(JiraTestEnvVars.SERVER_USERNAME);
         return envUsername != null ? envUsername : "admin";
     }
 
-    public String getEnvPassword() {
-        String envPassword = System.getenv(ENV_PASSWORD);
+    public static String getEnvPassword() {
+        String envPassword = System.getenv(JiraTestEnvVars.SERVER_PASSWORD);
         return envPassword != null ? envPassword : "admin";
     }
 
-    public String getTestProject() {
-        String envTestProject = System.getenv(TEST_PROJECT);
+    public static String getTestProject() {
+        String envTestProject = System.getenv(JiraTestEnvVars.SERVER_TEST_PROJECT);
         return envTestProject != null ? envTestProject : "Test Project";
+    }
+
+    public static String getOAuthAccessToken() {
+        return System.getenv(JiraTestEnvVars.SERVER_OAUTH_ACCESS_TOKEN);
     }
 
 }

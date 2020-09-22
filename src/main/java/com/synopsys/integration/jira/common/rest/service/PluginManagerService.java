@@ -38,7 +38,6 @@ import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class PluginManagerService {
@@ -77,16 +76,15 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
-        JiraResponse jiraResponse = jiraApiClient.get(requestBuilder.build());
-        if (jiraResponse.isStatusCodeError()) {
-            if (404 == jiraResponse.getStatusCode()) {
-                return Optional.empty();
+        try {
+            PluginResponseModel pluginComponent = jiraApiClient.get(requestBuilder.build(), PluginResponseModel.class);
+            return Optional.of(pluginComponent);
+        } catch (IntegrationRestException e) {
+            if (404 != e.getHttpStatusCode()) {
+                throw e;
             }
-            // FIXME this class uses exception handling for flow control. There should be a better way to do this.
-            jiraResponse.throwExceptionForError();
         }
-        PluginResponseModel pluginComponent = gson.fromJson(jiraResponse.getContent(), PluginResponseModel.class);
-        return Optional.of(pluginComponent);
+        return Optional.empty();
     }
 
     public boolean isAppInstalled(String username, String accessTokenOrPassword, String appKey) throws IntegrationException {
@@ -96,12 +94,16 @@ public class PluginManagerService {
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
-        JiraResponse response = jiraApiClient.get(requestBuilder.build());
-        // The response should be 404 if the App is not installed
-        if (response.isStatusCodeError() && RestConstants.NOT_FOUND_404 != response.getStatusCode()) {
-            throw new IntegrationRestException(response.getStatusCode(), response.getStatusMessage(), response.getContent(), "There was an error when checking if the app was installed.");
+        try {
+            // The response should be 404 if the App is not installed
+            JiraResponse response = jiraApiClient.get(requestBuilder.build());
+            return response.isStatusCodeSuccess();
+        } catch (IntegrationRestException e) {
+            if (404 != e.getHttpStatusCode()) {
+                throw e;
+            }
+            return false;
         }
-        return response.isStatusCodeSuccess();
     }
 
     public InstalledAppsResponseModel getInstalledApps(String username, String accessTokenOrPassword) throws IntegrationException {

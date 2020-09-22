@@ -9,16 +9,19 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
+public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
@@ -27,14 +30,15 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
         Thread.sleep(1000);
     }
 
-    @Test
-    public void installMarketplaceAppTest() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void installMarketplaceAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
+        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
 
         int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
@@ -43,16 +47,17 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("getParameters")
     @Disabled
     // Disabled because development mode will likely not be turned on most of the time.
-    public void installCloudDevelopmentAppTest() throws Exception {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    public void installCloudDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
+        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
 
         int installResponse = pluginManagerService.installDevelopmentApp(
             "Test",
@@ -66,14 +71,15 @@ public class JiraCloudAppServiceTest extends JiraCloudServiceTest {
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
-    @Test
-    public void getInstalledAppsTest() throws IntegrationException {
-        validateConfiguration();
-        JiraCloudServiceFactory serviceFactory = createServiceFactory();
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
+        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
+        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
 
         Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
