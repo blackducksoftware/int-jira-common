@@ -39,13 +39,10 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String username = JiraServerServiceTestUtility.getEnvUsername();
-        String password = JiraServerServiceTestUtility.getEnvPassword();
-
-        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY, username, password);
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
         Thread.sleep(3000);
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY, username, password);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
@@ -58,18 +55,10 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = JiraServerServiceTestUtility.getEnvUsername();
-        String apiToken = JiraServerServiceTestUtility.getEnvPassword();
-
-        int installResponse = pluginManagerService.installDevelopmentApp(
-            "Test",
-            APP_SERVER_URI,
-            userEmail,
-            apiToken
-        );
+        int installResponse = pluginManagerService.installDevelopmentApp("Test", APP_SERVER_URI);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
         Thread.sleep(3000);
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
@@ -80,16 +69,13 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String username = JiraServerServiceTestUtility.getEnvUsername();
-        String password = JiraServerServiceTestUtility.getEnvPassword();
-
-        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(username, password, "not.a.real.key");
+        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp("not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY, username, password);
+        int installResponse = pluginManagerService.installMarketplaceServerApp(APP_FREE_MARKETPLACE_KEY);
         throwExceptionForError(installResponse);
         Thread.sleep(3000);
-        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(username, password);
+        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps();
 
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();
         List<PluginResponseModel> userInstalledPlugins = allInstalledPlugins
@@ -98,7 +84,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY, username, password);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_FREE_MARKETPLACE_KEY);
         throwExceptionForError(uninstallResponse);
     }
 

@@ -22,12 +22,13 @@ import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
+    private static final int WAIT_TIME = 1000;
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
     }
 
     @ParameterizedTest
@@ -37,13 +38,10 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
-        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
-
-        int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
+        int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
-        Thread.sleep(1000);
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
@@ -56,38 +54,27 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
-        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
-
-        int installResponse = pluginManagerService.installDevelopmentApp(
-            "Test",
-            APP_CLOUD_URI,
-            userEmail,
-            apiToken
-        );
+        int installResponse = pluginManagerService.installDevelopmentApp("Test", APP_CLOUD_URI);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
-        Thread.sleep(1000);
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException, InterruptedException {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
-        String apiToken = JiraCloudServiceTestUtility.getEnvApiToken();
-
-        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp(userEmail, apiToken, "not.a.real.key");
+        Optional<PluginResponseModel> fakeApp = pluginManagerService.getInstalledApp("not.a.real.key");
         assertFalse(fakeApp.isPresent(), "Expected app to not be installed");
 
-        int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY, userEmail, apiToken);
+        int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY);
         throwExceptionForError(installResponse);
 
-        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps(userEmail, apiToken);
+        InstalledAppsResponseModel installedApps = pluginManagerService.getInstalledApps();
         List<PluginResponseModel> allInstalledPlugins = installedApps.getPlugins();
         List<PluginResponseModel> userInstalledPlugins = allInstalledPlugins
                                                              .stream()
@@ -95,7 +82,8 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY, userEmail, apiToken);
+        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         throwExceptionForError(uninstallResponse);
     }
 
