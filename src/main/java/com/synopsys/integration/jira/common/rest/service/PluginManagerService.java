@@ -68,7 +68,7 @@ public class PluginManagerService {
 
     public Optional<PluginResponseModel> getInstalledApp(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
@@ -86,7 +86,7 @@ public class PluginManagerService {
 
     public boolean isAppInstalled(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
@@ -105,7 +105,7 @@ public class PluginManagerService {
 
     public InstalledAppsResponseModel getInstalledApps() throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createBaseRequestUrl());
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(httpUrl);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(httpUrl);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
@@ -145,7 +145,7 @@ public class PluginManagerService {
 
     public String retrievePluginToken() throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createBaseRequestUrl());
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(httpUrl);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(httpUrl);
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
@@ -155,14 +155,14 @@ public class PluginManagerService {
 
     private AvailableAppResponseModel getAvailableApp(String path, String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(path + "available/" + appKey + "-key");
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_AVAILABLE);
         return jiraApiClient.get(requestBuilder.build(), AvailableAppResponseModel.class);
     }
 
     private JiraRequest createMarketplaceInstallRequest(HttpUrl apiUri, String pluginToken, String addonKey) {
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.addQueryParameter("addonKey", addonKey);
         requestBuilder.addQueryParameter(TOKEN_QUERY, pluginToken);
         requestBuilder.method(HttpMethod.POST);
@@ -172,7 +172,7 @@ public class PluginManagerService {
     }
 
     private JiraRequest createAppUploadRequest(HttpUrl apiUri, String pluginToken, String pluginName, String pluginUri) {
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.addQueryParameter(TOKEN_QUERY, pluginToken);
         requestBuilder.method(HttpMethod.POST);
         requestBuilder.addHeader(CONTENT_TYPE_HEADER, MEDIA_TYPE_INSTALL_URI);
@@ -182,16 +182,12 @@ public class PluginManagerService {
     }
 
     private JiraRequest createDeleteRequest(HttpUrl apiUri, String pluginToken) {
-        JiraRequest.Builder requestBuilder = createBasicRequestBuilder(apiUri);
+        JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
         requestBuilder.addQueryParameter(TOKEN_QUERY, pluginToken);
         requestBuilder.method(HttpMethod.DELETE);
         requestBuilder.addHeader(CONTENT_TYPE_HEADER, MEDIA_TYPE_DEFAULT);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_DEFAULT);
         return requestBuilder.build();
-    }
-
-    private JiraRequest.Builder createBasicRequestBuilder(HttpUrl apiUri) {
-        return new JiraRequest.Builder(apiUri);
     }
 
     private String createBodyContent(String pluginName, String pluginUri) {
