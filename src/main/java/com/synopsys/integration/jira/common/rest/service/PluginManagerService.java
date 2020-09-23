@@ -191,10 +191,7 @@ public class PluginManagerService {
     }
 
     private JiraRequest.Builder createBasicRequestBuilder(HttpUrl apiUri) {
-        JiraRequest.Builder requestBuilder = new JiraRequest.Builder();
-
-        requestBuilder.url(apiUri);
-        return requestBuilder;
+        return new JiraRequest.Builder(apiUri);
     }
 
     private String createBodyContent(String pluginName, String pluginUri) {
