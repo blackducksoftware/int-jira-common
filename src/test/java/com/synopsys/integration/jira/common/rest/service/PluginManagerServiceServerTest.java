@@ -19,7 +19,7 @@ public class PluginManagerServiceServerTest extends JiraServerParameterizedTest 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
 
-        boolean appInstalled = pluginManagerService.isAppInstalled(JiraServerServiceTestUtility.getEnvUsername(), JiraServerServiceTestUtility.getEnvPassword(), "com.synopsys.integration.alert");
+        boolean appInstalled = pluginManagerService.isAppInstalled("com.synopsys.integration.alert");
         System.out.println("App is installed " + appInstalled);
     }
 }
