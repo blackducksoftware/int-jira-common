@@ -61,6 +61,10 @@ public class JiraApiClient {
         return httpClient.getBaseUrl();
     }
 
+    public IntJsonTransformer getJsonTransformer() {
+        return jsonTransformer;
+    }
+
     public <R extends JiraResponseModel> R get(JiraRequest jiraRequest, Class<R> responseClass) throws IntegrationException {
         return execute(jiraRequest, responseClass);
     }
