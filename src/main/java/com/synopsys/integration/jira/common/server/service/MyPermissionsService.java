@@ -20,19 +20,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.rest.service;
-
-import java.util.Collection;
-import java.util.Collections;
+package com.synopsys.integration.jira.common.server.service;
 
 import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.MultiPermissionResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
+import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class MyPermissionsService {
@@ -44,40 +40,21 @@ public class MyPermissionsService {
         this.jiraApiClient = jiraApiClient;
     }
 
-    public MultiPermissionResponseModel getMyPermissions(String permission) throws IntegrationException {
-        return getMyPermissions(Collections.singletonList(permission), null, null, null, null, null, null);
+    public MultiPermissionResponseModel getMyPermissions() throws IntegrationException {
+        return getMyPermissions(null, null, null, null);
     }
 
-    public MultiPermissionResponseModel getMyPermissions(
-        Collection<String> permissions,
-        @Nullable String projectKey,
-        @Nullable String projectId,
-        @Nullable String issueKey,
-        @Nullable String issueId,
-        @Nullable String projectUuid,
-        @Nullable String projectConfigurationUuid
-    ) throws IntegrationException {
+    public MultiPermissionResponseModel getMyPermissions(@Nullable String projectKey, @Nullable String projectId, @Nullable String issueKey, @Nullable String issueId) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
 
-        String permissionsCSV = StringUtils.join(permissions, ",");
         JiraRequest.Builder jiraRequestBuilder = JiraRequestFactory.createDefaultBuilder()
                                                      .url(httpUrl)
-                                                     .addQueryParameter("permissions", permissionsCSV);
-
-        addQueryParamIfNotBlank(jiraRequestBuilder, "projectKey", projectKey);
-        addQueryParamIfNotBlank(jiraRequestBuilder, "projectId", projectId);
-        addQueryParamIfNotBlank(jiraRequestBuilder, "issueKey", issueKey);
-        addQueryParamIfNotBlank(jiraRequestBuilder, "issueId", issueId);
-        addQueryParamIfNotBlank(jiraRequestBuilder, "projectUuid", projectUuid);
-        addQueryParamIfNotBlank(jiraRequestBuilder, "projectConfigurationUuid", projectConfigurationUuid);
+                                                     .addQueryParamIfValueNotBlank("projectKey", projectKey)
+                                                     .addQueryParamIfValueNotBlank("projectId", projectId)
+                                                     .addQueryParamIfValueNotBlank("issueKey", issueKey)
+                                                     .addQueryParamIfValueNotBlank("issueId", issueId);
 
         return jiraApiClient.get(jiraRequestBuilder.build(), MultiPermissionResponseModel.class);
-    }
-
-    private void addQueryParamIfNotBlank(JiraRequest.Builder jiraRequestBuilder, String keyName, String keyValue) {
-        if (StringUtils.isBlank(keyValue)) {
-            jiraRequestBuilder.addQueryParameter(keyName, keyValue);
-        }
     }
 
 }

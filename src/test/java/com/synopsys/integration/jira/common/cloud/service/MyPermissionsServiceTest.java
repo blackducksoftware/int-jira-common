@@ -13,7 +13,6 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.response.MultiPermissionResponseModel;
 import com.synopsys.integration.jira.common.model.response.PermissionModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.service.MyPermissionsService;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
@@ -25,7 +24,7 @@ public class MyPermissionsServiceTest {
         JiraHttpClient httpClient = JiraCloudServiceTestUtility.createJiraCredentialClient(logger);
         JiraCloudServiceFactory jiraServiceFactory = JiraCloudServiceTestUtility.createServiceFactory(httpClient);
 
-        MyPermissionsService myPermissionsService = new MyPermissionsService(jiraServiceFactory.getJiraApiClient());
+        MyPermissionsService myPermissionsService = jiraServiceFactory.createMyPermissionsService();
 
         String createIssuesPermissionName = "CREATE_ISSUES";
         String closeIssuesPermissionName = "CLOSE_ISSUES";

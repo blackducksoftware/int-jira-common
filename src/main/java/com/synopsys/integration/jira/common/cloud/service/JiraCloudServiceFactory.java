@@ -57,4 +57,8 @@ public class JiraCloudServiceFactory extends CommonServiceFactory {
         return new ProjectService(getJiraApiClient());
     }
 
+    public MyPermissionsService createMyPermissionsService() {
+        return new MyPermissionsService(getJiraApiClient());
+    }
+
 }
