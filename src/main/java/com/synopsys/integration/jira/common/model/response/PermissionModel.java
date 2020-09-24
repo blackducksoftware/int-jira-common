@@ -22,9 +22,9 @@
  */
 package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.jira.common.model.JiraResponseModel;
+import com.synopsys.integration.rest.component.IntRestComponent;
 
-public class PermissionModel extends JiraResponseModel {
+public class PermissionModel extends IntRestComponent {
     private String id;
     private String key;
     private String name;

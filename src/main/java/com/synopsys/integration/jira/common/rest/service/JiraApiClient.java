@@ -43,6 +43,7 @@ import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.component.IntRestComponent;
+import com.synopsys.integration.rest.component.IntRestResponse;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class JiraApiClient {
@@ -59,10 +60,6 @@ public class JiraApiClient {
 
     public String getBaseUrl() {
         return httpClient.getBaseUrl();
-    }
-
-    public IntJsonTransformer getJsonTransformer() {
-        return jsonTransformer;
     }
 
     public <R extends JiraResponseModel> R get(JiraRequest jiraRequest, Class<R> responseClass) throws IntegrationException {
@@ -188,7 +185,12 @@ public class JiraApiClient {
 
     private <R extends IntRestComponent> R parseResponse(JiraResponse jiraResponse, Type type) throws IntegrationException {
         String content = jiraResponse.getContent();
-        return jsonTransformer.getComponentAs(content, type);
+        R parsedResponse = jsonTransformer.getComponentAs(content, type);
+        if (parsedResponse instanceof IntRestResponse) {
+            // Necessary because we don't call jsonTransformer.getResponse(...)
+            ((IntRestResponse) parsedResponse).setGson(gson);
+        }
+        return parsedResponse;
     }
 
 }

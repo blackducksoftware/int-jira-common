@@ -22,23 +22,18 @@
  */
 package com.synopsys.integration.jira.common.rest.service;
 
-import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.reflect.TypeToken;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
-import com.synopsys.integration.jira.common.model.response.PermissionModel;
+import com.synopsys.integration.jira.common.model.response.MultiPermissionResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
-import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class MyPermissionsService {
     private static final String API_PATH = "/rest/api/2/mypermissions";
@@ -49,12 +44,12 @@ public class MyPermissionsService {
         this.jiraApiClient = jiraApiClient;
     }
 
-    public Map<String, PermissionModel> getMyPermissions(String permission) throws IntegrationException {
+    public MultiPermissionResponseModel getMyPermissions(String permission) throws IntegrationException {
         return getMyPermissions(Collections.singletonList(permission), null, null, null, null, null, null);
     }
 
-    public Map<String, PermissionModel> getMyPermissions(
-        List<String> permissions,
+    public MultiPermissionResponseModel getMyPermissions(
+        Collection<String> permissions,
         @Nullable String projectKey,
         @Nullable String projectId,
         @Nullable String issueKey,
@@ -76,11 +71,7 @@ public class MyPermissionsService {
         addQueryParamIfNotBlank(jiraRequestBuilder, "projectUuid", projectUuid);
         addQueryParamIfNotBlank(jiraRequestBuilder, "projectConfigurationUuid", projectConfigurationUuid);
 
-        JiraResponse jiraResponse = jiraApiClient.get(jiraRequestBuilder.build());
-
-        IntJsonTransformer jsonTransformer = jiraApiClient.getJsonTransformer();
-        Type responseType = new TypeToken<Map<String, PermissionModel>>() {}.getType();
-        return jsonTransformer.getComponentAs(jiraResponse.getContent(), responseType);
+        return jiraApiClient.get(jiraRequestBuilder.build(), MultiPermissionResponseModel.class);
     }
 
     private void addQueryParamIfNotBlank(JiraRequest.Builder jiraRequestBuilder, String keyName, String keyValue) {
