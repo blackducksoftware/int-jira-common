@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +33,6 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    @Ignore("This test is flaky as it occasionally takes too long to install and fails the test")
     public void installMarketplaceAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -49,8 +47,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    @Disabled
-    // Disabled because development mode will likely not be turned on most of the time.
+    @Disabled("Disabled because development mode will likely not be turned on most of the time")
     public void installCloudDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -65,6 +62,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
+    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
     public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException, InterruptedException {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
