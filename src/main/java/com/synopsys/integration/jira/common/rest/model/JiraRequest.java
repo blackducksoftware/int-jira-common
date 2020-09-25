@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.builder.Buildable;
@@ -177,6 +179,13 @@ public class JiraRequest extends Stringable implements Buildable {
 
         public JiraRequest.Builder addQueryParameter(String key, String value) {
             queryParameters.computeIfAbsent(key, k -> new HashSet<>()).add(value);
+            return this;
+        }
+
+        public JiraRequest.Builder addQueryParamIfValueNotBlank(String key, @Nullable String value) {
+            if (StringUtils.isBlank(value)) {
+                addQueryParameter(key, value);
+            }
             return this;
         }
 

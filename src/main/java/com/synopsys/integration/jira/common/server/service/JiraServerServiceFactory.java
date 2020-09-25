@@ -49,4 +49,8 @@ public class JiraServerServiceFactory extends CommonServiceFactory {
         return new UserSearchService(getJiraApiClient());
     }
 
+    public MyPermissionsService createMyPermissionsService() {
+        return new MyPermissionsService(getJiraApiClient());
+    }
+
 }
