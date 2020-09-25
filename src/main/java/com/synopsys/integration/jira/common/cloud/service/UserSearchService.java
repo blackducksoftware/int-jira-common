@@ -39,7 +39,8 @@ import com.synopsys.integration.rest.HttpUrl;
  * Waiting on Atlassian support to get back to us about why this is the case.
  */
 public class UserSearchService {
-    public static final String API_PATH = "/rest/api/2/user/search";
+    public static final String API_PATH_SEARCH = "/rest/api/2/user/search";
+    public static final String API_PATH_CURRENT = "/rest/api/2/myself";
 
     private final JiraApiClient jiraCloudService;
 
@@ -52,7 +53,7 @@ public class UserSearchService {
             return Collections.emptyList();
         }
 
-        HttpUrl uri = createApiUri();
+        HttpUrl uri = createSearchUri();
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(uri)
                                   .addQueryParameter("query", queryValue)
@@ -60,7 +61,16 @@ public class UserSearchService {
         return jiraCloudService.getList(request, UserDetailsResponseModel.class);
     }
 
-    private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH);
+    public UserDetailsResponseModel getCurrentUser() throws IntegrationException {
+        JiraRequest jiraRequest = JiraRequestFactory.createDefaultGetRequest(createCurrentUri());
+        return jiraCloudService.get(jiraRequest, UserDetailsResponseModel.class);
+    }
+
+    private HttpUrl createSearchUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH_SEARCH);
+    }
+
+    private HttpUrl createCurrentUri() throws IntegrationException {
+        return new HttpUrl(jiraCloudService.getBaseUrl() + API_PATH_CURRENT);
     }
 }

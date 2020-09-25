@@ -25,6 +25,7 @@ package com.synopsys.integration.jira.common.cloud.service;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
@@ -32,7 +33,8 @@ import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class ProjectService {
-    public static final String API_PATH = "/rest/api/2/project/search";
+    public static final String API_PATH_PROJECT = "/rest/api/2/project";
+    public static final String API_PATH_SEARCH = API_PATH_PROJECT + "/search";
     private final JiraApiClient jiraApiClient;
 
     public ProjectService(JiraApiClient jiraApiClient) {
@@ -40,8 +42,15 @@ public class ProjectService {
     }
 
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
-        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createSearchUri());
         return jiraApiClient.get(request, PageOfProjectsResponseModel.class);
+    }
+
+    public ProjectComponent getProject(String keyOrId) throws IntegrationException {
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(createPathApiUri(keyOrId))
+                                  .build();
+        return jiraApiClient.get(request, ProjectComponent.class);
     }
 
     public PageOfProjectsResponseModel getProjectsByName(String projectName) throws IntegrationException {
@@ -50,15 +59,19 @@ public class ProjectService {
         }
 
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
-                                  .url(createApiUri())
+                                  .url(createSearchUri())
                                   .addQueryParameter("query", projectName)
                                   .addQueryParameter("orderBy", "name")
                                   .build();
         return jiraApiClient.get(request, PageOfProjectsResponseModel.class);
     }
 
-    private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+    private HttpUrl createSearchUri() throws IntegrationException {
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH_SEARCH);
+    }
+
+    private HttpUrl createPathApiUri(String pathVariable) throws IntegrationException {
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH_PROJECT).appendRelativeUrl(pathVariable);
     }
 
 }

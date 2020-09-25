@@ -1,10 +1,12 @@
 package com.synopsys.integration.jira.common.server;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,6 +30,19 @@ public class UserSearchServiceTest extends JiraServerParameterizedTest {
 
         Optional<UserDetailsResponseModel> userNotMatchingName = userSearchService.findUserByUsername("totally_bogus_username_meant_to_not_match_anything");
         assertFalse(userNotMatchingName.isPresent(), "Expected not to find a user with a seemingly bogus username.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void getCurrentUserTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
+
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+        UserSearchService userSearchService = serviceFactory.createUserSearchService();
+
+        UserDetailsResponseModel currentUser = userSearchService.getCurrentUser();
+        assertNotNull(currentUser);
+        assertTrue(StringUtils.isNotBlank(currentUser.getSelf()));
     }
 
 }
