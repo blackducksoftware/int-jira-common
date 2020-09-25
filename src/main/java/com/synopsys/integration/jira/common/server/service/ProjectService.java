@@ -40,6 +40,13 @@ public class ProjectService {
         this.jiraApiClient = jiraApiClient;
     }
 
+    public ProjectComponent getProject(String keyOrId) throws IntegrationException {
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(createPathApiUri(keyOrId))
+                                  .build();
+        return jiraApiClient.get(request, ProjectComponent.class);
+    }
+
     public List<ProjectComponent> getProjects() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
         return jiraApiClient.getList(request, ProjectComponent.class);
@@ -55,6 +62,10 @@ public class ProjectService {
 
     private HttpUrl createApiUri() throws IntegrationException {
         return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+    }
+
+    private HttpUrl createPathApiUri(String pathVariable) throws IntegrationException {
+        return createApiUri().appendRelativeUrl(pathVariable);
     }
 
 }

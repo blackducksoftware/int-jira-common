@@ -39,7 +39,8 @@ import com.synopsys.integration.rest.exception.IntegrationRestException;
  * Waiting on Atlassian support to get back to us about why this is the case.
  */
 public class UserSearchService {
-    public static final String API_PATH = "/rest/api/2/user";
+    public static final String API_PATH_USER = "/rest/api/2/user";
+    public static final String API_PATH_CURRENT = "/rest/api/2/myself";
 
     private final JiraApiClient jiraApiClient;
 
@@ -55,12 +56,17 @@ public class UserSearchService {
         return findUsersByQuery("key", userKey);
     }
 
+    public UserDetailsResponseModel getCurrentUser() throws IntegrationException {
+        JiraRequest jiraRequest = JiraRequestFactory.createDefaultGetRequest(createCurrentUri());
+        return jiraApiClient.get(jiraRequest, UserDetailsResponseModel.class);
+    }
+
     private Optional<UserDetailsResponseModel> findUsersByQuery(String queryKey, String queryValue) throws IntegrationException {
         if (StringUtils.isBlank(queryValue)) {
             return Optional.empty();
         }
 
-        HttpUrl url = createApiUri();
+        HttpUrl url = createUserUri();
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(url)
                                   .addQueryParameter(queryKey, queryValue)
@@ -76,8 +82,12 @@ public class UserSearchService {
         return Optional.empty();
     }
 
-    private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+    private HttpUrl createUserUri() throws IntegrationException {
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH_USER);
+    }
+
+    private HttpUrl createCurrentUri() throws IntegrationException {
+        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH_CURRENT);
     }
 
 }

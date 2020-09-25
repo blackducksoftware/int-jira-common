@@ -25,6 +25,7 @@ package com.synopsys.integration.jira.common.cloud.service;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
@@ -44,6 +45,13 @@ public class ProjectService {
         return jiraApiClient.get(request, PageOfProjectsResponseModel.class);
     }
 
+    public ProjectComponent getProject(String keyOrId) throws IntegrationException {
+        JiraRequest request = JiraRequestFactory.createDefaultBuilder()
+                                  .url(createPathApiUri(keyOrId))
+                                  .build();
+        return jiraApiClient.get(request, ProjectComponent.class);
+    }
+
     public PageOfProjectsResponseModel getProjectsByName(String projectName) throws IntegrationException {
         if (StringUtils.isBlank(projectName)) {
             return new PageOfProjectsResponseModel();
@@ -59,6 +67,10 @@ public class ProjectService {
 
     private HttpUrl createApiUri() throws IntegrationException {
         return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+    }
+
+    private HttpUrl createPathApiUri(String pathVariable) throws IntegrationException {
+        return createApiUri().appendRelativeUrl(pathVariable);
     }
 
 }
