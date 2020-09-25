@@ -34,6 +34,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
+    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
     public void installServerAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -48,8 +49,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    @Disabled
-    // Disabled because development mode will likely not be turned on most of the time.
+    @Disabled("Disabled because development mode will likely not be turned on most of the time.")
     public void installServerDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -64,6 +64,7 @@ public class JiraServerAppServiceTest extends JiraServerParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
+    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
     public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
