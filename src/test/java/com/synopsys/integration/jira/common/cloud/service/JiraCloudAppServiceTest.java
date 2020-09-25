@@ -33,6 +33,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
     @ParameterizedTest
     @MethodSource("getParameters")
+    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
     public void installMarketplaceAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
