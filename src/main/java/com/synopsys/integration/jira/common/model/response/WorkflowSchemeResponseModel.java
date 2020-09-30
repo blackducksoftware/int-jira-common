@@ -24,7 +24,7 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.Map;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.UserDetailsComponent;
 
@@ -34,14 +34,14 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
     private String name;
     private String description;
     private String defaultWorkflow;
-    private Map<String, JsonObject> issueTypeMappings; // TODO implement
+    private Map<String, JsonElement> issueTypeMappings; // TODO implement
     private String originalDefaultWorkflow;
-    private Map<String, JsonObject> originalIssueTypeMappings;
+    private Map<String, JsonElement> originalIssueTypeMappings;
     private Boolean draft;
     private UserDetailsComponent lastModifiedUser;
     private String lastModified;
     private Boolean updateDraftIfNeeded;
-    private Map<String, JsonObject> issueTypes; // TODO implement
+    private Map<String, JsonElement> issueTypes; // TODO implement
 
     public WorkflowSchemeResponseModel() {
     }
@@ -52,14 +52,14 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
         String name,
         String description,
         String defaultWorkflow,
-        Map<String, JsonObject> issueTypeMappings,
+        Map<String, JsonElement> issueTypeMappings,
         String originalDefaultWorkflow,
-        Map<String, JsonObject> originalIssueTypeMappings,
+        Map<String, JsonElement> originalIssueTypeMappings,
         Boolean draft,
         UserDetailsComponent lastModifiedUser,
         String lastModified,
         Boolean updateDraftIfNeeded,
-        Map<String, JsonObject> issueTypes
+        Map<String, JsonElement> issueTypes
     ) {
         this.id = id;
         this.self = self;
@@ -96,7 +96,7 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
         return defaultWorkflow;
     }
 
-    public Map<String, JsonObject> getIssueTypeMappings() {
+    public Map<String, JsonElement> getIssueTypeMappings() {
         return issueTypeMappings;
     }
 
@@ -104,7 +104,7 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
         return originalDefaultWorkflow;
     }
 
-    public Map<String, JsonObject> getOriginalIssueTypeMappings() {
+    public Map<String, JsonElement> getOriginalIssueTypeMappings() {
         return originalIssueTypeMappings;
     }
 
@@ -124,7 +124,7 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
         return updateDraftIfNeeded;
     }
 
-    public Map<String, JsonObject> getIssueTypes() {
+    public Map<String, JsonElement> getIssueTypes() {
         return issueTypes;
     }
 }

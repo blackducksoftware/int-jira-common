@@ -25,7 +25,7 @@ package com.synopsys.integration.jira.common.model.response;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
 import com.synopsys.integration.jira.common.model.components.IdComponent;
 import com.synopsys.integration.jira.common.model.components.IssueFieldsComponent;
@@ -38,15 +38,15 @@ public class IssueResponseModel extends JiraResponseModel {
     private String id;
     private String self;
     private String key;
-    private Map<String, JsonObject> renderedFields;
-    private Map<String, JsonObject> properties;
-    private Map<String, JsonObject> names;
-    private Map<String, JsonObject> schema; // TODO maybe a Map<String, SchemaComponent> ?
+    private Map<String, JsonElement> renderedFields;
+    private Map<String, JsonElement> properties;
+    private Map<String, JsonElement> names;
+    private Map<String, JsonElement> schema; // TODO maybe a Map<String, SchemaComponent> ?
     private List<IdComponent> transitions;
     private OperationsComponent operations;
     private IssueUpdateMetadataComponent editmeta;
     private PageOfChangelogsResponseModel changelog;
-    private JsonObject versionedRepresentations; // TODO
+    private JsonElement versionedRepresentations; // TODO
     private IssueIncludedFieldsComponent fieldsToInclude;
     private IssueFieldsComponent fields;
 
@@ -58,15 +58,15 @@ public class IssueResponseModel extends JiraResponseModel {
         String id,
         String self,
         String key,
-        Map<String, JsonObject> renderedFields,
-        Map<String, JsonObject> properties,
-        Map<String, JsonObject> names,
-        Map<String, JsonObject> schema,
+        Map<String, JsonElement> renderedFields,
+        Map<String, JsonElement> properties,
+        Map<String, JsonElement> names,
+        Map<String, JsonElement> schema,
         List<IdComponent> transitions,
         OperationsComponent operations,
         IssueUpdateMetadataComponent editmeta,
         PageOfChangelogsResponseModel changelog,
-        JsonObject versionedRepresentations,
+        JsonElement versionedRepresentations,
         IssueIncludedFieldsComponent fieldsToInclude,
         IssueFieldsComponent fields
     ) {
@@ -103,19 +103,19 @@ public class IssueResponseModel extends JiraResponseModel {
         return key;
     }
 
-    public Map<String, JsonObject> getRenderedFields() {
+    public Map<String, JsonElement> getRenderedFields() {
         return renderedFields;
     }
 
-    public Map<String, JsonObject> getProperties() {
+    public Map<String, JsonElement> getProperties() {
         return properties;
     }
 
-    public Map<String, JsonObject> getNames() {
+    public Map<String, JsonElement> getNames() {
         return names;
     }
 
-    public Map<String, JsonObject> getSchema() {
+    public Map<String, JsonElement> getSchema() {
         return schema;
     }
 
@@ -135,7 +135,7 @@ public class IssueResponseModel extends JiraResponseModel {
         return changelog;
     }
 
-    public JsonObject getVersionedRepresentations() {
+    public JsonElement getVersionedRepresentations() {
         return versionedRepresentations;
     }
 

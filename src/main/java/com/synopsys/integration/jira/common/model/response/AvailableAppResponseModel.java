@@ -55,7 +55,7 @@ public class AvailableAppResponseModel extends JiraResponseModel {
     private Boolean stable;
     private Boolean dataCenterCompatible;
     private Boolean statusDataCenterCompatible;
-    private List<JsonObject> requests;
+    private List<JsonElement> requests;
     private String hamsProductKey;
 
     public AvailableAppResponseModel() {
@@ -86,7 +86,7 @@ public class AvailableAppResponseModel extends JiraResponseModel {
         Boolean stable,
         Boolean dataCenterCompatible,
         Boolean statusDataCenterCompatible,
-        List<JsonObject> requests,
+        List<JsonElement> requests,
         String hamsProductKey
     ) {
         this.links = links;
@@ -223,7 +223,7 @@ public class AvailableAppResponseModel extends JiraResponseModel {
         return statusDataCenterCompatible;
     }
 
-    public List<JsonObject> getRequests() {
+    public List<JsonElement> getRequests() {
         return requests;
     }
 

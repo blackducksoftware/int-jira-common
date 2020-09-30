@@ -164,8 +164,7 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
         assertNotNull(foundIssueWithAssignee.getFields().getAssignee());
         assertEquals(userDetails.getAccountId(), foundIssueWithAssignee.getFields().getAssignee().getAccountId());
         assertTrue(foundIssueWithAssignee.getProperties().containsKey(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
-        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
+        assertEquals(propertyValue, foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY).getAsString());
         assertNotEquals(foundIssue.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY), foundIssueWithAssignee.getProperties().get(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY));
     }
 
