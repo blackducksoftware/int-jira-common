@@ -24,6 +24,7 @@ package com.synopsys.integration.jira.common.cloud.model;
 
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import com.synopsys.integration.jira.common.model.JiraPageResponseModel;
 import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
@@ -32,13 +33,13 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
     private List<IssueResponseModel> issues;
     private List<String> warningMessages;
-    private Object names; // TODO create a bean for this object
+    private JsonObject names; // TODO create a bean for this object
     private SchemaComponent schema;
 
     public IssueSearchResponseModel() {
     }
 
-    public IssueSearchResponseModel(String expand, List<IssueResponseModel> issues, List<String> warningMessages, Object names, SchemaComponent schema) {
+    public IssueSearchResponseModel(String expand, List<IssueResponseModel> issues, List<String> warningMessages, JsonObject names, SchemaComponent schema) {
         this.expand = expand;
         this.issues = issues;
         this.warningMessages = warningMessages;
@@ -70,11 +71,11 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         this.warningMessages = warningMessages;
     }
 
-    public Object getNames() {
+    public JsonObject getNames() {
         return names;
     }
 
-    public void setNames(Object names) {
+    public void setNames(JsonObject names) {
         this.names = names;
     }
 
