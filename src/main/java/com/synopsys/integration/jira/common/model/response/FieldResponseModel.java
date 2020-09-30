@@ -40,6 +40,26 @@ public class FieldResponseModel extends JiraResponseModel {
     public FieldResponseModel() {
     }
 
+    public FieldResponseModel(
+        String id,
+        String key,
+        String name,
+        Boolean custom,
+        Boolean navigable,
+        Boolean searchable,
+        List<String> clauseNames,
+        SchemaComponent schema
+    ) {
+        this.id = id;
+        this.key = key;
+        this.name = name;
+        this.custom = custom;
+        this.navigable = navigable;
+        this.searchable = searchable;
+        this.clauseNames = clauseNames;
+        this.schema = schema;
+    }
+
     public String getId() {
         return id;
     }

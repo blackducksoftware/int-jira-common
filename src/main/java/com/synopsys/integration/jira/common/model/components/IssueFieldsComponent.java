@@ -24,6 +24,7 @@ package com.synopsys.integration.jira.common.model.components;
 
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 import com.synopsys.integration.rest.component.IntRestComponent;
 
@@ -36,12 +37,38 @@ public class IssueFieldsComponent extends IntRestComponent {
     private ProjectComponent project;
     @SerializedName(value = "subtasks", alternate = "sub-tasks")
     private List<IssueLinksComponent> subTasks;
-    private Object timetracking; // TODO
+    private JsonElement timetracking; // TODO
     private String updated;
     private WatcherComponent watcher;
     private PageOfWorklogsComponent worklog;
 
     public IssueFieldsComponent() {
+    }
+
+    public IssueFieldsComponent(
+        List<IssueAttachmentComponent> attachment,
+        UserDetailsComponent assignee,
+        PageOfIssueCommentsComponent comment,
+        String description,
+        List<IssueLinksComponent> issuelinks,
+        ProjectComponent project,
+        List<IssueLinksComponent> subTasks,
+        JsonElement timetracking,
+        String updated,
+        WatcherComponent watcher,
+        PageOfWorklogsComponent worklog
+    ) {
+        this.attachment = attachment;
+        this.assignee = assignee;
+        this.comment = comment;
+        this.description = description;
+        this.issuelinks = issuelinks;
+        this.project = project;
+        this.subTasks = subTasks;
+        this.timetracking = timetracking;
+        this.updated = updated;
+        this.watcher = watcher;
+        this.worklog = worklog;
     }
 
     public List<IssueAttachmentComponent> getAttachment() {
@@ -72,7 +99,7 @@ public class IssueFieldsComponent extends IntRestComponent {
         return subTasks;
     }
 
-    public Object getTimetracking() {
+    public JsonElement getTimetracking() {
         return timetracking;
     }
 

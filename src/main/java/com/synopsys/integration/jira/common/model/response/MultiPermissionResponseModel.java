@@ -35,6 +35,13 @@ import com.synopsys.integration.jira.common.model.JiraResponseModel;
 public class MultiPermissionResponseModel extends JiraResponseModel {
     private JsonObject permissions;
 
+    public MultiPermissionResponseModel() {
+    }
+
+    public MultiPermissionResponseModel(JsonObject permissions) {
+        this.permissions = permissions;
+    }
+
     public Map<String, PermissionModel> extractPermissions() {
         return permissions.keySet()
                    .stream()

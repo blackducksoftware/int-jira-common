@@ -35,6 +35,27 @@ public class WorkflowResponseModel extends JiraResponseModel {
     @SerializedName("default")
     private Boolean isDefault;
 
+    public WorkflowResponseModel() {
+    }
+
+    public WorkflowResponseModel(
+        String name,
+        String description,
+        String lastModifiedDate,
+        String lastModifiedUser,
+        String lastModifiedUserAccountId,
+        Integer steps,
+        Boolean isDefault
+    ) {
+        this.name = name;
+        this.description = description;
+        this.lastModifiedDate = lastModifiedDate;
+        this.lastModifiedUser = lastModifiedUser;
+        this.lastModifiedUserAccountId = lastModifiedUserAccountId;
+        this.steps = steps;
+        this.isDefault = isDefault;
+    }
+
     public String getName() {
         return name;
     }
