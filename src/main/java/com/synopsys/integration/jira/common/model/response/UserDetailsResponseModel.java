@@ -40,8 +40,18 @@ public class UserDetailsResponseModel extends JiraResponseModel {
     public UserDetailsResponseModel() {
     }
 
-    public UserDetailsResponseModel(String self, String name, String key, String accountId, String emailAddress, AvatarUrlsComponent avatarUrls, String displayName, Boolean active,
-        String timeZone, String accountType) {
+    public UserDetailsResponseModel(
+        String self,
+        String name,
+        String key,
+        String accountId,
+        String emailAddress,
+        AvatarUrlsComponent avatarUrls,
+        String displayName,
+        Boolean active,
+        String timeZone,
+        String accountType
+    ) {
         this.self = self;
         this.name = name;
         this.key = key;

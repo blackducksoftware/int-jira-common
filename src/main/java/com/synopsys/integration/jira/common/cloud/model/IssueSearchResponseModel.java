@@ -35,6 +35,17 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
     private Object names; // TODO create a bean for this object
     private SchemaComponent schema;
 
+    public IssueSearchResponseModel() {
+    }
+
+    public IssueSearchResponseModel(String expand, List<IssueResponseModel> issues, List<String> warningMessages, Object names, SchemaComponent schema) {
+        this.expand = expand;
+        this.issues = issues;
+        this.warningMessages = warningMessages;
+        this.names = names;
+        this.schema = schema;
+    }
+
     public String getExpand() {
         return expand;
     }

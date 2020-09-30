@@ -44,6 +44,32 @@ public class IssueFieldsComponent extends IntRestComponent {
     public IssueFieldsComponent() {
     }
 
+    public IssueFieldsComponent(
+        List<IssueAttachmentComponent> attachment,
+        UserDetailsComponent assignee,
+        PageOfIssueCommentsComponent comment,
+        String description,
+        List<IssueLinksComponent> issuelinks,
+        ProjectComponent project,
+        List<IssueLinksComponent> subTasks,
+        Object timetracking,
+        String updated,
+        WatcherComponent watcher,
+        PageOfWorklogsComponent worklog
+    ) {
+        this.attachment = attachment;
+        this.assignee = assignee;
+        this.comment = comment;
+        this.description = description;
+        this.issuelinks = issuelinks;
+        this.project = project;
+        this.subTasks = subTasks;
+        this.timetracking = timetracking;
+        this.updated = updated;
+        this.watcher = watcher;
+        this.worklog = worklog;
+    }
+
     public List<IssueAttachmentComponent> getAttachment() {
         return attachment;
     }

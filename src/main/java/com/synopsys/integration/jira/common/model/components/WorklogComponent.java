@@ -45,8 +45,21 @@ public class WorklogComponent extends IntRestComponent {
     public WorklogComponent() {
     }
 
-    public WorklogComponent(final String self, final String id, final String issueId, final UserDetailsComponent author, final UserDetailsComponent updateAuthor, final String comment, final String created, final String updated,
-        final VisibilityComponent visibility, final String started, final String timeSpent, final Integer timeSpentSeconds, final List<EntityProperty> properties) {
+    public WorklogComponent(
+        String self,
+        String id,
+        String issueId,
+        UserDetailsComponent author,
+        UserDetailsComponent updateAuthor,
+        String comment,
+        String created,
+        String updated,
+        VisibilityComponent visibility,
+        String started,
+        String timeSpent,
+        Integer timeSpentSeconds,
+        List<EntityProperty> properties
+    ) {
         this.self = self;
         this.id = id;
         this.issueId = issueId;

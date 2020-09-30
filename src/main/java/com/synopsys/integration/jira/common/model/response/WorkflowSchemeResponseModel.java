@@ -45,8 +45,21 @@ public class WorkflowSchemeResponseModel extends JiraResponseModel {
     public WorkflowSchemeResponseModel() {
     }
 
-    public WorkflowSchemeResponseModel(Integer id, String self, String name, String description, String defaultWorkflow, Map<String, Object> issueTypeMappings, String originalDefaultWorkflow,
-        Map<String, Object> originalIssueTypeMappings, Boolean draft, UserDetailsComponent lastModifiedUser, String lastModified, Boolean updateDraftIfNeeded, Map<String, Object> issueTypes) {
+    public WorkflowSchemeResponseModel(
+        Integer id,
+        String self,
+        String name,
+        String description,
+        String defaultWorkflow,
+        Map<String, Object> issueTypeMappings,
+        String originalDefaultWorkflow,
+        Map<String, Object> originalIssueTypeMappings,
+        Boolean draft,
+        UserDetailsComponent lastModifiedUser,
+        String lastModified,
+        Boolean updateDraftIfNeeded,
+        Map<String, Object> issueTypes
+    ) {
         this.id = id;
         this.self = self;
         this.name = name;

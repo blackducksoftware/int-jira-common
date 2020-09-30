@@ -34,6 +34,11 @@ public class InstalledAppsResponseModel extends JiraResponseModel {
     public InstalledAppsResponseModel() {
     }
 
+    public InstalledAppsResponseModel(List<PluginResponseModel> plugins, JsonObject links) {
+        this.plugins = plugins;
+        this.links = links;
+    }
+
     public List<PluginResponseModel> getPlugins() {
         return plugins;
     }

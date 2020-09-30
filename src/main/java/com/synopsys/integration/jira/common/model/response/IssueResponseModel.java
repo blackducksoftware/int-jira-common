@@ -52,6 +52,40 @@ public class IssueResponseModel extends JiraResponseModel {
     public IssueResponseModel() {
     }
 
+    public IssueResponseModel(
+        String expand,
+        String id,
+        String self,
+        String key,
+        Map<String, Object> renderedFields,
+        Map<String, Object> properties,
+        Map<String, Object> names,
+        Map<String, Object> schema,
+        List<IdComponent> transitions,
+        OperationsComponent operations,
+        IssueUpdateMetadataComponent editmeta,
+        PageOfChangelogsResponseModel changelog,
+        Object versionedRepresentations,
+        IssueIncludedFieldsComponent fieldsToInclude,
+        IssueFieldsComponent fields
+    ) {
+        this.expand = expand;
+        this.id = id;
+        this.self = self;
+        this.key = key;
+        this.renderedFields = renderedFields;
+        this.properties = properties;
+        this.names = names;
+        this.schema = schema;
+        this.transitions = transitions;
+        this.operations = operations;
+        this.editmeta = editmeta;
+        this.changelog = changelog;
+        this.versionedRepresentations = versionedRepresentations;
+        this.fieldsToInclude = fieldsToInclude;
+        this.fields = fields;
+    }
+
     public String getExpand() {
         return expand;
     }

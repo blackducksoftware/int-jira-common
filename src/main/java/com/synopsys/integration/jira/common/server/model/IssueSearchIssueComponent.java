@@ -39,6 +39,13 @@ public class IssueSearchIssueComponent extends IntRestComponent {
     public IssueSearchIssueComponent() {
     }
 
+    public IssueSearchIssueComponent(String expand, String id, String key, IssueSearchIssueFieldsComponent fields) {
+        this.expand = expand;
+        this.id = id;
+        this.key = key;
+        this.fields = fields;
+    }
+
     public String getExpand() {
         return expand;
     }
