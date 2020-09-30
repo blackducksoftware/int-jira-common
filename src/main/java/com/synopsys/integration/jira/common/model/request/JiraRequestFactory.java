@@ -32,8 +32,8 @@ import com.synopsys.integration.rest.HttpMethod;
 import com.synopsys.integration.rest.HttpUrl;
 
 public class JiraRequestFactory {
-    public static final String LIMIT_PARAMETER = "limit";
-    public static final String OFFSET_PARAMETER = "offset";
+    public static final String LIMIT_PARAMETER = "maxResults";
+    public static final String OFFSET_PARAMETER = "startAt";
     public static final int DEFAULT_LIMIT = 50;
     public static final int DEFAULT_OFFSET = 0;
     public static final String DEFAULT_MIME_TYPE = "application/json";
