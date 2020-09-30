@@ -45,9 +45,21 @@ public class PluginResponseModel extends JiraResponseModel {
     public PluginResponseModel() {
     }
 
-    public PluginResponseModel(Boolean enabled, JsonObject links, String name, String version, Boolean userInstalled, Boolean optional, Boolean isStatic, Boolean unloadable,
-        String description, String key, Boolean usesLicensing,
-        Boolean remotable, JsonObject vendor) {
+    public PluginResponseModel(
+        Boolean enabled,
+        JsonObject links,
+        String name,
+        String version,
+        Boolean userInstalled,
+        Boolean optional,
+        Boolean isStatic,
+        Boolean unloadable,
+        String description,
+        String key,
+        Boolean usesLicensing,
+        Boolean remotable,
+        JsonObject vendor
+    ) {
         this.enabled = enabled;
         this.links = links;
         this.name = name;

@@ -55,10 +55,66 @@ public class AvailableAppResponseModel extends JiraResponseModel {
     private Boolean stable;
     private Boolean dataCenterCompatible;
     private Boolean statusDataCenterCompatible;
-    private List<Object> requests;
+    private List<JsonElement> requests;
     private String hamsProductKey;
 
     public AvailableAppResponseModel() {
+    }
+
+    public AvailableAppResponseModel(
+        JsonObject links,
+        String key,
+        String name,
+        JsonObject vendor,
+        JsonObject logo,
+        String version,
+        String license,
+        String summary,
+        String description,
+        JsonObject versionDetails,
+        String marketPlaceType,
+        Boolean usesLicensing,
+        JsonArray categories,
+        Double rating,
+        Long ratingCount,
+        Long reviewCount,
+        Long downloadCount,
+        Long installationCount,
+        Boolean installed,
+        Boolean installable,
+        Boolean preinstalled,
+        Boolean stable,
+        Boolean dataCenterCompatible,
+        Boolean statusDataCenterCompatible,
+        List<JsonElement> requests,
+        String hamsProductKey
+    ) {
+        this.links = links;
+        this.key = key;
+        this.name = name;
+        this.vendor = vendor;
+        this.logo = logo;
+        this.version = version;
+        this.license = license;
+        this.summary = summary;
+        this.description = description;
+        this.versionDetails = versionDetails;
+        this.marketPlaceType = marketPlaceType;
+        this.usesLicensing = usesLicensing;
+        this.categories = categories;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.reviewCount = reviewCount;
+        this.downloadCount = downloadCount;
+        this.installationCount = installationCount;
+        this.installed = installed;
+        this.installable = installable;
+        this.preinstalled = preinstalled;
+        this.stable = stable;
+        this.dataCenterCompatible = dataCenterCompatible;
+        this.statusDataCenterCompatible = statusDataCenterCompatible;
+        this.requests = requests;
+        this.hamsProductKey = hamsProductKey;
     }
 
     public Optional<String> getBinaryLink() {
@@ -167,7 +223,7 @@ public class AvailableAppResponseModel extends JiraResponseModel {
         return statusDataCenterCompatible;
     }
 
-    public List<Object> getRequests() {
+    public List<JsonElement> getRequests() {
         return requests;
     }
 

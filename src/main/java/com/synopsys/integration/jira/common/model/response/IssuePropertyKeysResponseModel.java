@@ -33,6 +33,10 @@ public class IssuePropertyKeysResponseModel extends JiraResponseModel {
     public IssuePropertyKeysResponseModel() {
     }
 
+    public IssuePropertyKeysResponseModel(List<IssuePropertyKeyComponent> keys) {
+        this.keys = keys;
+    }
+
     public List<IssuePropertyKeyComponent> getKeys() {
         return keys;
     }

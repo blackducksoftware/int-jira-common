@@ -33,6 +33,27 @@ public class IssueTypeResponseModel extends JiraResponseModel {
     private Boolean subtask;
     private Integer avatarId;
 
+    public IssueTypeResponseModel() {
+    }
+
+    public IssueTypeResponseModel(
+        String self,
+        String id,
+        String description,
+        String iconUrl,
+        String name,
+        Boolean subtask,
+        Integer avatarId
+    ) {
+        this.self = self;
+        this.id = id;
+        this.description = description;
+        this.iconUrl = iconUrl;
+        this.name = name;
+        this.subtask = subtask;
+        this.avatarId = avatarId;
+    }
+
     public String getSelf() {
         return self;
     }

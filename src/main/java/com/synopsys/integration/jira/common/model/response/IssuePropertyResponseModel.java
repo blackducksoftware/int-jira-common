@@ -32,6 +32,11 @@ public class IssuePropertyResponseModel extends JiraResponseModel {
     public IssuePropertyResponseModel() {
     }
 
+    public IssuePropertyResponseModel(String key, JsonObject value) {
+        this.key = key;
+        this.value = value;
+    }
+
     public String getKey() {
         return key;
     }

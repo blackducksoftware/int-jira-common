@@ -32,6 +32,18 @@ public class PermissionModel extends IntRestComponent {
     private String description;
     private Boolean havePermission;
 
+    public PermissionModel() {
+    }
+
+    public PermissionModel(String id, String key, String name, String type, String description, Boolean havePermission) {
+        this.id = id;
+        this.key = key;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.havePermission = havePermission;
+    }
+
     public String getId() {
         return id;
     }

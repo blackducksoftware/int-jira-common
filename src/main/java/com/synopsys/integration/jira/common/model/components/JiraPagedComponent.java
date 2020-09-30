@@ -30,6 +30,15 @@ public class JiraPagedComponent extends IntRestComponent implements JiraPagedMod
     private Integer maxResults;
     private Integer total;
 
+    public JiraPagedComponent() {
+    }
+
+    public JiraPagedComponent(Integer startAt, Integer maxResults, Integer total) {
+        this.startAt = startAt;
+        this.maxResults = maxResults;
+        this.total = total;
+    }
+
     @Override
     public Integer getStartAt() {
         return startAt;
