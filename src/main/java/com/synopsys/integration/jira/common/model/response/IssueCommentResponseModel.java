@@ -41,4 +41,24 @@ public class IssueCommentResponseModel extends JiraResponseModel {
         this.body = body;
         this.updateAuthor = updateAuthor;
     }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public IssueCommentAuthorResponseModel getAuthor() {
+        return author;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public IssueCommentAuthorResponseModel getUpdateAuthor() {
+        return updateAuthor;
+    }
 }
