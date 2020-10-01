@@ -41,6 +41,12 @@ public class ProjectService {
         this.jiraApiClient = jiraApiClient;
     }
 
+    public PageOfProjectsResponseModel getProjects(int startAt, int limit) throws IntegrationException {
+        JiraRequest.Builder requestBuilder = JiraRequestFactory.createDefaultPageRequestBuilder(startAt, limit);
+        requestBuilder.url(createSearchUri());
+        return jiraApiClient.get(requestBuilder.build(), PageOfProjectsResponseModel.class);
+    }
+
     public PageOfProjectsResponseModel getProjects() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createSearchUri());
         return jiraApiClient.get(request, PageOfProjectsResponseModel.class);

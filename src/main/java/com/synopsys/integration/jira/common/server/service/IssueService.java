@@ -37,6 +37,7 @@ import com.synopsys.integration.jira.common.model.request.IssueCommentRequestMod
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
+import com.synopsys.integration.jira.common.model.response.IssueCommentResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
@@ -148,13 +149,9 @@ public class IssueService {
         return jiraApiClient.get(request, TransitionsResponseModel.class);
     }
 
-    public void addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
+    public IssueCommentResponseModel addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
-        JiraResponse response = jiraApiClient.post(requestModel, commentsUri);
-
-        if (response.isStatusCodeError()) {
-            throw new IntegrationException(String.format("Error commenting on issue; cause: (%d) - %s", response.getStatusCode(), response.getStatusMessage()));
-        }
+        return jiraApiClient.post(requestModel, commentsUri, IssueCommentResponseModel.class);
     }
 
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
