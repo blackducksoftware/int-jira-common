@@ -26,11 +26,29 @@ public class ProjectServiceTest extends JiraCloudParameterizedTest {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        PageOfProjectsResponseModel pagedModel = projectService.getProjects(0, 1);
+        int limit = 5;
+        int startAt = 0;
+        PageOfProjectsResponseModel pagedModel = projectService.getProjects(limit, startAt);
+        assertNotNull(pagedModel);
+        assertNotNull(pagedModel.getProjects());
+        assertEquals(limit, pagedModel.getMaxResults());
+        assertEquals(startAt, pagedModel.getStartAt());
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testGetManyPaginatedProjects(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
+
+        ProjectService projectService = serviceFactory.createProjectService();
+
+        int limit = 1000;
+        PageOfProjectsResponseModel pagedModel = projectService.getProjects(limit, 0);
         assertNotNull(pagedModel);
         assertNotNull(pagedModel.getProjects());
         assertFalse(pagedModel.getProjects().isEmpty());
-        assertEquals(1, pagedModel.getMaxResults());
+        assertTrue(limit > pagedModel.getMaxResults());
     }
 
     @ParameterizedTest
