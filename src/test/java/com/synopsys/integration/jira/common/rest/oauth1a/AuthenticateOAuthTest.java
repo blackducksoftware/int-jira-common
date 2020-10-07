@@ -135,7 +135,7 @@ public class AuthenticateOAuthTest {
             assertTrue(projects.getTotal() > 0, failureMessage);
         } else {
             com.synopsys.integration.jira.common.server.service.ProjectService projectService = new com.synopsys.integration.jira.common.server.service.ProjectService(jiraApiClient);
-            List<ProjectComponent> projects = projectService.getProjects();
+            List<ProjectComponent> projects = projectService.getProjects().getProjects();
             assertTrue(projects.size() > 0, failureMessage);
         }
 

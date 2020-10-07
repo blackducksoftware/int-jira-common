@@ -22,12 +22,14 @@
  */
 package com.synopsys.integration.jira.common.server.service;
 
-import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
+import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
@@ -47,17 +49,22 @@ public class ProjectService {
         return jiraApiClient.get(request, ProjectComponent.class);
     }
 
-    public List<ProjectComponent> getProjects() throws IntegrationException {
+    public PageOfProjectsResponseModel getProjects() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
-        return jiraApiClient.getList(request, ProjectComponent.class);
+        return new PageOfProjectsResponseModel(jiraApiClient.getList(request, ProjectComponent.class));
     }
 
-    public List<ProjectComponent> getProjectsByName(String projectName) throws IntegrationException {
+    public PageOfProjectsResponseModel getProjectsByName(String projectName) throws IntegrationException {
+        if (StringUtils.isBlank(projectName)) {
+            return new PageOfProjectsResponseModel();
+        }
+        
         // TODO gavink - I could not find a way to query for projects through the API, so we may have issues handling large collections of results.
-        return getProjects()
-                   .stream()
-                   .filter(project -> project.getName().equals(projectName) || project.getKey().equals(projectName))
-                   .collect(Collectors.toList());
+        return new PageOfProjectsResponseModel(getProjects()
+                       .getProjects()
+                       .stream()
+                       .filter(project -> project.getName().equals(projectName) || project.getKey().equals(projectName))
+                       .collect(Collectors.toList()));
     }
 
     private HttpUrl createApiUri() throws IntegrationException {

@@ -84,7 +84,7 @@ public class IssueService {
                                                     .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
         UserDetailsResponseModel foundUserDetails = userSearchService.findUserByUsername(reporter)
                                                         .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporter)));
-        List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
+        List<ProjectComponent> projects = projectService.getProjectsByName(projectName).getProjects();
         ProjectComponent foundProject = projects.stream()
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));

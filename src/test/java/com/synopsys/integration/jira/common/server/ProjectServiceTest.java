@@ -24,7 +24,7 @@ public class ProjectServiceTest extends JiraServerParameterizedTest {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        List<ProjectComponent> projects = projectService.getProjects();
+        List<ProjectComponent> projects = projectService.getProjects().getProjects();
         assertFalse(projects.isEmpty());
     }
 
@@ -37,7 +37,7 @@ public class ProjectServiceTest extends JiraServerParameterizedTest {
         ProjectService projectService = serviceFactory.createProjectService();
 
         String testProject = JiraServerServiceTestUtility.getTestProject();
-        List<ProjectComponent> projects = projectService.getProjectsByName(testProject);
+        List<ProjectComponent> projects = projectService.getProjectsByName(testProject).getProjects();
 
         assertFalse(projects.isEmpty());
 
