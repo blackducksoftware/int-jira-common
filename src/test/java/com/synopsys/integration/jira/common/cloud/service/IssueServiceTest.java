@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -31,10 +32,13 @@ import com.synopsys.integration.jira.common.model.components.TransitionComponent
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.TransitionsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
 
 public class IssueServiceTest extends JiraCloudParameterizedTest {
 
@@ -248,6 +252,34 @@ public class IssueServiceTest extends JiraCloudParameterizedTest {
 
         assertEquals(createdIssue.getId(), foundIssueWithTransition.getId());
         assertNotEquals(foundIssue.getFields().getUpdated(), foundIssueWithTransition.getFields().getUpdated());
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testIssueFields(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
+        IssueService issueService = serviceFactory.createIssueService();
+        IssueTypeService issueTypeService = serviceFactory.createIssueTypeService();
+        ProjectService projectService = serviceFactory.createProjectService();
+
+        String testProject = JiraCloudServiceTestUtility.getTestProject();
+        String projectKey = projectService.getProjectsByName(testProject)
+                                .getProjects()
+                                .stream()
+                                .findFirst()
+                                .map(ProjectComponent::getKey)
+                                .orElseThrow(() -> new IntegrationException("Expected to find project"));
+
+        String issueId = issueTypeService.getAllIssueTypes()
+                             .stream()
+                             .filter(issueType -> "Task".equalsIgnoreCase(issueType.getName()))
+                             .map(IssueTypeResponseModel::getId)
+                             .findFirst()
+                             .orElseThrow(() -> new IntegrationException("Expected to find issue type task"));
+
+        JiraResponse issueFields = issueService.getIssueFields(projectKey, issueId);
+        assertTrue(StringUtils.isNotBlank(issueFields.getContent()));
     }
 
     private IssueResponseModel createIssue(JiraCloudServiceFactory serviceFactory) throws IntegrationException {

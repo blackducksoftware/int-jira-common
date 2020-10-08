@@ -174,8 +174,20 @@ public class IssueService {
         return statusDetailsComponent;
     }
 
+    public JiraResponse getIssueFields(String projectIdOrKey, String issueTypeId) throws IntegrationException {
+        HttpUrl issueFieldsQueryUri = createIssueFieldsQueryUri(projectIdOrKey, issueTypeId);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(issueFieldsQueryUri);
+        JiraResponse jiraResponse = jiraApiClient.get(request);
+        return jiraResponse;
+    }
+
     private String createApiUri() {
         return jiraApiClient.getBaseUrl() + API_PATH;
+    }
+
+    private HttpUrl createIssueFieldsQueryUri(String projectIdOrKey, String issueTypeId) throws IntegrationException {
+        //        return new HttpUrl(String.format("%s/createmeta?projectKeys=%s&expand=projects.issuetypes.fields", createApiUri(), projectIdOrKey, issueTypeId));
+        return new HttpUrl(String.format("%s/createmeta/%s/issuetypes/%s", createApiUri(), projectIdOrKey, issueTypeId));
     }
 
     private HttpUrl createApiIssueUri(String issueIdOrKey) throws IntegrationException {
