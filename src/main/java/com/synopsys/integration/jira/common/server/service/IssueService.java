@@ -1,8 +1,8 @@
 /**
  * int-jira-common
- *
+ * <p>
  * Copyright (c) 2020 Synopsys, Inc.
- *
+ * <p>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -10,9 +10,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
+
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
@@ -73,21 +74,22 @@ public class IssueService {
         this.issueTypeService = issueTypeService;
     }
 
+    // FIXME Both server and cloud return an object that has far too many fields for the actual data that is returned.
     public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
         String issueTypeName = requestModel.getIssueTypeName();
         String projectName = requestModel.getProjectName();
         String reporter = requestModel.getReporterUsername();
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
-                                                    .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
-                                                    .findFirst()
-                                                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
+            .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
+            .findFirst()
+            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
         UserDetailsResponseModel foundUserDetails = userSearchService.findUserByUsername(reporter)
-                                                        .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporter)));
+            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporter)));
         List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = projects.stream()
-                                            .findFirst()
-                                            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
+            .findFirst()
+            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
         return createIssue(foundIssueType.getId(), foundUserDetails.getName(), foundProject.getId(), requestModel.getFieldsBuilder());
     }
@@ -123,9 +125,9 @@ public class IssueService {
     public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueUri(issueIdOrKey);
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
-                                  .url(uri)
-                                  .addQueryParameter("properties", "*all")
-                                  .build();
+            .url(uri)
+            .addQueryParameter("properties", "*all")
+            .build();
         return jiraApiClient.get(request, IssueResponseModel.class);
     }
 

@@ -1,8 +1,8 @@
 /**
  * int-jira-common
- *
+ * <p>
  * Copyright (c) 2020 Synopsys, Inc.
- *
+ * <p>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -10,9 +10,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -66,8 +66,13 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return Collections.unmodifiableMap(issueFields);
     }
 
+    public IssueRequestModelFieldsBuilder setField(String key, Object value) {
+        issueFields.put(key, value);
+        return this;
+    }
+
     public IssueRequestModelFieldsBuilder setSummary(String summary) {
-        issueFields.put(SUMMARY, summary);
+        setField(SUMMARY, summary);
         return this;
     }
 
@@ -84,7 +89,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setDescription(String description) {
-        issueFields.put(DESCRIPTION, description);
+        setField(DESCRIPTION, description);
         return this;
     }
 
@@ -101,7 +106,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setLabels(Collection<String> labels) {
-        issueFields.put(LABELS, labels);
+        setField(LABELS, labels);
         return this;
     }
 

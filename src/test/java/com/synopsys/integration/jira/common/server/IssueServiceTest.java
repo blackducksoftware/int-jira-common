@@ -1,5 +1,6 @@
 package com.synopsys.integration.jira.common.server;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,7 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.model.components.IssueFieldsComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
@@ -69,6 +74,42 @@ public class IssueServiceTest extends JiraServerParameterizedTest {
 
         JiraResponse issueFields = issueService.getIssueFields(projectKey, issueId);
         assertTrue(StringUtils.isNotBlank(issueFields.getContent()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void createIssueWithCustomFieldTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+        IssueService issueService = serviceFactory.createIssueService();
+
+        String reporter = "admin";
+        String issueTypeName = "Task";
+        String projectName = JiraServerServiceTestUtility.getTestProject();
+
+        IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
+        issueRequestModelFieldsBuilder.setSummary("Custom field Test in int-jira-common: " + UUID.randomUUID().toString());
+        issueRequestModelFieldsBuilder.setDescription("Test description");
+        issueRequestModelFieldsBuilder.setPriority("3");
+
+        String key = "customfield_10107";
+        String value = "Custom field using rest";
+        issueRequestModelFieldsBuilder.setField(key, value);
+
+        IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
+        IssueResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);
+
+        assertNotNull(issueCreationResponse);
+        assertTrue(StringUtils.isNotBlank(issueCreationResponse.getKey()));
+
+        IssueResponseModel issue = issueService.getIssue(issueCreationResponse.getKey());
+
+        IssueFieldsComponent fields = issue.getFields();
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(fields.getJson(), JsonObject.class);
+        JsonPrimitive customValueFromResponse = jsonObject.getAsJsonPrimitive(key);
+
+        assertEquals(value, customValueFromResponse.getAsString());
     }
 
 }

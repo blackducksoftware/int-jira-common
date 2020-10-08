@@ -112,6 +112,7 @@ public class IssueService {
                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
     }
 
+    // FIXME Both server and cloud return an object that has far too many fields for the actual data that is returned.
     private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
         return jiraCloudService.post(requestModel, httpUrl, IssueResponseModel.class);
