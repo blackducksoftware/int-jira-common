@@ -24,72 +24,62 @@ package com.synopsys.integration.jira.common.model.response;
 
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
-import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 
 public class FieldResponseModel extends JiraResponseModel {
-    private String id;
-    private String key;
+    private boolean required;
+    private JsonElement schema;
     private String name;
-    private Boolean custom;
-    private Boolean navigable;
-    private Boolean searchable;
-    private List<String> clauseNames;
-    private SchemaComponent schema;
+    private String key;
+    private boolean hasDefaultValue;
+    private List<String> operations;
+    private List<JsonElement> allowedValues;
 
     public FieldResponseModel() {
     }
 
-    public FieldResponseModel(
-        String id,
-        String key,
+    public FieldResponseModel(boolean required,
+        JsonElement schema,
         String name,
-        Boolean custom,
-        Boolean navigable,
-        Boolean searchable,
-        List<String> clauseNames,
-        SchemaComponent schema
-    ) {
-        this.id = id;
-        this.key = key;
-        this.name = name;
-        this.custom = custom;
-        this.navigable = navigable;
-        this.searchable = searchable;
-        this.clauseNames = clauseNames;
+        String key,
+        boolean hasDefaultValue,
+        List<String> operations,
+        List<JsonElement> allowedValues) {
+        this.required = required;
         this.schema = schema;
+        this.name = name;
+        this.key = key;
+        this.hasDefaultValue = hasDefaultValue;
+        this.operations = operations;
+        this.allowedValues = allowedValues;
     }
 
-    public String getId() {
-        return id;
+    public boolean isRequired() {
+        return required;
     }
 
-    public String getKey() {
-        return key;
+    public JsonElement getSchema() {
+        return schema;
     }
 
     public String getName() {
         return name;
     }
 
-    public Boolean getCustom() {
-        return custom;
+    public String getKey() {
+        return key;
     }
 
-    public Boolean getNavigable() {
-        return navigable;
+    public boolean isHasDefaultValue() {
+        return hasDefaultValue;
     }
 
-    public Boolean getSearchable() {
-        return searchable;
+    public List<String> getOperations() {
+        return operations;
     }
 
-    public List<String> getClauseNames() {
-        return clauseNames;
+    public List<JsonElement> getAllowedValues() {
+        return allowedValues;
     }
-
-    public SchemaComponent getSchema() {
-        return schema;
-    }
-
 }

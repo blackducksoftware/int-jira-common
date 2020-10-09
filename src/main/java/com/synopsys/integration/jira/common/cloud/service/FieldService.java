@@ -27,7 +27,7 @@ import java.util.List;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.request.FieldRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
-import com.synopsys.integration.jira.common.model.response.FieldResponseModel;
+import com.synopsys.integration.jira.common.model.response.CustomFieldCreationResponseModel;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
@@ -41,13 +41,13 @@ public class FieldService {
         this.jiraCloudService = jiraCloudService;
     }
 
-    public List<FieldResponseModel> getUserVisibleFields() throws IntegrationException {
+    public List<CustomFieldCreationResponseModel> getUserVisibleFields() throws IntegrationException {
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(createApiUri());
-        return jiraCloudService.getList(request, FieldResponseModel.class);
+        return jiraCloudService.getList(request, CustomFieldCreationResponseModel.class);
     }
 
-    public FieldResponseModel createCustomField(FieldRequestModel fieldModel) throws IntegrationException {
-        return jiraCloudService.post(fieldModel, createApiUri(), FieldResponseModel.class);
+    public CustomFieldCreationResponseModel createCustomField(FieldRequestModel fieldModel) throws IntegrationException {
+        return jiraCloudService.post(fieldModel, createApiUri(), CustomFieldCreationResponseModel.class);
     }
 
     private HttpUrl createApiUri() throws IntegrationException {

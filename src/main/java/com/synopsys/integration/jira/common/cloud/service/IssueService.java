@@ -42,6 +42,7 @@ import com.synopsys.integration.jira.common.model.request.IssueCommentRequestMod
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueCommentResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
@@ -76,7 +77,7 @@ public class IssueService {
         this.issueTypeService = issueTypeService;
     }
 
-    public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
+    public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
         String issueTypeName = requestModel.getIssueTypeName();
         String projectName = requestModel.getProjectName();
         String reporterEmail = requestModel.getReporterEmail();
@@ -113,9 +114,9 @@ public class IssueService {
     }
 
     // FIXME Both server and cloud return an object that has far too many fields for the actual data that is returned.
-    private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
-        return jiraCloudService.post(requestModel, httpUrl, IssueResponseModel.class);
+        return jiraCloudService.post(requestModel, httpUrl, IssueCreationResponseModel.class);
     }
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {
@@ -181,19 +182,8 @@ public class IssueService {
         return statusDetailsComponent;
     }
 
-    public JiraResponse getIssueFields(String projectIdOrKey, String issueTypeId) throws IntegrationException {
-        HttpUrl issueFieldsQueryUri = createIssueFieldsQueryUri(projectIdOrKey, issueTypeId);
-        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(issueFieldsQueryUri);
-        JiraResponse jiraResponse = jiraCloudService.get(request);
-        return jiraResponse;
-    }
-
     private String createApiUri() {
         return jiraCloudService.getBaseUrl() + API_PATH;
-    }
-
-    private HttpUrl createIssueFieldsQueryUri(String projectIdOrKey, String issueTypeId) throws IntegrationException {
-        return new HttpUrl(String.format("%s/createmeta?projectKeys=%s&expand=projects.issuetypes.fields", createApiUri(), projectIdOrKey, issueTypeId));
     }
 
     private HttpUrl createApiIssueUri(String issueIdOrKey) throws IntegrationException {

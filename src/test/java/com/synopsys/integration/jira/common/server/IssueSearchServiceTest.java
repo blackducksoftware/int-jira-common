@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
@@ -34,7 +34,7 @@ public class IssueSearchServiceTest extends JiraServerParameterizedTest {
         String projectName = JiraServerServiceTestUtility.getTestProject();
         String searchTerm = "my_extra_special_word";
         String description = "Example description containing a special word to search on: " + searchTerm;
-        IssueResponseModel issue = createIssue(issueService, projectName, description);
+        IssueCreationResponseModel issue = createIssue(issueService, projectName, description);
 
         try {
             IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
@@ -66,7 +66,7 @@ public class IssueSearchServiceTest extends JiraServerParameterizedTest {
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
         String projectName = JiraServerServiceTestUtility.getTestProject();
-        IssueResponseModel issue = createIssue(issueService, projectName, "Test description");
+        IssueCreationResponseModel issue = createIssue(issueService, projectName, "Test description");
 
         Gson gson = new Gson();
         TestPropertyClass testPropertyClass = new TestPropertyClass("innerValue");
@@ -92,7 +92,7 @@ public class IssueSearchServiceTest extends JiraServerParameterizedTest {
         }
     }
 
-    private IssueResponseModel createIssue(IssueService issueService, String projectName, String description) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(IssueService issueService, String projectName, String description) throws IntegrationException {
         String reporter = "admin";
         String issueTypeName = "Task";
 

@@ -11,9 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
-import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
@@ -34,7 +34,7 @@ public class ServerIssuePropertyServiceTest extends JiraServerParameterizedTest 
         Gson gson = new Gson();
 
         String projectName = JiraServerServiceTestUtility.getTestProject();
-        IssueResponseModel issue = createIssue(issueService, projectName);
+        IssueCreationResponseModel issue = createIssue(issueService, projectName);
 
         String propertyKey = "examplePropertyKey";
         try {
@@ -60,7 +60,7 @@ public class ServerIssuePropertyServiceTest extends JiraServerParameterizedTest 
         }
     }
 
-    private IssueResponseModel createIssue(IssueService issueService, String projectName) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(IssueService issueService, String projectName) throws IntegrationException {
         String reporter = "admin";
         String issueTypeName = "Task";
 

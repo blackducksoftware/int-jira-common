@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
-import com.synopsys.integration.jira.common.model.response.FieldResponseModel;
+import com.synopsys.integration.jira.common.model.response.CustomFieldCreationResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
 public class FieldServiceTest extends JiraCloudParameterizedTest {
@@ -20,7 +20,7 @@ public class FieldServiceTest extends JiraCloudParameterizedTest {
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         FieldService fieldService = serviceFactory.createFieldService();
 
-        List<FieldResponseModel> userVisibleFields = fieldService.getUserVisibleFields();
+        List<CustomFieldCreationResponseModel> userVisibleFields = fieldService.getUserVisibleFields();
         assertTrue(userVisibleFields.size() > 0);
     }
 }

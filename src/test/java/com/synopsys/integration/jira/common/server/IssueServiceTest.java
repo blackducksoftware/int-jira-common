@@ -16,6 +16,7 @@ import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.IssueFieldsComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -45,7 +46,7 @@ public class IssueServiceTest extends JiraServerParameterizedTest {
         issueRequestModelFieldsBuilder.setDescription("Test description");
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
-        IssueResponseModel issue = issueService.createIssue(issueCreationRequestModel);
+        IssueCreationResponseModel issue = issueService.createIssue(issueCreationRequestModel);
         assertNotNull(issue, "Expected an issue to be created.");
     }
 
@@ -97,7 +98,7 @@ public class IssueServiceTest extends JiraServerParameterizedTest {
         issueRequestModelFieldsBuilder.setField(key, value);
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
-        IssueResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);
+        IssueCreationResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);
 
         assertNotNull(issueCreationResponse);
         assertTrue(StringUtils.isNotBlank(issueCreationResponse.getKey()));

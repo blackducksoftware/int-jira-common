@@ -22,73 +22,74 @@
  */
 package com.synopsys.integration.jira.common.model.response;
 
-import java.util.Map;
+import java.util.List;
 
-import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
+import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 
-public class IssueTypeResponseModel extends JiraResponseModel {
-    private String self;
+public class CustomFieldCreationResponseModel extends JiraResponseModel {
     private String id;
-    private String description;
-    private String iconUrl;
+    private String key;
     private String name;
-    private Boolean subtask;
-    private Integer avatarId;
-    private Map<String, JsonElement> fields;
+    private Boolean custom;
+    private Boolean navigable;
+    private Boolean searchable;
+    private List<String> clauseNames;
+    private SchemaComponent schema;
 
-    public IssueTypeResponseModel() {
+    public CustomFieldCreationResponseModel() {
     }
 
-    public IssueTypeResponseModel(
-        String self,
+    public CustomFieldCreationResponseModel(
         String id,
-        String description,
-        String iconUrl,
+        String key,
         String name,
-        Boolean subtask,
-        Integer avatarId,
-        Map<String, JsonElement> fields
+        Boolean custom,
+        Boolean navigable,
+        Boolean searchable,
+        List<String> clauseNames,
+        SchemaComponent schema
     ) {
-        this.self = self;
         this.id = id;
-        this.description = description;
-        this.iconUrl = iconUrl;
+        this.key = key;
         this.name = name;
-        this.subtask = subtask;
-        this.avatarId = avatarId;
-        this.fields = fields;
-    }
-
-    public String getSelf() {
-        return self;
+        this.custom = custom;
+        this.navigable = navigable;
+        this.searchable = searchable;
+        this.clauseNames = clauseNames;
+        this.schema = schema;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getIconUrl() {
-        return iconUrl;
+    public String getKey() {
+        return key;
     }
 
     public String getName() {
         return name;
     }
 
-    public Boolean getSubtask() {
-        return subtask;
+    public Boolean getCustom() {
+        return custom;
     }
 
-    public Integer getAvatarId() {
-        return avatarId;
+    public Boolean getNavigable() {
+        return navigable;
     }
 
-    public Map<String, JsonElement> getFields() {
-        return fields;
+    public Boolean getSearchable() {
+        return searchable;
     }
+
+    public List<String> getClauseNames() {
+        return clauseNames;
+    }
+
+    public SchemaComponent getSchema() {
+        return schema;
+    }
+
 }

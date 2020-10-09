@@ -16,6 +16,7 @@ import com.synopsys.integration.jira.common.cloud.model.IssueSearchResponseModel
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
@@ -52,7 +53,7 @@ public class IssueSearchServiceTest extends JiraCloudParameterizedTest {
         String issueType = "bug";
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
         IssueSearchResponseModel foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
 
@@ -91,7 +92,7 @@ public class IssueSearchServiceTest extends JiraCloudParameterizedTest {
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
         IssueCommentRequestModel commentRequestModel = new IssueCommentRequestModel(createdIssue.getId(), commentValue, null, null, null);
         issueService.addComment(commentRequestModel);
 
@@ -135,7 +136,7 @@ public class IssueSearchServiceTest extends JiraCloudParameterizedTest {
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
         IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
         issueService.addComment(firstComment);
@@ -188,7 +189,7 @@ public class IssueSearchServiceTest extends JiraCloudParameterizedTest {
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
         // create an issue
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
         IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
         issueService.addComment(firstComment);

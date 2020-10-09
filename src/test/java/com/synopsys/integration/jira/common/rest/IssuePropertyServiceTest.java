@@ -24,9 +24,9 @@ import com.synopsys.integration.jira.common.cloud.service.UserSearchService;
 import com.synopsys.integration.jira.common.model.EntityProperty;
 import com.synopsys.integration.jira.common.model.components.IssuePropertyKeyComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssuePropertyResponseModel;
-import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
@@ -62,7 +62,7 @@ public class IssuePropertyServiceTest extends JiraCloudParameterizedTest {
         String issueType = "bug";
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
         String testPropertyKey = "test-property-key";
         String testObjectKey = "exampleKey";
@@ -104,7 +104,7 @@ public class IssuePropertyServiceTest extends JiraCloudParameterizedTest {
         String issueType = "bug";
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
-        IssueResponseModel createdIssue = issueService.createIssue(requestModel);
+        IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
         String testPropertyKey = "test-property-key";
         String testObjectKey = "exampleKey";
