@@ -42,6 +42,7 @@ import com.synopsys.integration.jira.common.model.request.IssueCommentRequestMod
 import com.synopsys.integration.jira.common.model.request.IssueRequestModel;
 import com.synopsys.integration.jira.common.model.request.JiraRequestFactory;
 import com.synopsys.integration.jira.common.model.response.IssueCommentResponseModel;
+import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
@@ -76,7 +77,7 @@ public class IssueService {
         this.issueTypeService = issueTypeService;
     }
 
-    public IssueResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
+    public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
         String issueTypeName = requestModel.getIssueTypeName();
         String projectName = requestModel.getProjectName();
         String reporterEmail = requestModel.getReporterEmail();
@@ -112,9 +113,9 @@ public class IssueService {
                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
     }
 
-    private IssueResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
-        return jiraCloudService.post(requestModel, httpUrl, IssueResponseModel.class);
+        return jiraCloudService.post(requestModel, httpUrl, IssueCreationResponseModel.class);
     }
 
     public void updateIssue(IssueRequestModel requestModel) throws IntegrationException {

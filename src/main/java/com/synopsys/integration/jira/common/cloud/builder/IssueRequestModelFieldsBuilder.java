@@ -66,89 +66,86 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return Collections.unmodifiableMap(issueFields);
     }
 
-    public IssueRequestModelFieldsBuilder setSummary(String summary) {
-        issueFields.put(SUMMARY, summary);
+    public IssueRequestModelFieldsBuilder setValue(String key, Object value) {
+        issueFields.put(key, value);
         return this;
+    }
+
+    public IssueRequestModelFieldsBuilder setSummary(String summary) {
+        return setValue(SUMMARY, summary);
     }
 
     public IssueRequestModelFieldsBuilder setIssueType(String issueTypeId) {
-        return setField(ISSUE_TYPE, issueTypeId);
+        return setIdField(ISSUE_TYPE, issueTypeId);
     }
 
     public IssueRequestModelFieldsBuilder setComponents(Collection<String> componentIds) {
-        return setFields(COMPONENTS, componentIds);
+        return setIdFields(COMPONENTS, componentIds);
     }
 
     public IssueRequestModelFieldsBuilder setProject(String projectId) {
-        return setField(PROJECT, projectId);
+        return setIdField(PROJECT, projectId);
     }
 
     public IssueRequestModelFieldsBuilder setDescription(String description) {
-        issueFields.put(DESCRIPTION, description);
-        return this;
+        return setValue(DESCRIPTION, description);
     }
 
     public IssueRequestModelFieldsBuilder setReporterId(String reporterId) {
-        return setField(REPORTER, reporterId);
+        return setIdField(REPORTER, reporterId);
     }
 
     public IssueRequestModelFieldsBuilder setFixVersions(Collection<String> versionIds) {
-        return setFields(FIX_VERSIONS, versionIds);
+        return setIdFields(FIX_VERSIONS, versionIds);
     }
 
     public IssueRequestModelFieldsBuilder setPriority(String priorityId) {
-        return setField(PRIORITY, priorityId);
+        return setIdField(PRIORITY, priorityId);
     }
 
     public IssueRequestModelFieldsBuilder setLabels(Collection<String> labels) {
-        issueFields.put(LABELS, labels);
-        return this;
+        return setValue(LABELS, labels);
     }
 
     public IssueRequestModelFieldsBuilder setTimeTracking(String remainingEstimate, String originalEstimate) {
         Map<String, String> timeTrackingMap = new HashMap<>();
         timeTrackingMap.put("remainingEstimate", remainingEstimate);
         timeTrackingMap.put("originalEstimate", originalEstimate);
-        issueFields.put(TIME_TRACKING, timeTrackingMap);
-        return this;
+        return setValue(TIME_TRACKING, timeTrackingMap);
     }
 
     public IssueRequestModelFieldsBuilder setSecurity(String securityId) {
-        return setField(SECURITY, securityId);
+        return setIdField(SECURITY, securityId);
     }
 
     public IssueRequestModelFieldsBuilder setEnvironment(String environment) {
-        issueFields.put(ENVIRONMENT, environment);
-        return this;
+        return setValue(ENVIRONMENT, environment);
     }
 
     public IssueRequestModelFieldsBuilder setVersions(Collection<String> versionIds) {
-        return setFields(VERSIONS, versionIds);
+        return setIdFields(VERSIONS, versionIds);
     }
 
     public IssueRequestModelFieldsBuilder setDueDate(String dueDate) {
-        issueFields.put(DUE_DATE, dueDate);
-        return this;
+        return setValue(DUE_DATE, dueDate);
     }
 
     public IssueRequestModelFieldsBuilder setAssigneeId(String assigneeId) {
-        return setField(ASSIGNEE, assigneeId);
+        return setIdField(ASSIGNEE, assigneeId);
     }
 
-    private IssueRequestModelFieldsBuilder setField(String key, String value) {
+    private IssueRequestModelFieldsBuilder setIdField(String key, String value) {
         ObjectWithId issueTypeObject = new ObjectWithId(value);
-        issueFields.put(key, issueTypeObject);
-        return this;
+        return setValue(key, issueTypeObject);
     }
 
-    private IssueRequestModelFieldsBuilder setFields(String key, Collection<String> values) {
+    private IssueRequestModelFieldsBuilder setIdFields(String key, Collection<String> values) {
         List<ObjectWithId> newObjects = new ArrayList<>();
         values
             .stream()
             .map(ObjectWithId::new)
             .forEach(newObjects::add);
-        issueFields.put(key, newObjects);
-        return this;
+        return setValue(key, newObjects);
     }
 
     private class ObjectWithId {

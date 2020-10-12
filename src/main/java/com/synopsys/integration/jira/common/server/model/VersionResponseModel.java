@@ -20,44 +20,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.model.response;
+package com.synopsys.integration.jira.common.server.model;
 
-import java.util.Map;
-
-import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class IssueTypeResponseModel extends JiraResponseModel {
+public class VersionResponseModel extends JiraResponseModel {
     private String self;
     private String id;
-    private String description;
-    private String iconUrl;
     private String name;
-    private Boolean subtask;
-    private Integer avatarId;
-    private Map<String, JsonElement> fields;
+    private boolean archived;
+    private boolean released;
+    private String projectId;
 
-    public IssueTypeResponseModel() {
+    public VersionResponseModel() {
     }
 
-    public IssueTypeResponseModel(
+    public VersionResponseModel(
         String self,
         String id,
-        String description,
-        String iconUrl,
         String name,
-        Boolean subtask,
-        Integer avatarId,
-        Map<String, JsonElement> fields
+        boolean archived,
+        boolean released,
+        String projectId
     ) {
         this.self = self;
         this.id = id;
-        this.description = description;
-        this.iconUrl = iconUrl;
         this.name = name;
-        this.subtask = subtask;
-        this.avatarId = avatarId;
-        this.fields = fields;
+        this.archived = archived;
+        this.released = released;
+        this.projectId = projectId;
     }
 
     public String getSelf() {
@@ -68,27 +59,19 @@ public class IssueTypeResponseModel extends JiraResponseModel {
         return id;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getIconUrl() {
-        return iconUrl;
-    }
-
     public String getName() {
         return name;
     }
 
-    public Boolean getSubtask() {
-        return subtask;
+    public boolean isArchived() {
+        return archived;
     }
 
-    public Integer getAvatarId() {
-        return avatarId;
+    public boolean isReleased() {
+        return released;
     }
 
-    public Map<String, JsonElement> getFields() {
-        return fields;
+    public String getProjectId() {
+        return projectId;
     }
 }

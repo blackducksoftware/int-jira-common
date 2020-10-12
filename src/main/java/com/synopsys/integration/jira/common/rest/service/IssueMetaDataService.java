@@ -45,6 +45,12 @@ public class IssueMetaDataService {
         return jiraApiClient.get(request, IssueCreateMetadataResponseModel.class);
     }
 
+    public IssueCreateMetadataResponseModel getCreateMetadataProjectIssueTypeFields(String projectKeyOrId, String issueTypeId) throws IntegrationException {
+        HttpUrl issueFieldsQueryUri = createIssueFieldsQueryUri(projectKeyOrId, issueTypeId);
+        JiraRequest request = JiraRequestFactory.createDefaultGetRequest(issueFieldsQueryUri);
+        return jiraApiClient.get(request, IssueCreateMetadataResponseModel.class);
+    }
+
     public boolean doesProjectContainIssueType(String projectName, String issueType) throws IntegrationException {
         IssueCreateMetadataResponseModel response = getCreateMetadata();
 
@@ -69,5 +75,9 @@ public class IssueMetaDataService {
 
     private HttpUrl createApiUri() throws IntegrationException {
         return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+    }
+
+    private HttpUrl createIssueFieldsQueryUri(String projectIdOrKey, String issueTypeId) throws IntegrationException {
+        return new HttpUrl(String.format("%s?projectKeys=%s&expand=projects.issuetypes.fields", createApiUri(), projectIdOrKey, issueTypeId));
     }
 }
