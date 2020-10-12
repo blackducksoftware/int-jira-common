@@ -26,26 +26,29 @@ import java.util.List;
 
 import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
+import com.synopsys.integration.jira.common.model.components.SchemaComponent;
 
-public class FieldResponseModel extends JiraResponseModel {
+public class IssueCreatemetaFieldResponseModel extends JiraResponseModel {
     private boolean required;
-    private JsonElement schema;
+    private SchemaComponent schema;
     private String name;
     private String key;
     private boolean hasDefaultValue;
     private List<String> operations;
     private List<JsonElement> allowedValues;
 
-    public FieldResponseModel() {
+    public IssueCreatemetaFieldResponseModel() {
     }
 
-    public FieldResponseModel(boolean required,
-        JsonElement schema,
+    public IssueCreatemetaFieldResponseModel(
+        boolean required,
+        SchemaComponent schema,
         String name,
         String key,
         boolean hasDefaultValue,
         List<String> operations,
-        List<JsonElement> allowedValues) {
+        List<JsonElement> allowedValues
+    ) {
         this.required = required;
         this.schema = schema;
         this.name = name;
@@ -59,7 +62,7 @@ public class FieldResponseModel extends JiraResponseModel {
         return required;
     }
 
-    public JsonElement getSchema() {
+    public SchemaComponent getSchema() {
         return schema;
     }
 

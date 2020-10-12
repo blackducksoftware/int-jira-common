@@ -42,7 +42,8 @@ public class VersionRequestModel extends JiraRequestModel {
         this.projectId = projectId;
     }
 
-    public VersionRequestModel(String description,
+    public VersionRequestModel(
+        String description,
         String name,
         boolean archived,
         boolean released,
