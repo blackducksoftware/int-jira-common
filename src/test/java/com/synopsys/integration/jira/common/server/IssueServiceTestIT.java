@@ -47,6 +47,27 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
+    public void createIssueWithoutReporterTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraServerServiceTestUtility.validateConfiguration();
+
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+        IssueService issueService = serviceFactory.createIssueService();
+
+        String reporter = null;
+        String issueTypeName = "Task";
+        String projectName = JiraServerServiceTestUtility.getTestProject();
+
+        IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
+        issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
+        issueRequestModelFieldsBuilder.setDescription("Test description");
+
+        IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
+        IssueCreationResponseModel issue = issueService.createIssue(issueCreationRequestModel);
+        assertNotNull(issue, "Expected an issue to be created.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
     public void createIssueWithCustomFieldTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);

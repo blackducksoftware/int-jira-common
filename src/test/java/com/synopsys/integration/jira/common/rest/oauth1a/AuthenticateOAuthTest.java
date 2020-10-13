@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +43,7 @@ public class AuthenticateOAuthTest {
      */
 
     @Test
-    @Ignore("Be sure you have all variables available before running")
+    @Disabled("Be sure you have all variables available before running")
     public void createAuthUrl() throws Exception {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(currentOAuthCredentials.getBaseUrl());
@@ -75,7 +75,7 @@ public class AuthenticateOAuthTest {
     }
 
     @Test
-    @Ignore("Be sure you have all variables available before running")
+    @Disabled("Be sure you have all variables available before running")
     public void createAuthenticationToken() throws Exception {
         setTemporaryTokenAndVerificationCode();
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();

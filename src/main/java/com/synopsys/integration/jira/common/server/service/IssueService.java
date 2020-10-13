@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
@@ -83,14 +85,15 @@ public class IssueService {
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
                                                     .findFirst()
                                                     .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
-        UserDetailsResponseModel foundUserDetails = userSearchService.findUserByUsername(reporter)
-                                                        .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporter)));
+        String username = userSearchService.findUserByUsername(reporter)
+                              .map(UserDetailsResponseModel::getName)
+                              .orElse("");
         List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = projects.stream()
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
-        return createIssue(foundIssueType.getId(), foundUserDetails.getName(), foundProject.getId(), requestModel.getFieldsBuilder());
+        return createIssue(foundIssueType.getId(), username, foundProject.getId(), requestModel.getFieldsBuilder());
     }
 
     public IssueCreationResponseModel createIssue(String issueTypeId, String reporterUserName, String projectId, IssueRequestModelFieldsMapBuilder issueRequestModelFieldsMapBuilder) throws IntegrationException {
@@ -99,7 +102,9 @@ public class IssueService {
         fieldsBuilder.copyFields(issueRequestModelFieldsMapBuilder);
 
         fieldsBuilder.setIssueType(issueTypeId);
-        fieldsBuilder.setReporterName(reporterUserName);
+        if (StringUtils.isNotBlank(reporterUserName)) {
+            fieldsBuilder.setReporterName(reporterUserName);
+        }
         fieldsBuilder.setProject(projectId);
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();

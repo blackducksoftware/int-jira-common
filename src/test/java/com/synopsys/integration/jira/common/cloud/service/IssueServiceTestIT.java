@@ -255,7 +255,6 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        String userEmail = JiraCloudServiceTestUtility.getEnvUserEmail();
         ProjectComponent project = projects.getProjects().stream()
                                        .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
                                        .findFirst()
@@ -269,7 +268,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         String propertyValue = UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
         properties.add(new EntityProperty(JiraTestEnvVars.CLOUD_TEST_PROPERTY_KEY, propertyValue));
-        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userEmail, "bug", project.getName(), fieldsBuilder, properties);
+        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(null, "bug", project.getName(), fieldsBuilder, properties);
 
         // create an issue
         return issueService.createIssue(requestModel);
