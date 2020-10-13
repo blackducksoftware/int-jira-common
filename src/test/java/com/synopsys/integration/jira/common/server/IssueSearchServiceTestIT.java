@@ -22,7 +22,7 @@ import com.synopsys.integration.jira.common.server.service.IssueSearchService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
-public class IssueSearchServiceTest extends JiraServerParameterizedTest {
+public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void queryForIssuesTest(JiraHttpClient jiraHttpClient) throws IntegrationException {

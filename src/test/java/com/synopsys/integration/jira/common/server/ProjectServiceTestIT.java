@@ -15,7 +15,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.ProjectService;
 
-public class ProjectServiceTest extends JiraServerParameterizedTest {
+public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void getProjectsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {

@@ -21,7 +21,7 @@ import com.synopsys.integration.jira.common.server.model.IssueCreationRequestMod
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
-public class ServerIssuePropertyServiceTest extends JiraServerParameterizedTest {
+public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void setAndGetTest(JiraHttpClient jiraHttpClient) throws IntegrationException {

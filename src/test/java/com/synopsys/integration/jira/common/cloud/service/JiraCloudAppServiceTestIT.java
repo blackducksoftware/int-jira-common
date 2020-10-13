@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.synopsys.integration.jira.common.model.response.PluginResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
@@ -21,14 +21,14 @@ import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
+public class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
     private static final int WAIT_TIME = 1000;
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
     @AfterEach
     public void waitForUninstallToFinish() throws InterruptedException {
-        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        Thread.sleep(JiraCloudAppServiceTestIT.WAIT_TIME);
     }
 
     @ParameterizedTest
@@ -41,7 +41,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
         int installResponse = pluginManagerService.installMarketplaceCloudApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
-        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        Thread.sleep(JiraCloudAppServiceTestIT.WAIT_TIME);
         int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
@@ -56,7 +56,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
 
         int installResponse = pluginManagerService.installDevelopmentApp("Test", APP_CLOUD_URI);
         assertTrue(isStatusCodeSuccess(installResponse), "Expected a 2xx response code, but was: " + installResponse);
-        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        Thread.sleep(JiraCloudAppServiceTestIT.WAIT_TIME);
         int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         assertTrue(isStatusCodeSuccess(uninstallResponse), "Expected a 2xx response code, but was: " + uninstallResponse);
     }
@@ -83,7 +83,7 @@ public class JiraCloudAppServiceTest extends JiraCloudParameterizedTest {
                                                              .collect(Collectors.toList());
         assertTrue(userInstalledPlugins.size() < allInstalledPlugins.size(), "Expected fewer user-installed plugins than total plugins");
 
-        Thread.sleep(JiraCloudAppServiceTest.WAIT_TIME);
+        Thread.sleep(JiraCloudAppServiceTestIT.WAIT_TIME);
         int uninstallResponse = pluginManagerService.uninstallApp(APP_KEY);
         throwExceptionForError(uninstallResponse);
     }

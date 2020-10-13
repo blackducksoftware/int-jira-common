@@ -116,6 +116,10 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
         URIBuilder uriBuilder = new URIBuilder(url);
         queryParams.entrySet()
             .stream()
+            .filter(entry -> entry.getValue() != null)
+            .filter(entry -> entry.getValue()
+                                 .stream()
+                                 .allMatch(StringUtils::isNotBlank))
             .forEach(entry ->
                          uriBuilder.addParameter(entry.getKey(), entry.getValue()
                                                                      .stream()

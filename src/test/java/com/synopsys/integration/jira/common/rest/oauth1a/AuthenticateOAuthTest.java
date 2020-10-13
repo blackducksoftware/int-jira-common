@@ -9,11 +9,13 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Tag;
 
 import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.IntegrationsTestConstants;
 import com.synopsys.integration.jira.common.cloud.service.ProjectService;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
@@ -24,6 +26,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 
+@Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public class AuthenticateOAuthTest {
     private static final OAuthTestCredentials cloudOAuth = OAuthTestCredentials.fromCloud();
     private static final OAuthTestCredentials serverOAuth = OAuthTestCredentials.fromServer();
