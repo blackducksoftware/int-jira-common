@@ -20,46 +20,55 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.jira.common.server.model;
+package com.synopsys.integration.jira.common.model.response;
 
-import com.synopsys.integration.jira.common.model.request.JiraRequestModel;
+import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
-public class VersionRequestModel extends JiraRequestModel {
+public class VersionResponseModel extends JiraResponseModel {
+    private String self;
+    private String id;
     private String description;
     private String name;
     private boolean archived;
     private boolean released;
     private String releaseDate;
+    private boolean overdue;
     private String userReleaseDate;
-    private String project;
     private String projectId;
 
-    public VersionRequestModel() {
+    public VersionResponseModel() {
     }
 
-    public VersionRequestModel(String name, String projectId) {
-        this.name = name;
-        this.projectId = projectId;
-    }
-
-    public VersionRequestModel(
+    public VersionResponseModel(
+        String self,
+        String id,
         String description,
         String name,
         boolean archived,
         boolean released,
         String releaseDate,
+        boolean overdue,
         String userReleaseDate,
-        String project,
         String projectId
     ) {
+        this.self = self;
+        this.id = id;
         this.description = description;
         this.name = name;
         this.archived = archived;
         this.released = released;
         this.releaseDate = releaseDate;
+        this.overdue = overdue;
         this.userReleaseDate = userReleaseDate;
-        this.project = project;
         this.projectId = projectId;
+    }
+
+    public String getSelf() {
+        return self;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -82,12 +91,12 @@ public class VersionRequestModel extends JiraRequestModel {
         return releaseDate;
     }
 
-    public String getUserReleaseDate() {
-        return userReleaseDate;
+    public boolean isOverdue() {
+        return overdue;
     }
 
-    public String getProject() {
-        return project;
+    public String getUserReleaseDate() {
+        return userReleaseDate;
     }
 
     public String getProjectId() {
