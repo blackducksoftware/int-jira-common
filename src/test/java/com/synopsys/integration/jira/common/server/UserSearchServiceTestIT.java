@@ -16,7 +16,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.UserSearchService;
 
-public class UserSearchServiceTest extends JiraServerParameterizedTest {
+public class UserSearchServiceTestIT extends JiraServerParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void findUsersByUsernameTest(JiraHttpClient jiraHttpClient) throws IntegrationException {

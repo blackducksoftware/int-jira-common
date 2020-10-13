@@ -5,11 +5,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.server.JiraServerParameterizedTest;
+import com.synopsys.integration.jira.common.server.JiraServerParameterizedTestIT;
 import com.synopsys.integration.jira.common.server.JiraServerServiceTestUtility;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
-public class PluginManagerServiceServerTest extends JiraServerParameterizedTest {
+public class PluginManagerServiceServerTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")

@@ -17,7 +17,7 @@ import com.synopsys.integration.jira.common.server.service.ProjectService;
 import com.synopsys.integration.jira.common.server.service.VersionService;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class VersionServiceTest extends JiraServerParameterizedTest {
+public class VersionServiceTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")

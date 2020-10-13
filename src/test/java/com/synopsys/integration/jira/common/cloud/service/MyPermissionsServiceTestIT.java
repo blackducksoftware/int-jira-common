@@ -7,22 +7,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.response.MultiPermissionResponseModel;
 import com.synopsys.integration.jira.common.model.response.PermissionModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.log.IntLogger;
-import com.synopsys.integration.log.LogLevel;
-import com.synopsys.integration.log.PrintStreamIntLogger;
 
-public class MyPermissionsServiceTest {
-    @Test
-    public void getMyPermissionsTest() throws IntegrationException {
-        IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
-        JiraHttpClient httpClient = JiraCloudServiceTestUtility.createJiraCredentialClient(logger);
-        JiraCloudServiceFactory jiraServiceFactory = JiraCloudServiceTestUtility.createServiceFactory(httpClient);
+public class MyPermissionsServiceTestIT extends JiraCloudParameterizedTestIT {
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void getMyPermissionsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+        JiraCloudServiceFactory jiraServiceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 
         MyPermissionsService myPermissionsService = jiraServiceFactory.createMyPermissionsService();
 

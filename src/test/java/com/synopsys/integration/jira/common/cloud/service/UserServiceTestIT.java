@@ -11,11 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
-public class UserServiceTest extends JiraCloudParameterizedTest {
+public class UserServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")

@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.JiraTestEnvVars;
-import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTest;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
@@ -37,7 +37,7 @@ import com.synopsys.integration.jira.common.model.response.TransitionsResponseMo
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
-public class IssueServiceTest extends JiraCloudParameterizedTest {
+public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
