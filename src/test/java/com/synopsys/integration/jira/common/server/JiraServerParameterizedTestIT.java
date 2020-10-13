@@ -7,11 +7,12 @@ import java.util.Collection;
 
 import org.junit.jupiter.api.Tag;
 
+import com.synopsys.integration.jira.common.IntegrationsTestConstants;
 import com.synopsys.integration.jira.common.rest.oauth1a.JiraOauthTestUtility;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 
-@Tag("integration")
+@Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public abstract class JiraServerParameterizedTestIT {
     public static Collection getParameters() throws InvalidKeySpecException, NoSuchAlgorithmException {
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);

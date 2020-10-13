@@ -15,6 +15,7 @@ import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.gson.Gson;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.IntegrationsTestConstants;
 import com.synopsys.integration.jira.common.cloud.service.ProjectService;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.oauth.OAuthAuthorizationData;
@@ -25,7 +26,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 
-@Tag("integration")
+@Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public class AuthenticateOAuthTest {
     private static final OAuthTestCredentials cloudOAuth = OAuthTestCredentials.fromCloud();
     private static final OAuthTestCredentials serverOAuth = OAuthTestCredentials.fromServer();
