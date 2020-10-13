@@ -42,10 +42,14 @@ public class VersionResponseModel extends JiraResponseModel {
     public VersionResponseModel(
         String self,
         String id,
-        String description, String name,
+        String description,
+        String name,
         boolean archived,
         boolean released,
-        String releaseDate, boolean overdue, String userReleaseDate, String projectId
+        String releaseDate,
+        boolean overdue,
+        String userReleaseDate,
+        String projectId
     ) {
         this.self = self;
         this.id = id;
