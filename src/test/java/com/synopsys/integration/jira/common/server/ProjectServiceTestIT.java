@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
+import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.ProjectService;
@@ -46,6 +47,26 @@ public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
 
         ProjectComponent project = projectService.getProject(projectKey);
         assertTrue(testProject.equalsIgnoreCase(project.getName()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testGetProjectVersions(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraServerServiceTestUtility.validateConfiguration();
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+
+        ProjectService projectService = serviceFactory.createProjectService();
+
+        String testProject = JiraServerServiceTestUtility.getTestProject();
+        List<ProjectComponent> projects = projectService.getProjectsByName(testProject);
+
+        assertFalse(projects.isEmpty());
+
+        String projectKey = projects.get(0).getKey();
+        assertTrue(StringUtils.isNotBlank(projectKey));
+
+        List<VersionResponseModel> project = projectService.getProjectVersions(projectKey);
+        assertTrue(project.size() > 0);
     }
 
 }

@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
+import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 
 public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
@@ -84,5 +85,25 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
         ProjectComponent project = projectService.getProject(projectKey);
         assertEquals(testProject, project.getName());
+    }
+
+    @ParameterizedTest
+    @MethodSource("getParameters")
+    public void testGetProjectVersions(JiraHttpClient jiraHttpClient) throws Exception {
+        JiraCloudServiceTestUtility.validateConfiguration();
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
+
+        ProjectService projectService = serviceFactory.createProjectService();
+
+        String testProject = JiraCloudServiceTestUtility.getTestProject();
+        PageOfProjectsResponseModel projects = projectService.getProjectsByName(testProject);
+
+        assertTrue(projects.getTotal() > 0);
+
+        String projectKey = projects.getProjects().get(0).getKey();
+        assertTrue(StringUtils.isNotBlank(projectKey));
+
+        List<VersionResponseModel> project = projectService.getProjectVersions(projectKey);
+        assertTrue(project.size() > 0);
     }
 }

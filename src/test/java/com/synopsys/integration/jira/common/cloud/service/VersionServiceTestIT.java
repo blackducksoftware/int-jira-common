@@ -1,4 +1,4 @@
-package com.synopsys.integration.jira.common.server;
+package com.synopsys.integration.jira.common.cloud.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -9,27 +9,25 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
-import com.synopsys.integration.jira.common.server.service.ProjectService;
-import com.synopsys.integration.jira.common.server.service.VersionService;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class VersionServiceTestIT extends JiraServerParameterizedTestIT {
-
+public class VersionServiceTestIT extends JiraCloudParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void findUsersByUsernameTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
-        JiraServerServiceTestUtility.validateConfiguration();
+        JiraCloudServiceTestUtility.validateConfiguration();
 
-        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+        JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         VersionService versionService = serviceFactory.createVersionService();
 
-        String testProject = JiraServerServiceTestUtility.getTestProject();
+        String testProject = JiraCloudServiceTestUtility.getTestProject();
         ProjectService projectService = serviceFactory.createProjectService();
         ProjectComponent projectComponent = projectService.getProjectsByName(testProject)
+                                                .getProjects()
                                                 .stream()
                                                 .findFirst()
                                                 .orElseThrow(() -> new IntegrationException("Expected to find project"));
