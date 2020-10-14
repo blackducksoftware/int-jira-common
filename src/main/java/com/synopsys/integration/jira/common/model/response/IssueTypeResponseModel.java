@@ -23,7 +23,9 @@
 package com.synopsys.integration.jira.common.model.response;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.jira.common.model.JiraResponseModel;
 
@@ -90,5 +92,16 @@ public class IssueTypeResponseModel extends JiraResponseModel {
 
     public Map<String, JsonElement> getFields() {
         return fields;
+    }
+
+    public Map<String, IssueCreatemetaFieldResponseModel> getTypedFields(Gson gson) {
+        return getFields().entrySet()
+                   .stream()
+                   .filter(entry -> entry.getKey() != "json")
+                   .collect(Collectors.toMap(Map.Entry::getKey, entry -> extractValues(gson, entry.getValue())));
+    }
+
+    private IssueCreatemetaFieldResponseModel extractValues(Gson gson, JsonElement jsonElement) {
+        return gson.fromJson(jsonElement, IssueCreatemetaFieldResponseModel.class);
     }
 }
