@@ -62,6 +62,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     public static final int DEFAULT_TIMEOUT_SECONDS = 120;
 
     private final BuilderProperties builderProperties;
+    private ProxyInfo proxyInfo;
     private IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.INFO);
     private Gson gson = new Gson();
     private AuthenticationSupport authenticationSupport = new AuthenticationSupport();
@@ -80,7 +81,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         propertyKeys.add(PROXY_NTLM_WORKSTATION_KEY);
         propertyKeys.add(TRUST_CERT_KEY);
         builderProperties = new BuilderProperties(propertyKeys);
-
+        proxyInfo = null;
         builderProperties.set(TIMEOUT_KEY, Integer.toString(JiraCloudRestConfigBuilder.DEFAULT_TIMEOUT_SECONDS));
     }
 
@@ -168,6 +169,9 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     private ProxyInfo getProxyInfo() {
+        if (null != proxyInfo) {
+            return proxyInfo;
+        }
         if (StringUtils.isBlank(getProxyHost())) {
             return ProxyInfo.NO_PROXY_INFO;
         }
@@ -184,6 +188,10 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         proxyInfoBuilder.setNtlmWorkstation(getProxyNtlmWorkstation());
 
         return proxyInfoBuilder.build();
+    }
+
+    public void setProxyInfo(ProxyInfo proxyInfo) {
+        this.proxyInfo = proxyInfo;
     }
 
     public IntLogger getLogger() {
