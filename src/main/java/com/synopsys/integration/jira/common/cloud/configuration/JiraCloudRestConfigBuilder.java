@@ -81,7 +81,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         propertyKeys.add(PROXY_NTLM_WORKSTATION_KEY);
         propertyKeys.add(TRUST_CERT_KEY);
         builderProperties = new BuilderProperties(propertyKeys);
-        proxyInfo = null;
+        proxyInfo = ProxyInfo.NO_PROXY_INFO;
         builderProperties.set(TIMEOUT_KEY, Integer.toString(JiraCloudRestConfigBuilder.DEFAULT_TIMEOUT_SECONDS));
     }
 
@@ -169,7 +169,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     private ProxyInfo getProxyInfo() {
-        if (null != proxyInfo) {
+        if (null != proxyInfo && !ProxyInfo.NO_PROXY_INFO.equals(proxyInfo)) {
             return proxyInfo;
         }
         if (StringUtils.isBlank(getProxyHost())) {
