@@ -33,6 +33,14 @@ public class JiraServerServiceFactory extends CommonServiceFactory {
         super(logger, httpClient, gson);
     }
 
+    public CustomFieldService createCustomFieldService() {
+        return new CustomFieldService(getJiraApiClient());
+    }
+
+    public FieldService createFieldService() {
+        return new FieldService(getJiraApiClient());
+    }
+
     public ProjectService createProjectService() {
         return new ProjectService(getJiraApiClient());
     }
