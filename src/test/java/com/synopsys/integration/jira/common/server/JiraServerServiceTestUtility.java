@@ -31,7 +31,7 @@ public final class JiraServerServiceTestUtility {
         assumeTrue(StringUtils.isNotBlank(baseUrl), "No Jira Server base url provided");
         assumeTrue(StringUtils.isNotBlank(userEmail), "No Jira Server user email provided");
         assumeTrue(StringUtils.isNotBlank(apiToken), "No Jira Server API Token provided");
-        assumeTrue(StringUtils.isNotBlank(apiToken), "No Jira Server test project provided");
+        assumeTrue(StringUtils.isNotBlank(testProject), "No Jira Server test project provided");
 
         try {
             IntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.ERROR);

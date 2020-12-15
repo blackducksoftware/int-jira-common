@@ -32,7 +32,7 @@ public class AuthenticateOAuthTest {
     private static final OAuthTestCredentials serverOAuth = OAuthTestCredentials.fromServer();
 
     // Set your current credentials to use the proper jira instance.
-    private final OAuthTestCredentials currentOAuthCredentials = cloudOAuth;
+    private final OAuthTestCredentials currentOAuthCredentials = serverOAuth;
 
     /*
      * These first two tests shouldn't be ran unless setting up OAuth. If you don't have all

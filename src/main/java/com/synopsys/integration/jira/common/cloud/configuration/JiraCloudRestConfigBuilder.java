@@ -111,7 +111,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         }
 
         if (StringUtils.isBlank(getAuthUserEmail())) {
-            builderStatus.addErrorMessage("The Jira Cloud user name must be specified.");
+            builderStatus.addErrorMessage("The Jira Cloud user email must be specified.");
         }
 
         if (StringUtils.isBlank(getApiToken())) {
