@@ -32,6 +32,7 @@ public class IssueFieldsComponent extends IntRestComponent {
     private List<IssueAttachmentComponent> attachment;
     private UserDetailsComponent assignee;
     private PageOfIssueCommentsComponent comment;
+    private String summary;
     private String description;
     private List<IssueLinksComponent> issuelinks;
     private ProjectComponent project;
@@ -49,6 +50,7 @@ public class IssueFieldsComponent extends IntRestComponent {
         List<IssueAttachmentComponent> attachment,
         UserDetailsComponent assignee,
         PageOfIssueCommentsComponent comment,
+        String summary,
         String description,
         List<IssueLinksComponent> issuelinks,
         ProjectComponent project,
@@ -61,6 +63,7 @@ public class IssueFieldsComponent extends IntRestComponent {
         this.attachment = attachment;
         this.assignee = assignee;
         this.comment = comment;
+        this.summary = summary;
         this.description = description;
         this.issuelinks = issuelinks;
         this.project = project;
@@ -81,6 +84,10 @@ public class IssueFieldsComponent extends IntRestComponent {
 
     public PageOfIssueCommentsComponent getComment() {
         return comment;
+    }
+
+    public String getSummary() {
+        return summary;
     }
 
     public String getDescription() {
@@ -114,4 +121,5 @@ public class IssueFieldsComponent extends IntRestComponent {
     public PageOfWorklogsComponent getWorklog() {
         return worklog;
     }
+
 }
