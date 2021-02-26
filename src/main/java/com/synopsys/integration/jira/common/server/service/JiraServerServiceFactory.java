@@ -45,8 +45,8 @@ public class JiraServerServiceFactory extends CommonServiceFactory {
         return new ProjectService(getJiraApiClient());
     }
 
-    public IssueService createIssueService() {
-        return new IssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
+    public ServerIssueService createIssueService() {
+        return new ServerIssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public IssueSearchService createIssueSearchService() {

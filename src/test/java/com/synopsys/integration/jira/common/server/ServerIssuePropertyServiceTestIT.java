@@ -18,7 +18,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.service.IssuePropertyService;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
-import com.synopsys.integration.jira.common.server.service.IssueService;
+import com.synopsys.integration.jira.common.server.service.ServerIssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
 public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTestIT {
@@ -28,7 +28,7 @@ public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTes
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
         Gson gson = new Gson();
@@ -60,7 +60,7 @@ public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTes
         }
     }
 
-    private IssueCreationResponseModel createIssue(IssueService issueService, String projectName) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(ServerIssueService issueService, String projectName) throws IntegrationException {
         String reporter = "admin";
         String issueTypeName = "Task";
 

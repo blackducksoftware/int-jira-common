@@ -20,7 +20,7 @@ import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
-import com.synopsys.integration.jira.common.server.service.IssueService;
+import com.synopsys.integration.jira.common.server.service.ServerIssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
 public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
@@ -30,7 +30,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
 
         String reporter = "admin";
         String issueTypeName = "Task";
@@ -51,7 +51,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
 
         String reporter = null;
         String issueTypeName = "Task";
@@ -71,7 +71,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
     public void createIssueWithCustomFieldTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
 
         String reporter = "admin";
         String issueTypeName = "Task";

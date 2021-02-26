@@ -16,7 +16,7 @@ import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
-import com.synopsys.integration.jira.common.cloud.service.IssueService;
+import com.synopsys.integration.jira.common.cloud.service.CloudIssueService;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceFactory;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
 import com.synopsys.integration.jira.common.cloud.service.ProjectService;
@@ -39,7 +39,7 @@ public class IssuePropertyServiceTestIT extends JiraCloudParameterizedTestIT {
     public void getPropertyKeysTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 
@@ -81,7 +81,7 @@ public class IssuePropertyServiceTestIT extends JiraCloudParameterizedTestIT {
     public void getPropertyTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
 

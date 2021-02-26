@@ -34,6 +34,7 @@ import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.common.IssueService;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
@@ -55,7 +56,7 @@ import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
-public class IssueService {
+public class CloudIssueService implements IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
@@ -69,7 +70,7 @@ public class IssueService {
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+    public CloudIssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraCloudService, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
         this.intJsonTransformer = intJsonTransformer;
         this.jiraCloudService = jiraCloudService;
         this.userSearchService = userSearchService;
@@ -156,6 +157,7 @@ public class IssueService {
         return jiraCloudService.get(request, TransitionsResponseModel.class);
     }
 
+    @Override
     public IssueCommentResponseModel addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
         return jiraCloudService.post(requestModel, commentsUri, IssueCommentResponseModel.class);
