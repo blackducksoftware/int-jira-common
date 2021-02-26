@@ -41,8 +41,8 @@ public class JiraCloudServiceFactory extends CommonServiceFactory {
         return new IssueSearchService(getJiraApiClient());
     }
 
-    public IssueService createIssueService() {
-        return new IssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
+    public CloudIssueService createIssueService() {
+        return new CloudIssueService(getJsonTransformer(), getJiraApiClient(), createUserSearchService(), createProjectService(), createIssueTypeService());
     }
 
     public UserSearchService createUserSearchService() {

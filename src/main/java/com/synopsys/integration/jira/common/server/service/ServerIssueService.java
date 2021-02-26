@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.JsonObject;
 import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.jira.common.common.IssueService;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
@@ -54,7 +55,7 @@ import com.synopsys.integration.jira.common.server.model.IssueCreationRequestMod
 import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.service.IntJsonTransformer;
 
-public class IssueService {
+public class ServerIssueService implements IssueService {
     public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
@@ -68,7 +69,7 @@ public class IssueService {
     private final ProjectService projectService;
     private final IssueTypeService issueTypeService;
 
-    public IssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraApiClient, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
+    public ServerIssueService(IntJsonTransformer intJsonTransformer, JiraApiClient jiraApiClient, UserSearchService userSearchService, ProjectService projectService, IssueTypeService issueTypeService) {
         this.intJsonTransformer = intJsonTransformer;
         this.jiraApiClient = jiraApiClient;
         this.userSearchService = userSearchService;
@@ -97,7 +98,6 @@ public class IssueService {
     }
 
     public IssueCreationResponseModel createIssue(String issueTypeId, String reporterUserName, String projectId, IssueRequestModelFieldsMapBuilder issueRequestModelFieldsMapBuilder) throws IntegrationException {
-
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.copyFields(issueRequestModelFieldsMapBuilder);
 
@@ -155,6 +155,7 @@ public class IssueService {
         return jiraApiClient.get(request, TransitionsResponseModel.class);
     }
 
+    @Override
     public IssueCommentResponseModel addComment(IssueCommentRequestModel requestModel) throws IntegrationException {
         HttpUrl commentsUri = createApiCommentsUri(requestModel.getIssueIdOrKey());
         return jiraApiClient.post(requestModel, commentsUri, IssueCommentResponseModel.class);

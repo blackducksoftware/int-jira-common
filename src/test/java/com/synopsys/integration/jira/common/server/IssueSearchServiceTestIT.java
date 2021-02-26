@@ -19,7 +19,7 @@ import com.synopsys.integration.jira.common.server.model.IssueCreationRequestMod
 import com.synopsys.integration.jira.common.server.model.IssueSearchIssueComponent;
 import com.synopsys.integration.jira.common.server.model.IssueSearchResponseModel;
 import com.synopsys.integration.jira.common.server.service.IssueSearchService;
-import com.synopsys.integration.jira.common.server.service.IssueService;
+import com.synopsys.integration.jira.common.server.service.ServerIssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
 public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
@@ -29,7 +29,7 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
 
         String projectName = JiraServerServiceTestUtility.getTestProject();
         String searchTerm = "my_extra_special_word";
@@ -61,7 +61,7 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        ServerIssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
@@ -92,7 +92,7 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         }
     }
 
-    private IssueCreationResponseModel createIssue(IssueService issueService, String projectName, String description) throws IntegrationException {
+    private IssueCreationResponseModel createIssue(ServerIssueService issueService, String projectName, String description) throws IntegrationException {
         String reporter = "admin";
         String issueTypeName = "Task";
 

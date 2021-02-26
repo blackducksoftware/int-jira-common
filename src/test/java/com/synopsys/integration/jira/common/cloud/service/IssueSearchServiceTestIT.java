@@ -29,7 +29,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
     public void findIssuesByDescriptionTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
@@ -67,7 +67,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testSearchForIssueWithSingleComment(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
@@ -111,7 +111,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testSearchForIssueWithMultipleComments(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();
@@ -164,7 +164,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testSearchForIssueByCommentNoMatches(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
         ProjectService projectService = serviceFactory.createProjectService();

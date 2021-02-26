@@ -44,7 +44,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testCreateIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
@@ -63,7 +63,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testCreateNullFieldExceptions(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
@@ -98,7 +98,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testCreateFieldsNotFoundExceptions(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
@@ -137,7 +137,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testUpdateIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
         UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
@@ -174,7 +174,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testAddComment(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
@@ -198,7 +198,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testGetStatus(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
@@ -218,7 +218,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     public void testTransitionIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
 
         UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
@@ -252,7 +252,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     }
 
     private IssueCreationResponseModel createIssue(JiraCloudServiceFactory serviceFactory) throws IntegrationException {
-        IssueService issueService = serviceFactory.createIssueService();
+        CloudIssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         PageOfProjectsResponseModel projects = projectService.getProjects();
         ProjectComponent project = projects.getProjects().stream()
