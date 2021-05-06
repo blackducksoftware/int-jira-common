@@ -99,7 +99,7 @@ public class JiraServerAppServiceTestIT extends JiraServerParameterizedTestIT {
 
     public void throwExceptionForError(int status) throws IntegrationRestException {
         if (isStatusCodeError(status)) {
-            throw new IntegrationRestException(status, "statusMessage", "Body", "message");
+            throw new IntegrationRestException(null, null, status, "statusMessage", "Body", "message");
         }
     }
 

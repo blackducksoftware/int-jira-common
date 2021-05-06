@@ -13,21 +13,35 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.EnglishReasonPhraseCatalog;
 
+import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 import com.synopsys.integration.util.Stringable;
 
 public class JiraResponse extends Stringable {
+    private final HttpMethod httpMethod;
+    private final HttpUrl httpUrl;
     private final int statusCode;
     private final String statusMessage;
     private final String content;
     private final Map<String, String> headers;
 
-    public JiraResponse(int statusCode, String statusMessage, String content, Map<String, String> headers) {
+    public JiraResponse(HttpMethod httpMethod, HttpUrl httpUrl, int statusCode, String statusMessage, String content, Map<String, String> headers) {
+        this.httpMethod = httpMethod;
+        this.httpUrl = httpUrl;
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.content = content;
         this.headers = headers;
+    }
+
+    public HttpMethod getHttpMethod() {
+        return httpMethod;
+    }
+
+    public HttpUrl getHttpUrl() {
+        return httpUrl;
     }
 
     public int getStatusCode() {
@@ -68,7 +82,7 @@ public class JiraResponse extends Stringable {
 
             String messageFormat = "There was a problem trying to request data, response was %s %s%s.";
             String message = String.format(messageFormat, statusCode, statusCodeDescription, reasonPhraseDescription);
-            throw new IntegrationRestException(statusCode, statusMessage, getContent(), message);
+            throw new IntegrationRestException(getHttpMethod(), getHttpUrl(), statusCode, statusMessage, getContent(), message);
         }
     }
 }

@@ -29,10 +29,11 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.util.Charsets;
 import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.function.ThrowingFunction;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
+import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class JiraOAuthHttpClient implements JiraHttpClient {
@@ -51,7 +52,7 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
 
     @Override
     public JiraResponse execute(JiraRequest jiraRequest) throws IntegrationException {
-        return executeRequestAndProcess(jiraRequest, this::convertToJiraResponse);
+        return executeRequestAndProcess(jiraRequest);
     }
 
     private Map<String, String> convertHttpHeaderToMap(HttpResponse httpResponse) {
@@ -59,7 +60,7 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
         return headers.keySet().stream().collect(Collectors.toMap(Function.identity(), headers::getFirstHeaderStringValue));
     }
 
-    private <R> R executeRequestAndProcess(JiraRequest jiraRequest, ThrowingFunction<HttpResponse, R, IOException> returnResponse) throws IntegrationException {
+    private JiraResponse executeRequestAndProcess(JiraRequest jiraRequest) throws IntegrationException {
         HttpResponse httpResponse = null;
         try {
             HttpRequest httpRequest = convertToRequest(jiraRequest);
@@ -67,9 +68,9 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
             if (!httpResponse.isSuccessStatusCode()) {
                 throw new IntegrationException(httpResponse.getStatusMessage());
             }
-            return returnResponse.apply(httpResponse);
+            return convertToJiraResponse(jiraRequest.getMethod(), jiraRequest.getUrl(), httpResponse);
         } catch (HttpResponseException e) {
-            throw new IntegrationRestException(e.getStatusCode(), e.getStatusMessage(), e.getContent(), e);
+            throw new IntegrationRestException(jiraRequest.getMethod(), jiraRequest.getUrl(), e.getStatusCode(), e.getStatusMessage(), e.getContent(), e);
         } catch (IOException | URISyntaxException e) {
             throw new IntegrationException(e.getMessage());
         } finally {
@@ -119,10 +120,10 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
         return httpHeaders;
     }
 
-    private JiraResponse convertToJiraResponse(HttpResponse httpResponse) throws IOException {
+    private JiraResponse convertToJiraResponse(HttpMethod httpMethod, HttpUrl httpUrl, HttpResponse httpResponse) throws IOException {
         String content = buildResponseBody(httpResponse.getContent());
         Map<String, String> headers = convertHttpHeaderToMap(httpResponse);
-        return new JiraResponse(httpResponse.getStatusCode(), httpResponse.getStatusMessage(), content, headers);
+        return new JiraResponse(httpMethod, httpUrl, httpResponse.getStatusCode(), httpResponse.getStatusMessage(), content, headers);
     }
 
     private String buildResponseBody(InputStream responseStream) throws IOException {

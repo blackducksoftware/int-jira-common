@@ -15,6 +15,8 @@ import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.rest.model.JiraRequest;
 import com.synopsys.integration.jira.common.rest.model.JiraResponse;
 import com.synopsys.integration.log.IntLogger;
+import com.synopsys.integration.rest.HttpMethod;
+import com.synopsys.integration.rest.HttpUrl;
 import com.synopsys.integration.rest.body.StringBodyContent;
 import com.synopsys.integration.rest.client.BasicAuthHttpClient;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
@@ -48,7 +50,7 @@ public class JiraCredentialHttpClient extends BasicAuthHttpClient implements Jir
         Request request = convertToRequest(jiraRequest);
         try (Response response = execute(request)) {
             throwExceptionForError(response);
-            return convertToJiraResponse(response);
+            return convertToJiraResponse(jiraRequest.getMethod(), jiraRequest.getUrl(), response);
         } catch (IOException e) {
             throw new IntegrationException("Was unable to close response object: " + e.getCause(), e);
         }
@@ -69,8 +71,8 @@ public class JiraCredentialHttpClient extends BasicAuthHttpClient implements Jir
         return builder.build();
     }
 
-    private JiraResponse convertToJiraResponse(Response response) throws IntegrationException {
-        return new JiraResponse(response.getStatusCode(), response.getStatusMessage(), response.getContentString(), response.getHeaders());
+    private JiraResponse convertToJiraResponse(HttpMethod httpMethod, HttpUrl httpUrl, Response response) throws IntegrationException {
+        return new JiraResponse(httpMethod, httpUrl, response.getStatusCode(), response.getStatusMessage(), response.getContentString(), response.getHeaders());
     }
 
 }

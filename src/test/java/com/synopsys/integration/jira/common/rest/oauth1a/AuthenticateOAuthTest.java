@@ -50,14 +50,14 @@ public class AuthenticateOAuthTest {
 
         OAuthAuthorizationData oAuthAuthorizationData = jiraOAuthService.createOAuthAuthorizationData(currentOAuthCredentials.getConsumerKey(), currentOAuthCredentials.getPrivateKey());
 
-        String authorizationToken = oAuthAuthorizationData.getAuthorizationToken();
-        assertTrue(StringUtils.isNotBlank(authorizationToken));
+        String temporaryToken = oAuthAuthorizationData.getAuthorizationToken();
+        assertTrue(StringUtils.isNotBlank(temporaryToken));
 
         String authorizationUrl = oAuthAuthorizationData.getAuthorizationUrl();
         URL url = new URL(authorizationUrl);
         assertTrue(StringUtils.isNotBlank(url.toString()));
 
-        System.out.println("Please copy this temporary token into the authCredentials: " + authorizationToken);
+        System.out.println("Please copy this temporary token into the temporaryToken: " + temporaryToken);
         System.out.println("Please follow this link and copy the verification code into the authCredentials: " + authorizationUrl);
     }
 
