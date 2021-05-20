@@ -17,7 +17,7 @@ public class SchemaComponent extends IntRestComponent {
     public SchemaComponent() {
     }
 
-    public SchemaComponent(String type, String system) {
+    public SchemaComponent(String type, String system, String items) {
         this.type = type;
         this.system = system;
         this.items = items;
