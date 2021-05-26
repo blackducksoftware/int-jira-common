@@ -45,7 +45,7 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
     }
 
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraCredentialHttpClient(logger, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
+        return new JiraCredentialHttpClient(logger, gson, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
     }
 
     public JiraCloudServiceFactory createJiraCloudServiceFactory(IntLogger logger) {

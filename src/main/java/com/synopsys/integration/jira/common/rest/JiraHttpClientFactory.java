@@ -10,6 +10,7 @@ package com.synopsys.integration.jira.common.rest;
 import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.oauth1a.JiraOAuthHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
@@ -21,12 +22,12 @@ public class JiraHttpClientFactory {
         return new JiraOAuthHttpClient(jiraUrl, createHttpRequestFactory(oAuthParameters));
     }
 
-    public JiraHttpClient createJiraCloudCredentialClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
-        return JiraCredentialHttpClient.cloud(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, authUserEmail, apiToken);
+    public JiraHttpClient createJiraCloudCredentialClient(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
+        return JiraCredentialHttpClient.cloud(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, authUserEmail, apiToken);
     }
 
-    public JiraHttpClient createJiraServerCredentialClient(IntLogger logger, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
-        return JiraCredentialHttpClient.server(logger, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, username, password);
+    public JiraHttpClient createJiraServerCredentialClient(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
+        return JiraCredentialHttpClient.server(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, username, password);
     }
 
     private HttpRequestFactory createHttpRequestFactory(OAuthParameters oAuthParameters) {

@@ -21,6 +21,7 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.request.Request;
 
 public final class JiraServerServiceTestUtility {
+    private static final Gson gson = new Gson();
 
     public static void validateConfiguration() {
         String baseUrl = getEnvBaseUrl();
@@ -35,7 +36,7 @@ public final class JiraServerServiceTestUtility {
 
         try {
             IntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.ERROR);
-            IntHttpClient intHttpClient = new IntHttpClient(intLogger, 60, true, ProxyInfo.NO_PROXY_INFO);
+            IntHttpClient intHttpClient = new IntHttpClient(intLogger, gson, 60, true, ProxyInfo.NO_PROXY_INFO);
 
             Request basicGetRequestToJiraServer = new Request.Builder()
                                                       .url(new HttpUrl(baseUrl))
