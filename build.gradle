@@ -6,16 +6,10 @@ buildscript {
 project.ext.moduleName = 'com.synopsys.integration.int-jira-common'
 project.ext.javaUseAutoModuleName = 'true'
 
-group = 'com.synopsys.integration'
 version = '2.3.1-SNAPSHOT'
 description = 'A library for using various capabilities of Jira.'
 
 apply plugin: 'com.synopsys.integration.library'
-
-nexusStaging {
-    packageGroup = 'com.synopsys'
-    stagingProfileId = '4af8bea8300633'
-}
 
 dependencies {
     api 'com.synopsys.integration:integration-rest:8.0.2'
