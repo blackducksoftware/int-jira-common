@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,11 +17,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.model.components.IssueFieldsComponent;
+import com.synopsys.integration.jira.common.model.response.CustomFieldCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
+import com.synopsys.integration.jira.common.server.service.FieldService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 
@@ -85,6 +89,16 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         String key = "customfield_10700";
         String value = "Custom field using rest";
         issueRequestModelFieldsBuilder.setField(key, value);
+
+        FieldService fieldService = serviceFactory.createFieldService();
+        List<CustomFieldCreationResponseModel> jiraFieldModels = fieldService.getUserVisibleFields();
+
+        Optional<CustomFieldCreationResponseModel> model = jiraFieldModels.stream()
+                                                               .filter(field -> key.equals(field.getId()))
+                                                               .findAny();
+        // Check if the custom field is present on the server. If this check fails, a new custom field must be created and
+        // the variable "key" must be updated.
+        assertTrue(model.isPresent());
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
         IssueCreationResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);
