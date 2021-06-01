@@ -86,13 +86,12 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         issueRequestModelFieldsBuilder.setDescription("Test description");
         issueRequestModelFieldsBuilder.setPriority("3");
 
-        String key = "customfield_10700";
+        String key = JiraServerServiceTestUtility.getTestCustomFieldId();
         String value = "Custom field using rest";
         issueRequestModelFieldsBuilder.setField(key, value);
 
         FieldService fieldService = serviceFactory.createFieldService();
         List<CustomFieldCreationResponseModel> jiraFieldModels = fieldService.getUserVisibleFields();
-
         Optional<CustomFieldCreationResponseModel> model = jiraFieldModels.stream()
                                                                .filter(field -> key.equals(field.getId()))
                                                                .findAny();
