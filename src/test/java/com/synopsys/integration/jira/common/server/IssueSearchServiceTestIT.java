@@ -32,7 +32,7 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         IssueService issueService = serviceFactory.createIssueService();
 
         String projectName = JiraServerServiceTestUtility.getTestProject();
-        String searchTerm = "my_extra_special_word";
+        String searchTerm = UUID.randomUUID().toString();
         String description = "Example description containing a special word to search on: " + searchTerm;
         IssueCreationResponseModel issue = createIssue(issueService, projectName, description);
 

@@ -82,7 +82,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         issueRequestModelFieldsBuilder.setDescription("Test description");
         issueRequestModelFieldsBuilder.setPriority("3");
 
-        String key = "customfield_10107";
+        String key = "customfield_10700";
         String value = "Custom field using rest";
         issueRequestModelFieldsBuilder.setField(key, value);
 
