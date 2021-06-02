@@ -19,4 +19,6 @@ public final class JiraTestEnvVars {
     public static final String TEMPORARY_TOKEN = "JIRA_OAUTH_TEMP_TOKEN";
 
     public static final String VERIFICATION_CODE = "JIRA_OAUTH_VERIFICATION_CODE";
+
+    public static final String TEST_CUSTOM_FIELD_ID = "JIRA_CUSTOM_FIELD_TEST_ID";
 }
