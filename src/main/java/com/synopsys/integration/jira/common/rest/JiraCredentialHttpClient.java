@@ -63,7 +63,9 @@ public class JiraCredentialHttpClient extends BasicAuthHttpClient implements Jir
 
     private Request convertToRequest(JiraRequest jiraRequest) {
         Map<String, String> completeHeaders = new HashMap<>(jiraRequest.getHeaders());
-        completeHeaders.put(HttpHeaders.ACCEPT, jiraRequest.getAcceptMimeType());
+        if (!completeHeaders.containsKey(HttpHeaders.ACCEPT)) {
+            completeHeaders.put(HttpHeaders.ACCEPT, jiraRequest.getAcceptMimeType());
+        }
 
         Request.Builder builder = new Request.Builder()
                                       .url(jiraRequest.getUrl())
