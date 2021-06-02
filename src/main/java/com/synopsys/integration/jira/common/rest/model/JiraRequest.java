@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 
 import com.synopsys.integration.builder.Buildable;
 import com.synopsys.integration.builder.BuilderStatus;
@@ -27,6 +28,8 @@ import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.util.Stringable;
 
 public class JiraRequest extends Stringable implements Buildable {
+    public static final String DEFAULT_ACCEPT_MIME_TYPE = ContentType.APPLICATION_JSON.getMimeType();
+
     private final HttpUrl url;
     private final HttpMethod method;
     private final String acceptMimeType;
@@ -38,7 +41,7 @@ public class JiraRequest extends Stringable implements Buildable {
     public JiraRequest(HttpUrl url, HttpMethod method, String acceptMimeType, Charset bodyEncoding, Map<String, Set<String>> queryParameters, Map<String, String> headers, String bodyContent) {
         this.url = url;
         this.method = method;
-        this.acceptMimeType = StringUtils.isBlank(acceptMimeType) ? Request.DEFAULT_ACCEPT_MIME_TYPE : acceptMimeType;
+        this.acceptMimeType = StringUtils.isBlank(acceptMimeType) ? DEFAULT_ACCEPT_MIME_TYPE : acceptMimeType;
         this.bodyEncoding = null == bodyEncoding ? StandardCharsets.UTF_8 : bodyEncoding;
         this.queryParameters.putAll(queryParameters);
         this.headers.putAll(headers);
@@ -116,7 +119,7 @@ public class JiraRequest extends Stringable implements Buildable {
             this.url = url;
             this.method = method;
             this.headers.putAll(headers);
-            acceptMimeType = Request.DEFAULT_ACCEPT_MIME_TYPE;
+            acceptMimeType = DEFAULT_ACCEPT_MIME_TYPE;
             bodyEncoding = StandardCharsets.UTF_8;
         }
 
