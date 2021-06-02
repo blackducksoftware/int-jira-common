@@ -88,7 +88,8 @@ public final class JiraServerServiceTestUtility {
 
     public static String getTestCustomFieldId() {
         String envTestCustomField = System.getenv(JiraTestEnvVars.TEST_CUSTOM_FIELD_ID);
-        return envTestCustomField != null ? envTestCustomField : "customfield_10700";
+        assumeTrue(envTestCustomField != null);
+        return envTestCustomField;
     }
 
     public static String getOAuthAccessToken() {
