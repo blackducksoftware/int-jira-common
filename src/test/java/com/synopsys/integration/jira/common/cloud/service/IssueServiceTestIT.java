@@ -255,8 +255,10 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueService issueService = serviceFactory.createIssueService();
         ProjectService projectService = serviceFactory.createProjectService();
         PageOfProjectsResponseModel projects = projectService.getProjects();
+
+        String testProjectName = JiraCloudServiceTestUtility.getTestProject();
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(testProjectName) || currentProject.getKey().equals(testProjectName))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
