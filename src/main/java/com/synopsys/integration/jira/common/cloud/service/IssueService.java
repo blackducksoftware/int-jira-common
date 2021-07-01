@@ -77,30 +77,7 @@ public class IssueService {
                                .map(ProjectComponent::getId)
                                .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 
-        List<IssueTypeResponseModel> allIssueTypes = issueTypeService.getAllIssueTypes();
-        List<IssueTypeResponseModel> issueTypeCandidates = allIssueTypes
-                                                               .stream()
-                                                               .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
-                                                               .collect(Collectors.toList());
-        String issueTypeId = null;
-        for (IssueTypeResponseModel issueTypeCandidate : issueTypeCandidates) {
-            IssueTypeScope scope = issueTypeCandidate.getScope();
-            if (null != scope) {
-                IdComponent scopedProject = scope.getProject();
-                if (null != scopedProject) {
-                    issueTypeId = scopedProject.getId();
-                    // Exact match. Search complete.
-                    break;
-                }
-            } else {
-                // Possible match. There could be a better one.
-                issueTypeId = issueTypeCandidate.getId();
-            }
-        }
-
-        if (null == issueTypeId) {
-            throw new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName));
-        }
+        String issueTypeId = retrieveIssueTypeId(issueTypeName, projectId);
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
