@@ -106,11 +106,17 @@ public class IssueService {
             if (null != scope) {
                 IdComponent scopedProject = scope.getProject();
                 if (null != scopedProject) {
-                    // Exact match. Search complete.
-                    return scopedProject.getId();
+                    if (projectId.equals(scopedProject.getId())) {
+                        // Exact match. Search complete.
+                        return issueTypeCandidate.getId();
+                    }
+                    // Wrong project. Ignore.
+                } else if (null == issueTypeId) {
+                    // No project scope. This could be a match if there is no unscoped issue type.
+                    issueTypeId = issueTypeCandidate.getId();
                 }
             } else {
-                // Possible match. There could still be a better candidate.
+                // No scope. This could be a match.
                 issueTypeId = issueTypeCandidate.getId();
             }
         }
