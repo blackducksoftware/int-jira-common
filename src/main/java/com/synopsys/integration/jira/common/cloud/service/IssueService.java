@@ -10,6 +10,7 @@ package com.synopsys.integration.jira.common.cloud.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -21,6 +22,8 @@ import com.synopsys.integration.jira.common.cloud.builder.IssueRequestModelField
 import com.synopsys.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.synopsys.integration.jira.common.model.components.FieldUpdateOperationComponent;
+import com.synopsys.integration.jira.common.model.components.IdComponent;
+import com.synopsys.integration.jira.common.model.components.IssueTypeScope;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.components.StatusDetailsComponent;
 import com.synopsys.integration.jira.common.model.request.IssueCommentRequestModel;
@@ -67,28 +70,78 @@ public class IssueService {
         String projectName = requestModel.getProjectName();
         String reporterEmail = requestModel.getReporterEmail();
 
-        IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
-                                                    .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
-                                                    .findFirst()
-                                                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName)));
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
-        ProjectComponent foundProject = pageOfProjects.getProjects().stream()
-                                            .findFirst()
-                                            .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
+        String projectId = pageOfProjects.getProjects()
+                               .stream()
+                               .findFirst()
+                               .map(ProjectComponent::getId)
+                               .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
+
+        List<IssueTypeResponseModel> allIssueTypes = issueTypeService.getAllIssueTypes();
+        List<IssueTypeResponseModel> issueTypeCandidates = allIssueTypes
+                                                               .stream()
+                                                               .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
+                                                               .collect(Collectors.toList());
+        String issueTypeId = null;
+        for (IssueTypeResponseModel issueTypeCandidate : issueTypeCandidates) {
+            IssueTypeScope scope = issueTypeCandidate.getScope();
+            if (null != scope) {
+                IdComponent scopedProject = scope.getProject();
+                if (null != scopedProject) {
+                    issueTypeId = scopedProject.getId();
+                    // Exact match. Search complete.
+                    break;
+                }
+            } else {
+                // Possible match. There could be a better one.
+                issueTypeId = issueTypeCandidate.getId();
+            }
+        }
+
+        if (null == issueTypeId) {
+            throw new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName));
+        }
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.copyFields(requestModel.getFieldsBuilder());
 
-        fieldsBuilder.setIssueType(foundIssueType.getId());
+        fieldsBuilder.setIssueType(issueTypeId);
         if (StringUtils.isNotBlank(reporterEmail)) {
             String accountId = retrieveUserAccountId(reporterEmail);
             fieldsBuilder.setReporterId(accountId);
         }
-        fieldsBuilder.setProject(foundProject.getId());
+        fieldsBuilder.setProject(projectId);
 
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
         IssueRequestModel issueRequestModel = new IssueRequestModel(fieldsBuilder, update, requestModel.getProperties());
         return createIssue(issueRequestModel);
+    }
+
+    private String retrieveIssueTypeId(String issueTypeName, String projectId) throws IntegrationException {
+        List<IssueTypeResponseModel> allIssueTypes = issueTypeService.getAllIssueTypes();
+        List<IssueTypeResponseModel> issueTypeCandidates = allIssueTypes
+                                                               .stream()
+                                                               .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
+                                                               .collect(Collectors.toList());
+        String issueTypeId = null;
+        for (IssueTypeResponseModel issueTypeCandidate : issueTypeCandidates) {
+            IssueTypeScope scope = issueTypeCandidate.getScope();
+            if (null != scope) {
+                IdComponent scopedProject = scope.getProject();
+                if (null != scopedProject) {
+                    // Exact match. Search complete.
+                    return scopedProject.getId();
+                }
+            } else {
+                // Possible match. There could still be a better candidate.
+                issueTypeId = issueTypeCandidate.getId();
+            }
+        }
+
+        if (null != issueTypeId) {
+            return issueTypeId;
+        }
+        throw new JiraPreconditionNotMetException(String.format("Issue type not found; issue type %s", issueTypeName));
     }
 
     private String retrieveUserAccountId(@Nullable String reporterEmail) throws IntegrationException {
