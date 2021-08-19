@@ -6,10 +6,14 @@ import org.slf4j.LoggerFactory;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.JiraServerServiceTestUtility;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
 public class OAuthTestCredentials {
     public static final Logger logger = LoggerFactory.getLogger(OAuthTestCredentials.class);
+
+    private static final TestProperties testProperties = new TestProperties();
 
     private String baseUrl;
     private String consumerKey;
@@ -32,11 +36,22 @@ public class OAuthTestCredentials {
     }
 
     public static OAuthTestCredentials fromServer() {
+        /*
         return new OAuthTestCredentials(
             JiraServerServiceTestUtility.getEnvBaseUrl(),
             JiraOauthTestUtility.getConsumerKey(),
             JiraOauthTestUtility.getPrivateKey(),
             JiraServerServiceTestUtility.getOAuthAccessToken(),
+            JiraServerServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
+            false
+        );*/
+
+        //TODO: replace these calls to the test utility with TestProperties
+        return new OAuthTestCredentials(
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL),
+            JiraOauthTestUtility.getConsumerKey(),
+            JiraOauthTestUtility.getPrivateKey(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_OAUTH_ACCESS_TOKEN),
             JiraServerServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
             false
         );

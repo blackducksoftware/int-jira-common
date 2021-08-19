@@ -6,11 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.opentest4j.TestAbortedException;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.jira.common.JiraTestEnvVars;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfig;
 import com.synopsys.integration.jira.common.server.configuration.JiraServerRestConfigBuilder;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
@@ -23,11 +24,21 @@ import com.synopsys.integration.rest.request.Request;
 public final class JiraServerServiceTestUtility {
     private static final Gson gson = new Gson();
 
+    private static final TestProperties testProperties = new TestProperties();
+
     public static void validateConfiguration() {
+        /* TODO
         String baseUrl = getEnvBaseUrl();
         String userEmail = getEnvUsername();
         String apiToken = getEnvPassword();
         String testProject = getTestProject();
+         */
+
+        //TODO: some of these names don't make much sense, userEmail and apiToken should be possibly renamed to username/password
+        String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL);
+        String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
+        String apiToken = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_PASSWORD);
+        String testProject = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
 
         assumeTrue(StringUtils.isNotBlank(baseUrl), "No Jira Server base url provided");
         assumeTrue(StringUtils.isNotBlank(userEmail), "No Jira Server user email provided");
@@ -51,10 +62,17 @@ public final class JiraServerServiceTestUtility {
     public static JiraServerRestConfig createJiraServerConfig() {
         JiraServerRestConfigBuilder builder = JiraServerRestConfig.newBuilder();
 
+        /* TODO
         builder
             .setUrl(getEnvBaseUrl())
             .setAuthUsername(getEnvUsername())
             .setAuthPassword(getEnvPassword());
+         */
+        builder
+            .setUrl(testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL))
+            .setAuthUsername(testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME))
+            .setAuthPassword(testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_PASSWORD));
+
         return builder.build();
     }
 
@@ -67,14 +85,18 @@ public final class JiraServerServiceTestUtility {
         return new JiraServerServiceFactory(logger, jiraHttpClient, new Gson());
     }
 
+    /*
     public static String getEnvBaseUrl() {
         String envBaseUrl = System.getenv(JiraTestEnvVars.SERVER_BASE_URL);
         return envBaseUrl != null ? envBaseUrl : "http://localhost:2990/jira";
     }
 
     public static String getEnvUsername() {
-        String envUsername = System.getenv(JiraTestEnvVars.SERVER_USERNAME);
-        return envUsername != null ? envUsername : "admin";
+        //String envUsername = System.getenv(JiraTestEnvVars.SERVER_USERNAME);
+        //return envUsername != null ? envUsername : "admin";
+
+        String envUsername = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
+        return envUsername;
     }
 
     public static String getEnvPassword() {
@@ -96,5 +118,6 @@ public final class JiraServerServiceTestUtility {
     public static String getOAuthAccessToken() {
         return System.getenv(JiraTestEnvVars.SERVER_OAUTH_ACCESS_TOKEN);
     }
+     */
 
 }

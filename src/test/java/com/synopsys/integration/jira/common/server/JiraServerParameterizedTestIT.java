@@ -19,6 +19,11 @@ public abstract class JiraServerParameterizedTestIT {
 
         return Arrays.asList(
             JiraServerServiceTestUtility.createJiraCredentialClient(intLogger),
-            JiraOauthTestUtility.createOAuthClient(JiraServerServiceTestUtility.getEnvBaseUrl(), JiraServerServiceTestUtility.getOAuthAccessToken()));
+            //JiraOauthTestUtility.createOAuthClient(JiraServerServiceTestUtility.getEnvBaseUrl(), JiraServerServiceTestUtility.getOAuthAccessToken()));
+            //TODO:
+            JiraOauthTestUtility.createOAuthClient(
+                JiraServerServiceTestUtility.getEnvBaseUrl(),
+                JiraServerServiceTestUtility.getOAuthAccessToken()
+            ));
     }
 }
