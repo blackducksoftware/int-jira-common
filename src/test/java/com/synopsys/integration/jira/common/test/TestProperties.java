@@ -1,20 +1,19 @@
 package com.synopsys.integration.jira.common.test;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Assumptions;
 
 public class TestProperties {
+    private static final String DEFAULT_PROPERTIES_FILE_NAME = "test.properties";
+    private static final String PROPERTIES_LOCATION = "src/main/resources/" + DEFAULT_PROPERTIES_FILE_NAME;
+
     private Properties properties;
-    private String propertiesLocation;
 
     public TestProperties() {
-        try {
-            propertiesLocation = TestResourceUtils.createTestPropertiesCanonicalFilePath().toString();
-        } catch (IOException e) {
-            propertiesLocation = TestResourceUtils.DEFAULT_PROPERTIES_FILE_NAME;
-        }
         loadProperties();
     }
 
@@ -23,17 +22,16 @@ public class TestProperties {
         return properties;
     }
 
-    public void loadProperties() {
+    private void loadProperties() {
         if (properties == null) {
             properties = new Properties();
-            try {
-                properties = TestResourceUtils.loadProperties(propertiesLocation);
-            } catch (Exception ex) {
-                System.out.println("Couldn't load " + propertiesLocation + " file!");
-                System.out.println("Reading from the environment...");
+            try (InputStream iStream = new FileInputStream(PROPERTIES_LOCATION)) {
+                properties.load(iStream);
+            } catch (IOException ioException) {
+                System.out.println("Failed to load properties from " + PROPERTIES_LOCATION);
             }
-            populatePropertiesFromEnv();
         }
+        populatePropertiesFromEnv();
     }
 
     public String getProperty(TestPropertyKey propertyKey) {

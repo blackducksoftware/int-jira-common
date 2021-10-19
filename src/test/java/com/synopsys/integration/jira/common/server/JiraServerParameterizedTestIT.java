@@ -9,21 +9,22 @@ import org.junit.jupiter.api.Tag;
 
 import com.synopsys.integration.jira.common.IntegrationsTestConstants;
 import com.synopsys.integration.jira.common.rest.oauth1a.JiraOauthTestUtility;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.log.LogLevel;
 import com.synopsys.integration.log.PrintStreamIntLogger;
 
 @Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public abstract class JiraServerParameterizedTestIT {
     public static Collection getParameters() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        TestProperties testProperties = new TestProperties();
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
 
         return Arrays.asList(
             JiraServerServiceTestUtility.createJiraCredentialClient(intLogger),
-            //JiraOauthTestUtility.createOAuthClient(JiraServerServiceTestUtility.getEnvBaseUrl(), JiraServerServiceTestUtility.getOAuthAccessToken()));
-            //TODO:
             JiraOauthTestUtility.createOAuthClient(
-                JiraServerServiceTestUtility.getEnvBaseUrl(),
-                JiraServerServiceTestUtility.getOAuthAccessToken()
+                testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL.getPropertyKey()),
+                testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_OAUTH_ACCESS_TOKEN.getPropertyKey())
             ));
     }
 }

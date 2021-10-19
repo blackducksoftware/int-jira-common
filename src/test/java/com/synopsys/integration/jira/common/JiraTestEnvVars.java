@@ -1,5 +1,6 @@
 package com.synopsys.integration.jira.common;
 
+//TODO: Remove this class, roll changes into TestPropertyKey
 public final class JiraTestEnvVars {
     public static final String SERVER_BASE_URL = "JIRA_SERVER_URL";
     public static final String SERVER_USERNAME = "JIRA_SERVER_USERNAME";

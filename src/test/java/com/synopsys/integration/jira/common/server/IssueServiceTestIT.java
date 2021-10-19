@@ -26,8 +26,13 @@ import com.synopsys.integration.jira.common.server.model.IssueCreationRequestMod
 import com.synopsys.integration.jira.common.server.service.FieldService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = new TestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME.getPropertyKey());
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void createIssueTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -38,7 +43,6 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
         String reporter = "admin";
         String issueTypeName = "Task";
-        String projectName = JiraServerServiceTestUtility.getTestProject();
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
@@ -59,7 +63,6 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
         String reporter = null;
         String issueTypeName = "Task";
-        String projectName = JiraServerServiceTestUtility.getTestProject();
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
@@ -79,14 +82,13 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
         String reporter = "admin";
         String issueTypeName = "Task";
-        String projectName = JiraServerServiceTestUtility.getTestProject();
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Custom field Test in int-jira-common: " + UUID.randomUUID().toString());
         issueRequestModelFieldsBuilder.setDescription("Test description");
         issueRequestModelFieldsBuilder.setPriority("3");
 
-        String key = JiraServerServiceTestUtility.getTestCustomFieldId();
+        String key = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CUSTOM_FIELD_TEST_ID.getPropertyKey());
         String value = "Custom field using rest";
         issueRequestModelFieldsBuilder.setField(key, value);
 

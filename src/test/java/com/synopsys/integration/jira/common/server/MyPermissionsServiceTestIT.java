@@ -13,8 +13,13 @@ import com.synopsys.integration.jira.common.model.response.PermissionModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.MyPermissionsService;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class MyPermissionsServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = new TestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME.getPropertyKey());
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void getMyPermissionsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -22,8 +27,7 @@ public class MyPermissionsServiceTestIT extends JiraServerParameterizedTestIT {
 
         MyPermissionsService myPermissionsService = jiraServiceFactory.createMyPermissionsService();
 
-        String testProjectKey = JiraServerServiceTestUtility.getTestProject();
-        MultiPermissionResponseModel myPermissionsResponse = myPermissionsService.getMyPermissions(testProjectKey, null, null, null);
+        MultiPermissionResponseModel myPermissionsResponse = myPermissionsService.getMyPermissions(projectName, null, null, null);
 
         Map<String, PermissionModel> permissionsMap = myPermissionsResponse.extractPermissions();
         assertTrue(permissionsMap.containsKey("CREATE_ISSUE"));

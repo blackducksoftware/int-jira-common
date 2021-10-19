@@ -15,9 +15,13 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.ProjectService;
 import com.synopsys.integration.jira.common.server.service.VersionService;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class VersionServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = new TestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME.getPropertyKey());
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -27,9 +31,8 @@ public class VersionServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         VersionService versionService = serviceFactory.createVersionService();
 
-        String testProject = JiraServerServiceTestUtility.getTestProject();
         ProjectService projectService = serviceFactory.createProjectService();
-        ProjectComponent projectComponent = projectService.getProjectsByName(testProject)
+        ProjectComponent projectComponent = projectService.getProjectsByName(projectName)
                                                 .stream()
                                                 .findFirst()
                                                 .orElseThrow(() -> new IntegrationException("Expected to find project"));
