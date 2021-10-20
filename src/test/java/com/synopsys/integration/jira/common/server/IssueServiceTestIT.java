@@ -99,7 +99,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
                                                                .findAny();
         // Check if the custom field is present on the server. If this check fails, a new custom field must be created and
         // the variable "key" must be updated.
-        assertTrue(model.isPresent());
+        assertTrue(model.isPresent(), "Cannot find a custom field with key: " + key);
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
         IssueCreationResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);

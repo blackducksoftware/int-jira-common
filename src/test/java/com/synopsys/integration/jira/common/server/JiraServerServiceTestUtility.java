@@ -27,22 +27,14 @@ public final class JiraServerServiceTestUtility {
     private static final TestProperties testProperties = new TestProperties();
 
     public static void validateConfiguration() {
-        /* TODO
-        String baseUrl = getEnvBaseUrl();
-        String userEmail = getEnvUsername();
-        String apiToken = getEnvPassword();
-        String testProject = getTestProject();
-         */
-
-        //TODO: some of these names don't make much sense, userEmail and apiToken should be possibly renamed to username/password
         String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL);
-        String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
-        String apiToken = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_PASSWORD);
+        String username = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
+        String password = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_PASSWORD);
         String testProject = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
 
         assumeTrue(StringUtils.isNotBlank(baseUrl), "No Jira Server base url provided");
-        assumeTrue(StringUtils.isNotBlank(userEmail), "No Jira Server user email provided");
-        assumeTrue(StringUtils.isNotBlank(apiToken), "No Jira Server API Token provided");
+        assumeTrue(StringUtils.isNotBlank(username), "No Jira Server username provided");
+        assumeTrue(StringUtils.isNotBlank(password), "No Jira Server password provided");
         assumeTrue(StringUtils.isNotBlank(testProject), "No Jira Server test project provided");
 
         try {
@@ -62,12 +54,6 @@ public final class JiraServerServiceTestUtility {
     public static JiraServerRestConfig createJiraServerConfig() {
         JiraServerRestConfigBuilder builder = JiraServerRestConfig.newBuilder();
 
-        /* TODO
-        builder
-            .setUrl(getEnvBaseUrl())
-            .setAuthUsername(getEnvUsername())
-            .setAuthPassword(getEnvPassword());
-         */
         builder
             .setUrl(testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL))
             .setAuthUsername(testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME))
@@ -84,40 +70,4 @@ public final class JiraServerServiceTestUtility {
         IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
         return new JiraServerServiceFactory(logger, jiraHttpClient, new Gson());
     }
-
-    /*
-    public static String getEnvBaseUrl() {
-        String envBaseUrl = System.getenv(JiraTestEnvVars.SERVER_BASE_URL);
-        return envBaseUrl != null ? envBaseUrl : "http://localhost:2990/jira";
-    }
-
-    public static String getEnvUsername() {
-        //String envUsername = System.getenv(JiraTestEnvVars.SERVER_USERNAME);
-        //return envUsername != null ? envUsername : "admin";
-
-        String envUsername = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
-        return envUsername;
-    }
-
-    public static String getEnvPassword() {
-        String envPassword = System.getenv(JiraTestEnvVars.SERVER_PASSWORD);
-        return envPassword != null ? envPassword : "admin";
-    }
-
-    public static String getTestProject() {
-        String envTestProject = System.getenv(JiraTestEnvVars.SERVER_TEST_PROJECT);
-        return envTestProject != null ? envTestProject : "Test Project";
-    }
-
-    public static String getTestCustomFieldId() {
-        String envTestCustomField = System.getenv(JiraTestEnvVars.TEST_CUSTOM_FIELD_ID);
-        assumeTrue(envTestCustomField != null);
-        return envTestCustomField;
-    }
-
-    public static String getOAuthAccessToken() {
-        return System.getenv(JiraTestEnvVars.SERVER_OAUTH_ACCESS_TOKEN);
-    }
-     */
-
 }

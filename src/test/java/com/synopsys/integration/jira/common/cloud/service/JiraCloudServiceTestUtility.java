@@ -20,13 +20,6 @@ public final class JiraCloudServiceTestUtility {
     private static final TestProperties testProperties = new TestProperties();
 
     public static void validateConfiguration() {
-        /*
-        String baseUrl = getEnvBaseUrl();
-        String userEmail = getEnvUserEmail();
-        String apiToken = getEnvApiToken();
-        String testProject = getTestProject();
-         */
-
         String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL);
         String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
         String apiToken = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_API_TOKEN);
@@ -49,13 +42,6 @@ public final class JiraCloudServiceTestUtility {
 
     public static JiraCloudRestConfig createJiraServerConfig() {
         JiraCloudRestConfigBuilder builder = JiraCloudRestConfig.newBuilder();
-
-        /*
-        builder.setUrl(getEnvBaseUrl())
-            .setAuthUserEmail(getEnvUserEmail())
-            .setApiToken(getEnvApiToken());
-        return builder.build();
-        */
         builder.setUrl(testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL))
             .setAuthUserEmail(testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL))
             .setApiToken(testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_API_TOKEN));
@@ -66,26 +52,4 @@ public final class JiraCloudServiceTestUtility {
         IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
         return new JiraCloudServiceFactory(logger, jiraHttpClient, new Gson());
     }
-
-    /*
-    public static String getEnvBaseUrl() {
-        return System.getenv(JiraTestEnvVars.CLOUD_BASE_URL);
-    }
-
-    public static String getEnvUserEmail() {
-        return System.getenv(JiraTestEnvVars.CLOUD_USER_EMAIL);
-    }
-
-    public static String getEnvApiToken() {
-        return System.getenv(JiraTestEnvVars.CLOUD_API_TOKEN);
-    }
-
-    public static String getTestProject() {
-        return System.getenv(JiraTestEnvVars.CLOUD_TEST_PROJECT);
-    }
-
-    public static String getOAuthAccessToken() {
-        return System.getenv(JiraTestEnvVars.CLOUD_OAUTH_ACCESS_TOKEN);
-    }
-    */
 }
