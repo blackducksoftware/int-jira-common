@@ -25,6 +25,7 @@ public class OAuthTestCredentials {
     private boolean isCloud;
 
     public static OAuthTestCredentials fromCloud() {
+        /*TODO
         return new OAuthTestCredentials(
             JiraCloudServiceTestUtility.getEnvBaseUrl(),
             JiraOauthTestUtility.getConsumerKey(),
@@ -32,11 +33,20 @@ public class OAuthTestCredentials {
             JiraCloudServiceTestUtility.getOAuthAccessToken(),
             JiraCloudServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
             true
+        );*/
+
+        return new OAuthTestCredentials(
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL),
+            JiraOauthTestUtility.getConsumerKey(),
+            JiraOauthTestUtility.getPrivateKey(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_OAUTH_ACCESS_TOKEN),
+            JiraCloudServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
+            true
         );
     }
 
     public static OAuthTestCredentials fromServer() {
-        /*
+        /*TODO
         return new OAuthTestCredentials(
             JiraServerServiceTestUtility.getEnvBaseUrl(),
             JiraOauthTestUtility.getConsumerKey(),

@@ -1,17 +1,17 @@
 package com.synopsys.integration.jira.common.rest.oauth1a;
 
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import com.google.api.client.auth.oauth.OAuthParameters;
-import com.synopsys.integration.jira.common.JiraTestEnvVars;
 import com.synopsys.integration.jira.common.model.oauth.OAuthCredentialsData;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public final class JiraOauthTestUtility {
+    private static final TestProperties testProperties = new TestProperties();
 
     public static JiraHttpClient createOAuthClient(String baseUrl, String accessToken) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return createOAuthClient(baseUrl, getPrivateKey(), getConsumerKey(), accessToken);
@@ -30,24 +30,18 @@ public final class JiraOauthTestUtility {
     }
 
     public static String getConsumerKey() {
-        return getEnvVarAndAssumeTrue(JiraTestEnvVars.CONSUMER_KEY);
+        return testProperties.getProperty(TestPropertyKey.TEST_JIRA_OAUTH_CONSUMER_KEY);
     }
 
     public static String getPrivateKey() {
-        return getEnvVarAndAssumeTrue(JiraTestEnvVars.PRIVATE_KEY);
+        return testProperties.getProperty(TestPropertyKey.TEST_JIRA_OAUTH_PRIVATE_KEY);
     }
 
     public static String getTemporaryToken() {
-        return getEnvVarAndAssumeTrue(JiraTestEnvVars.TEMPORARY_TOKEN);
+        return testProperties.getProperty(TestPropertyKey.TEST_JIRA_OAUTH_TEMP_TOKEN);
     }
 
     public static String getVerificationCode() {
-        return getEnvVarAndAssumeTrue(JiraTestEnvVars.VERIFICATION_CODE);
-    }
-
-    public static String getEnvVarAndAssumeTrue(String envVarName) {
-        String envVar = System.getenv(envVarName);
-        assumeTrue(null != envVar, "Missing value for " + envVarName);
-        return envVar;
+        return testProperties.getProperty(TestPropertyKey.TEST_JIRA_OAUTH_VERIFICATION_CODE);
     }
 }

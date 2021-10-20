@@ -15,8 +15,12 @@ import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.response.MultiPermissionResponseModel;
 import com.synopsys.integration.jira.common.model.response.PermissionModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class MyPermissionsServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = new TestProperties();
+    private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -28,9 +32,8 @@ public class MyPermissionsServiceTestIT extends JiraCloudParameterizedTestIT {
         String createIssuesPermissionName = "CREATE_ISSUES";
         String closeIssuesPermissionName = "CLOSE_ISSUES";
         List<String> permissions = Arrays.asList(createIssuesPermissionName, closeIssuesPermissionName);
-        String testProjectKey = JiraCloudServiceTestUtility.getTestProject();
 
-        MultiPermissionResponseModel myPermissionsResponse = myPermissionsService.getMyPermissions(permissions, testProjectKey, null, null, null, null, null);
+        MultiPermissionResponseModel myPermissionsResponse = myPermissionsService.getMyPermissions(permissions, testProjectName, null, null, null, null, null);
 
         Map<String, PermissionModel> permissionsMap = myPermissionsResponse.extractPermissions();
         assertEquals(permissions.size(), permissionsMap.size());
