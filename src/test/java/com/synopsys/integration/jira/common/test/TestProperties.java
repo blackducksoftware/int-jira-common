@@ -11,27 +11,18 @@ public class TestProperties {
     private static final String DEFAULT_PROPERTIES_FILE_NAME = "test.properties";
     private static final String PROPERTIES_LOCATION = "src/main/resources/" + DEFAULT_PROPERTIES_FILE_NAME;
 
-    private Properties properties;
+    private static Properties properties;
 
-    public TestProperties() {
+    public static TestProperties loadTestProperties() {
         loadProperties();
+        return new TestProperties();
     }
+
+    private TestProperties() { }
 
     public Properties getProperties() {
         loadProperties();
         return properties;
-    }
-
-    private void loadProperties() {
-        if (properties == null) {
-            properties = new Properties();
-            try (InputStream iStream = new FileInputStream(PROPERTIES_LOCATION)) {
-                properties.load(iStream);
-            } catch (IOException ioException) {
-                System.out.println("Failed to load properties from " + PROPERTIES_LOCATION);
-            }
-        }
-        populatePropertiesFromEnv();
     }
 
     public String getProperty(TestPropertyKey propertyKey) {
@@ -59,7 +50,19 @@ public class TestProperties {
         return getProperties().containsKey(propertyKey);
     }
 
-    private void populatePropertiesFromEnv() {
+    private static void loadProperties() {
+        if (properties == null) {
+            properties = new Properties();
+            try (InputStream iStream = new FileInputStream(PROPERTIES_LOCATION)) {
+                properties.load(iStream);
+            } catch (IOException ioException) {
+                System.out.println("Failed to load properties from " + PROPERTIES_LOCATION);
+            }
+        }
+        populatePropertiesFromEnv();
+    }
+
+    private static void populatePropertiesFromEnv() {
         for (TestPropertyKey key : TestPropertyKey.values()) {
             String prop = System.getenv(key.name());
             if (prop != null && !prop.isEmpty()) {

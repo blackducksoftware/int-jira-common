@@ -18,7 +18,7 @@ import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class VersionServiceTestIT extends JiraCloudParameterizedTestIT {
-    private final TestProperties testProperties = new TestProperties();
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
 
     @ParameterizedTest

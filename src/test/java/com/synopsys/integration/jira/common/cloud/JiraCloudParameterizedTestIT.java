@@ -18,14 +18,14 @@ import com.synopsys.integration.log.PrintStreamIntLogger;
 @Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public abstract class JiraCloudParameterizedTestIT {
     public static Collection getParameters() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        TestProperties testProperties = new TestProperties();
+        TestProperties testProperties = TestProperties.loadTestProperties();
         PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
 
         return Arrays.asList(
             JiraCloudServiceTestUtility.createJiraCredentialClient(intLogger),
             JiraOauthTestUtility.createOAuthClient(
-                testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL.getPropertyKey()),
-                testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_OAUTH_ACCESS_TOKEN.getPropertyKey())
+                testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL),
+                testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_OAUTH_ACCESS_TOKEN)
             ));
     }
 }

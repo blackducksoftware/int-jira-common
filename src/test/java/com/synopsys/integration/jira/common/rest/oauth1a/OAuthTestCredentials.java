@@ -13,7 +13,7 @@ import com.synopsys.integration.log.Slf4jIntLogger;
 public class OAuthTestCredentials {
     public static final Logger logger = LoggerFactory.getLogger(OAuthTestCredentials.class);
 
-    private static final TestProperties testProperties = new TestProperties();
+    private static final TestProperties testProperties = TestProperties.loadTestProperties();
 
     private String baseUrl;
     private String consumerKey;

@@ -39,7 +39,7 @@ import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
-    private final TestProperties testProperties = new TestProperties();
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
     private final String jiraTestPropertyKey = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROPERTY_KEY);

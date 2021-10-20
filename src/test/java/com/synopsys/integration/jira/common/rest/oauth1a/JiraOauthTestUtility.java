@@ -11,7 +11,7 @@ import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public final class JiraOauthTestUtility {
-    private static final TestProperties testProperties = new TestProperties();
+    private static final TestProperties testProperties = TestProperties.loadTestProperties();
 
     public static JiraHttpClient createOAuthClient(String baseUrl, String accessToken) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return createOAuthClient(baseUrl, getPrivateKey(), getConsumerKey(), accessToken);

@@ -17,7 +17,7 @@ import com.synopsys.integration.log.PrintStreamIntLogger;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
 public final class JiraCloudServiceTestUtility {
-    private static final TestProperties testProperties = new TestProperties();
+    private static final TestProperties testProperties = TestProperties.loadTestProperties();
 
     public static void validateConfiguration() {
         String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL);

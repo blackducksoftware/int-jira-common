@@ -18,7 +18,7 @@ import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class UserServiceTestIT extends JiraCloudParameterizedTestIT {
-    private final TestProperties testProperties = new TestProperties();
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
 
     @ParameterizedTest

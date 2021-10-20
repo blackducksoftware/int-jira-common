@@ -24,7 +24,7 @@ import com.synopsys.integration.rest.request.Request;
 public final class JiraServerServiceTestUtility {
     private static final Gson gson = new Gson();
 
-    private static final TestProperties testProperties = new TestProperties();
+    private static final TestProperties testProperties = TestProperties.loadTestProperties();
 
     public static void validateConfiguration() {
         String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL);

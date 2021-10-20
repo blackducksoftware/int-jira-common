@@ -18,12 +18,12 @@ import com.synopsys.integration.rest.HttpUrl;
 
 public class JiraCloudHttpClientTestIT extends JiraCloudParameterizedTestIT {
     private static final String RESTRICTED_ENDPOINT_SPEC = "/rest/api/2/field";
-    private final TestProperties testProperties = new TestProperties();
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
 
     @ParameterizedTest
     @MethodSource("getParameters")
     public void authenticationTest(JiraHttpClient jiraHttpClient) throws IntegrationException, IOException {
-        String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL.getPropertyKey());
+        String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL);
         JiraCloudServiceTestUtility.validateConfiguration();
 
         HttpUrl requestUrl = new HttpUrl(baseUrl + RESTRICTED_ENDPOINT_SPEC);

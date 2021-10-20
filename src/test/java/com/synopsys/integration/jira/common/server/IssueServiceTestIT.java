@@ -30,8 +30,8 @@ import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
-    private final TestProperties testProperties = new TestProperties();
-    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME.getPropertyKey());
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -88,7 +88,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         issueRequestModelFieldsBuilder.setDescription("Test description");
         issueRequestModelFieldsBuilder.setPriority("3");
 
-        String key = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CUSTOM_FIELD_TEST_ID.getPropertyKey());
+        String key = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CUSTOM_FIELD_TEST_ID);
         String value = "Custom field using rest";
         issueRequestModelFieldsBuilder.setField(key, value);
 
@@ -97,9 +97,8 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         Optional<CustomFieldCreationResponseModel> model = jiraFieldModels.stream()
                                                                .filter(field -> key.equals(field.getId()))
                                                                .findAny();
-        // Check if the custom field is present on the server. If this check fails, a new custom field must be created and
-        // the variable "key" must be updated.
-        assertTrue(model.isPresent(), "Cannot find a custom field with key: " + key);
+        assertTrue(model.isPresent(), "Cannot find a custom field with key: " + key
+                                          + ". Check if the custom field is present on the server. If this check fails, a new custom field must be created on the server and the TEST_JIRA_CUSTOM_FIELD_TEST_ID property updated. ");
 
         IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
         IssueCreationResponseModel issueCreationResponse = issueService.createIssue(issueCreationRequestModel);
