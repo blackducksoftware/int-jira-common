@@ -32,6 +32,8 @@ import com.synopsys.integration.jira.common.test.TestPropertyKey;
 public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
+    private final String reporter = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
+    private final String issueTypeName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_ISSUE_TYPE);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -40,9 +42,6 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
-
-        String reporter = "admin";
-        String issueTypeName = "Task";
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
@@ -61,14 +60,11 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
-        String reporter = null;
-        String issueTypeName = "Task";
-
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
         issueRequestModelFieldsBuilder.setDescription("Test description");
 
-        IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(reporter, issueTypeName, projectName, issueRequestModelFieldsBuilder);
+        IssueCreationRequestModel issueCreationRequestModel = new IssueCreationRequestModel(null, issueTypeName, projectName, issueRequestModelFieldsBuilder);
         IssueCreationResponseModel issue = issueService.createIssue(issueCreationRequestModel);
         assertNotNull(issue, "Expected an issue to be created.");
     }
@@ -79,9 +75,6 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
-
-        String reporter = "admin";
-        String issueTypeName = "Task";
 
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Custom field Test in int-jira-common: " + UUID.randomUUID().toString());
