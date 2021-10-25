@@ -23,8 +23,13 @@ import com.synopsys.integration.jira.common.model.response.IssueTypeResponseMode
 import com.synopsys.integration.jira.common.model.response.ProjectIssueCreateMetadataResponseModel;
 import com.synopsys.integration.jira.common.rest.service.IssueMetaDataService;
 import com.synopsys.integration.jira.common.rest.service.IssueTypeService;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void testIssueFields(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -34,8 +39,7 @@ public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
         IssueMetaDataService issueMetadataService = serviceFactory.createIssueMetadataService();
 
-        String testProject = JiraCloudServiceTestUtility.getTestProject();
-        String projectKey = projectService.getProjectsByName(testProject)
+        String projectKey = projectService.getProjectsByName(testProjectName)
                                 .getProjects()
                                 .stream()
                                 .findFirst()
@@ -64,8 +68,7 @@ public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
         IssueMetaDataService issueMetadataService = serviceFactory.createIssueMetadataService();
 
-        String testProject = JiraCloudServiceTestUtility.getTestProject();
-        String projectKey = projectService.getProjectsByName(testProject)
+        String projectKey = projectService.getProjectsByName(testProjectName)
                                 .getProjects()
                                 .stream()
                                 .findFirst()

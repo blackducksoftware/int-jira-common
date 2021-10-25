@@ -13,9 +13,14 @@ import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
 public class VersionServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void findUsersByUsernameTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -24,9 +29,8 @@ public class VersionServiceTestIT extends JiraCloudParameterizedTestIT {
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         VersionService versionService = serviceFactory.createVersionService();
 
-        String testProject = JiraCloudServiceTestUtility.getTestProject();
         ProjectService projectService = serviceFactory.createProjectService();
-        ProjectComponent projectComponent = projectService.getProjectsByName(testProject)
+        ProjectComponent projectComponent = projectService.getProjectsByName(testProjectName)
                                                 .getProjects()
                                                 .stream()
                                                 .findFirst()

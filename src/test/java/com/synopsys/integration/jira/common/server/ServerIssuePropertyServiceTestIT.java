@@ -20,8 +20,13 @@ import com.synopsys.integration.jira.common.server.builder.IssueRequestModelFiel
 import com.synopsys.integration.jira.common.server.model.IssueCreationRequestModel;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void setAndGetTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -33,7 +38,6 @@ public class ServerIssuePropertyServiceTestIT extends JiraServerParameterizedTes
 
         Gson gson = new Gson();
 
-        String projectName = JiraServerServiceTestUtility.getTestProject();
         IssueCreationResponseModel issue = createIssue(issueService, projectName);
 
         String propertyKey = "examplePropertyKey";

@@ -6,10 +6,14 @@ import org.slf4j.LoggerFactory;
 import com.synopsys.integration.jira.common.cloud.service.JiraCloudServiceTestUtility;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.JiraServerServiceTestUtility;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 import com.synopsys.integration.log.Slf4jIntLogger;
 
 public class OAuthTestCredentials {
     public static final Logger logger = LoggerFactory.getLogger(OAuthTestCredentials.class);
+
+    private static final TestProperties testProperties = TestProperties.loadTestProperties();
 
     private String baseUrl;
     private String consumerKey;
@@ -22,10 +26,10 @@ public class OAuthTestCredentials {
 
     public static OAuthTestCredentials fromCloud() {
         return new OAuthTestCredentials(
-            JiraCloudServiceTestUtility.getEnvBaseUrl(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_URL),
             JiraOauthTestUtility.getConsumerKey(),
             JiraOauthTestUtility.getPrivateKey(),
-            JiraCloudServiceTestUtility.getOAuthAccessToken(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_OAUTH_ACCESS_TOKEN),
             JiraCloudServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
             true
         );
@@ -33,10 +37,10 @@ public class OAuthTestCredentials {
 
     public static OAuthTestCredentials fromServer() {
         return new OAuthTestCredentials(
-            JiraServerServiceTestUtility.getEnvBaseUrl(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL),
             JiraOauthTestUtility.getConsumerKey(),
             JiraOauthTestUtility.getPrivateKey(),
-            JiraServerServiceTestUtility.getOAuthAccessToken(),
+            testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_OAUTH_ACCESS_TOKEN),
             JiraServerServiceTestUtility.createJiraCredentialClient(new Slf4jIntLogger(logger)),
             false
         );

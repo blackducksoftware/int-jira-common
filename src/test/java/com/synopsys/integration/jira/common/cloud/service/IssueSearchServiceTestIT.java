@@ -21,8 +21,13 @@ import com.synopsys.integration.jira.common.model.response.IssueResponseModel;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
+    private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -35,11 +40,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(userEmail).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(testProjectName))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
 
@@ -73,11 +78,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(userEmail).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(testProjectName))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -117,11 +122,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(userEmail).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(testProjectName))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();
@@ -170,11 +175,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         ProjectService projectService = serviceFactory.createProjectService();
 
         PageOfProjectsResponseModel projects = projectService.getProjects();
-        UserDetailsResponseModel userDetails = userSearchService.findUser(JiraCloudServiceTestUtility.getEnvUserEmail()).stream()
+        UserDetailsResponseModel userDetails = userSearchService.findUser(userEmail).stream()
                                                    .findFirst()
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         ProjectComponent project = projects.getProjects().stream()
-                                       .filter(currentProject -> currentProject.getName().equals(JiraCloudServiceTestUtility.getTestProject()))
+                                       .filter(currentProject -> currentProject.getName().equals(testProjectName))
                                        .findFirst()
                                        .orElseThrow(() -> new IllegalStateException("Jira Projects not found"));
         UUID uniqueId = UUID.randomUUID();

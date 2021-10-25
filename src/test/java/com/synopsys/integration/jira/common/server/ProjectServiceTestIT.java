@@ -15,8 +15,13 @@ import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
 import com.synopsys.integration.jira.common.server.service.ProjectService;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void getProjectsTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -37,8 +42,7 @@ public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        String testProject = JiraServerServiceTestUtility.getTestProject();
-        List<ProjectComponent> projects = projectService.getProjectsByName(testProject);
+        List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
 
         assertFalse(projects.isEmpty());
 
@@ -46,7 +50,7 @@ public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
         assertTrue(StringUtils.isNotBlank(projectKey));
 
         ProjectComponent project = projectService.getProject(projectKey);
-        assertTrue(testProject.equalsIgnoreCase(project.getName()));
+        assertTrue(projectName.equalsIgnoreCase(project.getName()));
     }
 
     @ParameterizedTest
@@ -57,8 +61,7 @@ public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        String testProject = JiraServerServiceTestUtility.getTestProject();
-        List<ProjectComponent> projects = projectService.getProjectsByName(testProject);
+        List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
 
         assertFalse(projects.isEmpty());
 

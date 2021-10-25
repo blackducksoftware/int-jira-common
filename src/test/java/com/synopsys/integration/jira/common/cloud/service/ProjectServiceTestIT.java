@@ -16,8 +16,12 @@ import com.synopsys.integration.jira.common.model.components.ProjectComponent;
 import com.synopsys.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.synopsys.integration.jira.common.model.response.VersionResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -74,8 +78,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        String testProject = JiraCloudServiceTestUtility.getTestProject();
-        PageOfProjectsResponseModel projectsByName = projectService.getProjectsByName(testProject);
+        PageOfProjectsResponseModel projectsByName = projectService.getProjectsByName(testProjectName);
         List<ProjectComponent> projects = projectsByName.getProjects();
 
         assertFalse(projects.isEmpty());
@@ -84,7 +87,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
         assertTrue(StringUtils.isNotBlank(projectKey));
 
         ProjectComponent project = projectService.getProject(projectKey);
-        assertEquals(testProject, project.getName());
+        assertEquals(testProjectName, project.getName());
     }
 
     @ParameterizedTest
@@ -95,8 +98,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
         ProjectService projectService = serviceFactory.createProjectService();
 
-        String testProject = JiraCloudServiceTestUtility.getTestProject();
-        PageOfProjectsResponseModel projects = projectService.getProjectsByName(testProject);
+        PageOfProjectsResponseModel projects = projectService.getProjectsByName(testProjectName);
 
         assertTrue(projects.getTotal() > 0);
 

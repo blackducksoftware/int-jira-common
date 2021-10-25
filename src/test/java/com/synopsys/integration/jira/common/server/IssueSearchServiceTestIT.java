@@ -21,8 +21,13 @@ import com.synopsys.integration.jira.common.server.model.IssueSearchResponseMode
 import com.synopsys.integration.jira.common.server.service.IssueSearchService;
 import com.synopsys.integration.jira.common.server.service.IssueService;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void queryForIssuesTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
@@ -31,7 +36,6 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
 
-        String projectName = JiraServerServiceTestUtility.getTestProject();
         String searchTerm = UUID.randomUUID().toString();
         String description = "Example description containing a special word to search on: " + searchTerm;
         IssueCreationResponseModel issue = createIssue(issueService, projectName, description);
@@ -65,7 +69,6 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
         IssueSearchService issueSearchService = serviceFactory.createIssueSearchService();
         IssuePropertyService issuePropertyService = serviceFactory.createIssuePropertyService();
 
-        String projectName = JiraServerServiceTestUtility.getTestProject();
         IssueCreationResponseModel issue = createIssue(issueService, projectName, "Test description");
 
         Gson gson = new Gson();

@@ -14,8 +14,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.synopsys.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
 import com.synopsys.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.jira.common.test.TestProperties;
+import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
 public class UserServiceTestIT extends JiraCloudParameterizedTestIT {
+    private final TestProperties testProperties = TestProperties.loadTestProperties();
+    private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -23,14 +27,13 @@ public class UserServiceTestIT extends JiraCloudParameterizedTestIT {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         UserSearchService userSearchService = serviceFactory.createUserSearchService();
-        String email = JiraCloudServiceTestUtility.getEnvUserEmail();
 
-        List<UserDetailsResponseModel> users = userSearchService.findUser(email);
+        List<UserDetailsResponseModel> users = userSearchService.findUser(userEmail);
         assertFalse(users.isEmpty());
         assertEquals(1, users.size());
 
         // This test will fail if you try to retrieve a user who doesn't allow everyone to see their email.
-        assertEquals(email, users.get(0).getEmailAddress());
+        assertEquals(userEmail, users.get(0).getEmailAddress());
     }
 
     @ParameterizedTest
