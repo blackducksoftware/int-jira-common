@@ -72,7 +72,7 @@ public class JiraOAuthHttpClient implements JiraHttpClient {
         } catch (HttpResponseException e) {
             throw new IntegrationRestException(jiraRequest.getMethod(), jiraRequest.getUrl(), e.getStatusCode(), e.getStatusMessage(), e.getContent(), e);
         } catch (IOException | URISyntaxException e) {
-            throw new IntegrationException(e.getMessage());
+            throw new IntegrationException(e.getMessage(), e);
         } finally {
             disconnectResponse(httpResponse);
         }
