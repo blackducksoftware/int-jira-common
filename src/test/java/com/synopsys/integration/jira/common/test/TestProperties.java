@@ -8,8 +8,8 @@ import java.util.Properties;
 import org.junit.jupiter.api.Assumptions;
 
 public class TestProperties {
-    private static final String DEFAULT_PROPERTIES_FILE_NAME = "test.properties";
-    private static final String PROPERTIES_LOCATION = "src/main/resources/" + DEFAULT_PROPERTIES_FILE_NAME;
+    public static final String DEFAULT_PROPERTIES_FILE_NAME = "test.properties";
+    public static final String PROPERTIES_LOCATION = "src/main/resources/" + DEFAULT_PROPERTIES_FILE_NAME;
 
     private static Properties properties;
 

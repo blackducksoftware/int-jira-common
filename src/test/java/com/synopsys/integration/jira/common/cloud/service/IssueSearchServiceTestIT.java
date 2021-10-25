@@ -28,6 +28,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
+    private final String issueTypeName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_ISSUE_TYPE);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -188,10 +189,9 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
         fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
 
-        String issueType = "Task";
         String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
         List<EntityProperty> properties = new LinkedList<>();
-        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
+        IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueTypeName, project.getName(), fieldsBuilder, properties);
 
         // create an issue
         IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
@@ -203,7 +203,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
         issueService.addComment(lastComment);
 
-        IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
+        IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueTypeName, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(0, issueFromSearchService.getIssues().size());

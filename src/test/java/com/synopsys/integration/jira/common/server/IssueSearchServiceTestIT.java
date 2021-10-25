@@ -27,6 +27,8 @@ import com.synopsys.integration.jira.common.test.TestPropertyKey;
 public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
+    private final String reporter = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
+    private final String issueTypeName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_ISSUE_TYPE);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -96,9 +98,6 @@ public class IssueSearchServiceTestIT extends JiraServerParameterizedTestIT {
     }
 
     private IssueCreationResponseModel createIssue(IssueService issueService, String projectName, String description) throws IntegrationException {
-        String reporter = "admin";
-        String issueTypeName = "Task";
-
         IssueRequestModelFieldsBuilder issueRequestModelFieldsBuilder = new IssueRequestModelFieldsBuilder();
         issueRequestModelFieldsBuilder.setSummary("Created by a JUnit Test in int-jira-common: " + UUID.randomUUID().toString());
         issueRequestModelFieldsBuilder.setDescription(description);

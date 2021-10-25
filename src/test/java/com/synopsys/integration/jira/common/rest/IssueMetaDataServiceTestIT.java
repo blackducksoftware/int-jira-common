@@ -29,6 +29,7 @@ import com.synopsys.integration.jira.common.test.TestPropertyKey;
 public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
+    private final String issueTypeName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_ISSUE_TYPE);
 
     @ParameterizedTest
     @MethodSource("getParameters")
@@ -48,7 +49,7 @@ public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
 
         String issueId = issueTypeService.getAllIssueTypes()
                              .stream()
-                             .filter(issueType -> "Task".equalsIgnoreCase(issueType.getName()))
+                             .filter(issueType -> issueTypeName.equalsIgnoreCase(issueType.getName()))
                              .map(IssueTypeResponseModel::getId)
                              .findFirst()
                              .orElseThrow(() -> new IntegrationException("Expected to find issue type task"));
@@ -77,7 +78,7 @@ public class IssueMetaDataServiceTestIT extends JiraCloudParameterizedTestIT {
 
         String issueId = issueTypeService.getAllIssueTypes()
                              .stream()
-                             .filter(issueType -> "Task".equalsIgnoreCase(issueType.getName()))
+                             .filter(issueType -> issueTypeName.equalsIgnoreCase(issueType.getName()))
                              .map(IssueTypeResponseModel::getId)
                              .findFirst()
                              .orElseThrow(() -> new IntegrationException("Expected to find issue type task"));

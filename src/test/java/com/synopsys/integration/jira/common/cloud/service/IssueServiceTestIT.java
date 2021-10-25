@@ -240,10 +240,11 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         List<EntityProperty> properties = new LinkedList<>();
 
         TransitionsResponseModel transitionsResponseModel = issueService.getTransitions(foundIssue.getId());
-        TransitionComponent resolveTransition = transitionsResponseModel.findFirstTransitionByName("Resolve Issue")
-                                                    .orElseThrow(() -> new IllegalStateException("Transition not found for issue"));
+        String resolveTransition = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_RESOLVE_TRANSITION);
+        TransitionComponent discoveredResolveTransition = transitionsResponseModel.findFirstTransitionByName(resolveTransition)
+                                                              .orElseThrow(() -> new IllegalStateException("Transition not found for issue"));
 
-        IdComponent transitionId = new IdComponent(resolveTransition.getId());
+        IdComponent transitionId = new IdComponent(discoveredResolveTransition.getId());
         IssueRequestModel transitionRequest = new IssueRequestModel(foundIssue.getId(), transitionId, fieldsBuilder, update, properties);
         issueService.transitionIssue(transitionRequest);
 
