@@ -97,7 +97,7 @@ public class IssueService {
         return createIssue(issueRequestModel);
     }
 
-    private IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
+    public IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
         return jiraApiClient.post(requestModel, httpUrl, IssueCreationResponseModel.class);
     }

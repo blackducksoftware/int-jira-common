@@ -134,7 +134,7 @@ public class IssueService {
                    .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Reporter user with email not found; email: %s", reporterEmail)));
     }
 
-    private IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
+    public IssueCreationResponseModel createIssue(IssueRequestModel requestModel) throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createApiUri());
         return jiraCloudService.post(requestModel, httpUrl, IssueCreationResponseModel.class);
     }
