@@ -145,27 +145,28 @@ public class JiraApiClient {
 
     private JiraRequest.Builder createRequestBuilder(HttpUrl url, HttpMethod httpMethod) {
         return new JiraRequest.Builder()
-                   .url(url)
-                   .method(httpMethod);
+            .url(url)
+            .method(httpMethod);
     }
 
     private JiraRequest createPostRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.POST)
-                   .addHeader("Content-Type", "application/json")
-                   .bodyContent(bodyContent)
-                   .build();
+            .addHeader("Content-Type", "application/json")
+            .bodyContent(bodyContent)
+            .build();
     }
 
     private JiraRequest createPutRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.PUT)
-                   .addHeader("Content-Type", "application/json")
-                   .bodyContent(bodyContent)
-                   .build();
+            .addHeader("Content-Type", "application/json")
+            .bodyContent(bodyContent)
+            .build();
     }
 
     private JiraRequest createDeleteRequest(HttpUrl url) {
         return createRequestBuilder(url, HttpMethod.DELETE)
-                   .build();
+            .addHeader("Content-Type", "application/json")
+            .build();
     }
 
     private <R extends IntRestComponent> R parseResponse(JiraResponse jiraResponse, Type type) throws IntegrationException {
