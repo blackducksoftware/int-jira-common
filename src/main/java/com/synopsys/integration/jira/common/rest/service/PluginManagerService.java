@@ -134,8 +134,13 @@ public class PluginManagerService {
         requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
-        Map<String, String> response = jiraApiClient.getResponseHeaders(requestBuilder.build());
-        return response.get("upm-token");
+        JiraRequest request = requestBuilder.build();
+        Map<String, String> response = jiraApiClient.getResponseHeaders(request);
+        // Jira Cloud had a breaking change in its public API where the "upm-token" was renamed for their credential client
+        //  This change will support the new header name but keep the functionality of the old headers which are still used
+        //  by the OAuth client and Jira Server.
+        Optional<String> pluginToken = Optional.ofNullable(response.get("upm-token"));
+        return pluginToken.orElseGet(() -> response.get("Upm-Token"));
     }
 
     private AvailableAppResponseModel getAvailableApp(String path, String appKey) throws IntegrationException {
