@@ -140,7 +140,8 @@ public class PluginManagerService {
         //  This change will support the new header name but keep the functionality of the old headers which are still used
         //  by the OAuth client and Jira Server.
         Optional<String> pluginToken = Optional.ofNullable(response.get("upm-token"));
-        return pluginToken.orElseGet(() -> response.get("Upm-Token"));
+        return pluginToken.or(() -> Optional.ofNullable(response.get("Upm-Token")))
+                   .orElseThrow(() -> new IntegrationException("Jira upm-token not found."));
     }
 
     private AvailableAppResponseModel getAvailableApp(String path, String appKey) throws IntegrationException {
