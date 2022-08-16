@@ -21,8 +21,8 @@ import com.synopsys.integration.jira.common.rest.service.PluginManagerService;
 import com.synopsys.integration.rest.RestConstants;
 import com.synopsys.integration.rest.exception.IntegrationRestException;
 
-public class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
-    private static final int WAIT_TIME = 1000;
+class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
+    private static final int WAIT_TIME = 10000;
     private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
@@ -33,8 +33,7 @@ public class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
-    public void installMarketplaceAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+    void installMarketplaceAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
@@ -49,7 +48,7 @@ public class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
     @ParameterizedTest
     @MethodSource("getParameters")
     @Disabled("Disabled because development mode will likely not be turned on most of the time")
-    public void installCloudDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
+    void installCloudDevelopmentAppTest(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
@@ -63,8 +62,7 @@ public class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    @Disabled("This test is flaky as it occasionally takes too long to install and fails the test")
-    public void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException, InterruptedException {
+    void getInstalledAppsTest(JiraHttpClient jiraHttpClient) throws IntegrationException, InterruptedException {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
