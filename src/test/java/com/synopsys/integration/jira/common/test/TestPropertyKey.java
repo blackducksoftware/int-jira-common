@@ -9,6 +9,7 @@ public enum TestPropertyKey {
     TEST_JIRA_SERVER_RESOLVE_TRANSITION("jira.server.resolve.transition"),
     TEST_JIRA_SERVER_REOPEN_TRANSITION("jira.server.reopen.transition"),
     TEST_JIRA_SERVER_OAUTH_ACCESS_TOKEN("jira.server.oauth.access.token"),
+    TEST_JIRA_SERVER_PERSONAL_ACCESS_TOKEN("jira.server.personal.access.token"),
 
     TEST_JIRA_CLOUD_URL("jira.cloud.url"),
     TEST_JIRA_CLOUD_EMAIL("jira.cloud.email"),
