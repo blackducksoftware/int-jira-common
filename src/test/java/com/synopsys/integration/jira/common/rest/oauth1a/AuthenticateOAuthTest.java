@@ -48,7 +48,10 @@ public class AuthenticateOAuthTest {
         JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
         JiraOAuthService jiraOAuthService = jiraOAuthServiceFactory.fromJiraServerUrl(currentOAuthCredentials.getBaseUrl());
 
-        OAuthAuthorizationData oAuthAuthorizationData = jiraOAuthService.createOAuthAuthorizationData(currentOAuthCredentials.getConsumerKey(), currentOAuthCredentials.getPrivateKey());
+        OAuthAuthorizationData oAuthAuthorizationData = jiraOAuthService.createOAuthAuthorizationData(
+            currentOAuthCredentials.getConsumerKey(),
+            currentOAuthCredentials.getPrivateKey()
+        );
 
         String temporaryToken = oAuthAuthorizationData.getAuthorizationToken();
         assertTrue(StringUtils.isNotBlank(temporaryToken));
