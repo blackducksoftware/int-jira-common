@@ -44,7 +44,7 @@ public class JiraServerBearerAuthRestConfigBuilder extends JiraServerRestConfigB
         URL jiraUrl = null;
         try {
             jiraUrl = new URL(getUrl());
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ignored) {
         }
 
         return new JiraServerBearerAuthRestConfig(
