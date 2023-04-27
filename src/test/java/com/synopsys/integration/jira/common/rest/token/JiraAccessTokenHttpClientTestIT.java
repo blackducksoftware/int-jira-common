@@ -25,7 +25,7 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
 @Tag(IntegrationsTestConstants.INTEGRATION_TEST)
-class JiraTokenHttpClientTestIT {
+class JiraAccessTokenHttpClientTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
     private final String reporter = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
@@ -39,7 +39,7 @@ class JiraTokenHttpClientTestIT {
 
     @Test
     void jiraServerTokenAuthTest() throws IntegrationException {
-        JiraHttpClient jiraHttpClient = new JiraTokenHttpClient(intLogger, gson, 120, true, proxyInfo, url, authenticationSupport, accessToken);
+        JiraHttpClient jiraHttpClient = new JiraAccessTokenHttpClient(intLogger, gson, 120, true, proxyInfo, url, authenticationSupport, accessToken);
         testService(jiraHttpClient);
     }
 

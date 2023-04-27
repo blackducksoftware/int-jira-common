@@ -26,7 +26,7 @@ public final class JiraServerServiceTestUtility {
     private static final Gson gson = new Gson();
 
     private static final TestProperties testProperties = TestProperties.loadTestProperties();
-    
+
     public static void validateConfiguration() {
         String baseUrl = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL);
         String username = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
@@ -79,7 +79,7 @@ public final class JiraServerServiceTestUtility {
         return createBasicAuthJiraServerConfig().createJiraHttpClient(logger);
     }
 
-    public static JiraHttpClient createJiraBearerCredentialClient(IntLogger logger) {
+    public static JiraHttpClient createJiraBearerAuthClient(IntLogger logger) {
         return createBearerAuthJiraServerConfig().createJiraHttpClient(logger);
     }
 

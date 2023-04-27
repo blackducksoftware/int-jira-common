@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
-import com.synopsys.integration.jira.common.rest.token.JiraTokenHttpClient;
+import com.synopsys.integration.jira.common.rest.token.JiraAccessTokenHttpClient;
 import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
@@ -35,7 +35,7 @@ public class JiraServerBearerAuthRestConfig extends JiraServerRestConfig {
 
     @Override
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraTokenHttpClient(
+        return new JiraAccessTokenHttpClient(
             logger,
             getGson(),
             getTimeoutSeconds(),
