@@ -1,3 +1,10 @@
+/*
+ * int-jira-common
+ *
+ * Copyright (c) 2023 Synopsys, Inc.
+ *
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
+ */
 package com.synopsys.integration.jira.common.rest.token;
 
 import java.io.IOException;
@@ -24,13 +31,13 @@ import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
-public class JiraTokenHttpClient extends AuthenticatingIntHttpClient implements JiraHttpClient {
+public class JiraAccessTokenHttpClient extends AuthenticatingIntHttpClient implements JiraHttpClient {
     private static final String AUTHORIZATION_TYPE = "Bearer";
     private final AuthenticationSupport authenticationSupport;
     private final String baseUrl;
     private final String accessToken;
 
-    public JiraTokenHttpClient(
+    public JiraAccessTokenHttpClient(
         IntLogger logger,
         Gson gson,
         int timeout,

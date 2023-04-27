@@ -22,9 +22,11 @@ public abstract class JiraServerParameterizedTestIT {
 
         return Arrays.asList(
             JiraServerServiceTestUtility.createJiraCredentialClient(intLogger),
+            JiraServerServiceTestUtility.createJiraBearerAuthClient(intLogger),
             JiraOauthTestUtility.createOAuthClient(
                 testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_URL),
                 testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_OAUTH_ACCESS_TOKEN)
-            ));
+            )
+        );
     }
 }
