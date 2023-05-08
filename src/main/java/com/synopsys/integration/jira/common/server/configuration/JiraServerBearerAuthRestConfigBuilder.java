@@ -35,7 +35,7 @@ public class JiraServerBearerAuthRestConfigBuilder extends JiraServerRestConfigB
     @Override
     public void validateAuthenticationProperties(BuilderStatus builderStatus) {
         if (StringUtils.isBlank(getAccessToken())) {
-            builderStatus.addErrorMessage("The Jira server user name must be specified.");
+            builderStatus.addErrorMessage("The Jira server access token must be specified.");
         }
     }
 
