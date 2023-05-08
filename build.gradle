@@ -6,7 +6,7 @@ buildscript {
 project.ext.moduleName = 'com.synopsys.integration.int-jira-common'
 project.ext.javaUseAutoModuleName = 'true'
 
-version = '3.0.8-SNAPSHOT'
+version = '4.0.0-SNAPSHOT'
 description = 'A library for using various capabilities of Jira.'
 
 apply plugin: 'com.synopsys.integration.library'
