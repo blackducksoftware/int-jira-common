@@ -33,6 +33,8 @@ import com.synopsys.integration.rest.service.IntJsonTransformer;
 
 public class JiraApiClient {
     // TODO may want to replace all references to gson with jsonTransformer
+    private static final String CONTENT_TYPE_HEADER = "Content-Type";
+    private static final String MEDIA_TYPE = "application/json";
     private final Gson gson;
     private final JiraHttpClient httpClient;
     private final IntJsonTransformer jsonTransformer;
@@ -151,21 +153,21 @@ public class JiraApiClient {
 
     private JiraRequest createPostRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.POST)
-            .addHeader("Content-Type", "application/json")
+            .addHeader(CONTENT_TYPE_HEADER, MEDIA_TYPE)
             .bodyContent(bodyContent)
             .build();
     }
 
     private JiraRequest createPutRequest(HttpUrl url, String bodyContent) {
         return createRequestBuilder(url, HttpMethod.PUT)
-            .addHeader("Content-Type", "application/json")
+            .addHeader(CONTENT_TYPE_HEADER, MEDIA_TYPE)
             .bodyContent(bodyContent)
             .build();
     }
 
     private JiraRequest createDeleteRequest(HttpUrl url) {
         return createRequestBuilder(url, HttpMethod.DELETE)
-            .addHeader("Content-Type", "application/json")
+            .addHeader(CONTENT_TYPE_HEADER, MEDIA_TYPE)
             .build();
     }
 
