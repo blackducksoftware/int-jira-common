@@ -62,9 +62,9 @@ public class IssueService {
     }
 
     public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
-        String issueTypeName = requestModel.getIssueTypeName();
-        String projectName = requestModel.getProjectName();
-        String reporter = requestModel.getReporterUsername();
+        String issueTypeName = requestModel.getIssueTypeName().trim();
+        String projectName = requestModel.getProjectName().trim();
+        String reporter = requestModel.getReporterUsername().trim();
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
@@ -75,6 +75,7 @@ public class IssueService {
                               .orElse("");
         List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = projects.stream()
+                                            .filter(projectComponent -> projectComponent.getName().equals(projectName))
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 

@@ -66,13 +66,14 @@ public class IssueService {
     }
 
     public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
-        String issueTypeName = requestModel.getIssueTypeName();
-        String projectName = requestModel.getProjectName();
-        String reporterEmail = requestModel.getReporterEmail();
+        String issueTypeName = requestModel.getIssueTypeName().trim();
+        String projectName = requestModel.getProjectName().trim();
+        String reporterEmail = requestModel.getReporterEmail().trim();
 
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
         String projectId = pageOfProjects.getProjects()
                                .stream()
+                               .filter(projectComponent -> projectComponent.getName().equals(projectName))
                                .findFirst()
                                .map(ProjectComponent::getId)
                                .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
