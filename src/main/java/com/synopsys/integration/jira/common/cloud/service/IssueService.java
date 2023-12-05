@@ -66,9 +66,9 @@ public class IssueService {
     }
 
     public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
-        String issueTypeName = requestModel.getIssueTypeName().trim();
-        String projectName = requestModel.getProjectName().trim();
-        String reporterEmail = requestModel.getReporterEmail().trim();
+        String issueTypeName = StringUtils.trim(requestModel.getIssueTypeName());
+        String projectName = StringUtils.trim(requestModel.getProjectName());
+        String reporterEmail = StringUtils.trim(requestModel.getReporterEmail());
 
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
         String projectId = pageOfProjects.getProjects()

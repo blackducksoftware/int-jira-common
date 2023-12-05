@@ -62,9 +62,9 @@ public class IssueService {
     }
 
     public IssueCreationResponseModel createIssue(IssueCreationRequestModel requestModel) throws IntegrationException {
-        String issueTypeName = requestModel.getIssueTypeName().trim();
-        String projectName = requestModel.getProjectName().trim();
-        String reporter = requestModel.getReporterUsername().trim();
+        String issueTypeName = StringUtils.trim(requestModel.getIssueTypeName());
+        String projectName = StringUtils.trim(requestModel.getProjectName());
+        String reporter = StringUtils.trim(requestModel.getReporterUsername());
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
