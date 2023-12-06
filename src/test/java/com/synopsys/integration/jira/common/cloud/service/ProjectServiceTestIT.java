@@ -19,13 +19,13 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
-public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
+class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetPaginatedProjects(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetPaginatedProjects(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 
@@ -42,7 +42,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetManyPaginatedProjects(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetManyPaginatedProjects(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 
@@ -58,7 +58,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetAllProjects(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetAllProjects(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 
@@ -72,7 +72,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetProject(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetProject(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 
@@ -92,7 +92,7 @@ public class ProjectServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetProjectVersions(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetProjectVersions(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
 

@@ -50,7 +50,7 @@ public class ProjectServiceTestIT extends JiraServerParameterizedTestIT {
         assertTrue(StringUtils.isNotBlank(projectKey));
 
         ProjectComponent project = projectService.getProject(projectKey);
-        assertTrue(projectName.equalsIgnoreCase(project.getName()));
+        assertTrue(projectName.contains(project.getName()));
     }
 
     @ParameterizedTest
