@@ -38,7 +38,7 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
-public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
+class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String userEmail = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_EMAIL);
     private final String testProjectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_CLOUD_TEST_PROJECT_NAME);
@@ -46,7 +46,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testCreateIssue(JiraHttpClient jiraHttpClient) throws Exception {
+    void testCreateIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -65,7 +65,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testCreateNullFieldExceptions(JiraHttpClient jiraHttpClient) throws Exception {
+    void testCreateNullFieldExceptions(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -99,7 +99,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testCreateFieldsNotFoundExceptions(JiraHttpClient jiraHttpClient) throws Exception {
+    void testCreateFieldsNotFoundExceptions(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -138,7 +138,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testUpdateIssue(JiraHttpClient jiraHttpClient) throws Exception {
+    void testUpdateIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -175,7 +175,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testAddComment(JiraHttpClient jiraHttpClient) throws Exception {
+    void testAddComment(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -199,7 +199,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testGetStatus(JiraHttpClient jiraHttpClient) throws Exception {
+    void testGetStatus(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
@@ -219,7 +219,7 @@ public class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void testTransitionIssue(JiraHttpClient jiraHttpClient) throws Exception {
+    void testTransitionIssue(JiraHttpClient jiraHttpClient) throws Exception {
         JiraCloudServiceTestUtility.validateConfiguration();
         JiraCloudServiceFactory serviceFactory = JiraCloudServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();

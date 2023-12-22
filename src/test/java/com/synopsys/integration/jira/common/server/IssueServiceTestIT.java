@@ -29,7 +29,7 @@ import com.synopsys.integration.jira.common.server.service.JiraServerServiceFact
 import com.synopsys.integration.jira.common.test.TestProperties;
 import com.synopsys.integration.jira.common.test.TestPropertyKey;
 
-public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
+class IssueServiceTestIT extends JiraServerParameterizedTestIT {
     private final TestProperties testProperties = TestProperties.loadTestProperties();
     private final String projectName = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_TEST_PROJECT_NAME);
     private final String reporter = testProperties.getProperty(TestPropertyKey.TEST_JIRA_SERVER_USERNAME);
@@ -37,7 +37,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void createIssueTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    void createIssueTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -54,7 +54,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void createIssueWithoutReporterTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    void createIssueWithoutReporterTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -71,7 +71,7 @@ public class IssueServiceTestIT extends JiraServerParameterizedTestIT {
 
     @ParameterizedTest
     @MethodSource("getParameters")
-    public void createIssueWithCustomFieldTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    void createIssueWithCustomFieldTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
         JiraServerServiceTestUtility.validateConfiguration();
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
         IssueService issueService = serviceFactory.createIssueService();
