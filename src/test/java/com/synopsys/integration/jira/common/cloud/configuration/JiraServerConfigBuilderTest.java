@@ -1,15 +1,24 @@
 package com.synopsys.integration.jira.common.cloud.configuration;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.synopsys.integration.jira.common.rest.JiraCredentialHttpClient;
+import com.synopsys.integration.jira.common.rest.JiraHttpClient;
+import com.synopsys.integration.log.LogLevel;
+import com.synopsys.integration.log.PrintStreamIntLogger;
 import org.junit.jupiter.api.Test;
+
+import javax.net.ssl.SSLContext;
 
 public class JiraServerConfigBuilderTest {
     @Test
@@ -119,13 +128,30 @@ public class JiraServerConfigBuilderTest {
         assertEquals("fake but valid not blank access token", jiraServerConfig.getApiToken());
     }
 
+    @Test
+    public void testUsingSSLContext() {
+        JiraCloudRestConfigBuilder jiraServerConfigBuilder = createBuilderWithoutAccessToken();
+        jiraServerConfigBuilder.setApiToken("api_token");
+        assertFalse(jiraServerConfigBuilder.getSslContext().isPresent());
+
+        JiraCloudRestConfig jiraCloudRestConfig = jiraServerConfigBuilder.build();
+        assertFalse(jiraCloudRestConfig.getSslContext().isPresent());
+
+        SSLContext sslContext = assertDoesNotThrow(SSLContext::getDefault);
+        jiraServerConfigBuilder.setSslContext(sslContext);
+        assertTrue(jiraServerConfigBuilder.getSslContext().isPresent());
+        jiraCloudRestConfig = jiraServerConfigBuilder.build();
+        assertTrue(jiraCloudRestConfig.getSslContext().isPresent());
+
+        PrintStreamIntLogger intLogger = new PrintStreamIntLogger(System.out, LogLevel.WARN);
+        JiraHttpClient jiraHttpClient = jiraCloudRestConfig.createJiraHttpClient(intLogger);
+        assertTrue(jiraHttpClient instanceof JiraCredentialHttpClient);
+    }
+
     private JiraCloudRestConfigBuilder createBuilderWithoutAccessToken() {
-        JiraCloudRestConfigBuilder jiraServerConfigBuilder = JiraCloudRestConfig.newBuilder();
-
-        jiraServerConfigBuilder.setUrl("http://www.google.com/fake_but_valid_not_blank_url");
-        jiraServerConfigBuilder.setAuthUserEmail("fake but valid (not blank) user email");
-        jiraServerConfigBuilder.setTimeoutInSeconds(120);
-
-        return jiraServerConfigBuilder;
+        return JiraCloudRestConfig.newBuilder()
+                .setUrl("http://www.google.com/fake_but_valid_not_blank_url")
+                .setAuthUserEmail("fake but valid (not blank) user email")
+                .setTimeoutInSeconds(120);
     }
 }

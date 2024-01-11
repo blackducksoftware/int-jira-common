@@ -8,6 +8,7 @@
 package com.synopsys.integration.jira.common.cloud.configuration;
 
 import java.net.URL;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.builder.Buildable;
@@ -19,6 +20,8 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 import com.synopsys.integration.util.Stringable;
 
+import javax.net.ssl.SSLContext;
+
 public class JiraCloudRestConfig extends Stringable implements Buildable {
     private final URL jiraUrl;
     private final int timeoutSeconds;
@@ -28,8 +31,17 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
     private final boolean alwaysTrustServerCertificate;
     private final Gson gson;
     private final AuthenticationSupport authenticationSupport;
+    private final SSLContext sslContext;
 
     public JiraCloudRestConfig(URL jiraUrl, int timeoutSeconds, ProxyInfo proxyInfo, boolean alwaysTrustServerCertificate, Gson gson, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken) {
+        this(jiraUrl, timeoutSeconds, proxyInfo, alwaysTrustServerCertificate, gson, authenticationSupport, authUserEmail, apiToken, null);
+    }
+
+    public JiraCloudRestConfig(URL jiraUrl, int timeoutSeconds, ProxyInfo proxyInfo, SSLContext sslContext, Gson gson, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken) {
+        this(jiraUrl, timeoutSeconds, proxyInfo, false, gson, authenticationSupport, authUserEmail, apiToken, sslContext);
+    }
+
+    private JiraCloudRestConfig(URL jiraUrl, int timeoutSeconds, ProxyInfo proxyInfo, boolean alwaysTrustServerCertificate, Gson gson, AuthenticationSupport authenticationSupport, String authUserEmail, String apiToken, SSLContext sslContext) {
         this.jiraUrl = jiraUrl;
         this.timeoutSeconds = timeoutSeconds;
         this.authUserEmail = authUserEmail;
@@ -38,14 +50,19 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
         this.alwaysTrustServerCertificate = alwaysTrustServerCertificate;
         this.gson = gson;
         this.authenticationSupport = authenticationSupport;
+        this.sslContext = sslContext;
     }
 
-    public static final JiraCloudRestConfigBuilder newBuilder() {
+    public static JiraCloudRestConfigBuilder newBuilder() {
         return new JiraCloudRestConfigBuilder();
     }
 
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraCredentialHttpClient(logger, gson, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
+        if (getSslContext().isPresent()){
+            return new JiraCredentialHttpClient(logger, gson, timeoutSeconds, proxyInfo, getSslContext().get(), jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
+        } else {
+            return new JiraCredentialHttpClient(logger, gson, timeoutSeconds, alwaysTrustServerCertificate, proxyInfo, jiraUrl.toString(), authenticationSupport, authUserEmail, apiToken);
+        }
     }
 
     public JiraCloudServiceFactory createJiraCloudServiceFactory(IntLogger logger) {
@@ -82,6 +99,10 @@ public class JiraCloudRestConfig extends Stringable implements Buildable {
 
     public AuthenticationSupport getAuthenticationSupport() {
         return authenticationSupport;
+    }
+
+    public Optional<SSLContext> getSslContext() {
+        return Optional.ofNullable(sslContext);
     }
 
 }

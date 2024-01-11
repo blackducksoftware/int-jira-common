@@ -17,10 +17,12 @@ import com.synopsys.integration.log.IntLogger;
 import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
+import javax.net.ssl.SSLContext;
+
 public class JiraServerBearerAuthRestConfig extends JiraServerRestConfig {
     private final String accessToken;
 
-    public JiraServerBearerAuthRestConfig(
+    protected JiraServerBearerAuthRestConfig(
         URL jiraUrl,
         int timeoutSeconds,
         ProxyInfo proxyInfo,
@@ -33,18 +35,45 @@ public class JiraServerBearerAuthRestConfig extends JiraServerRestConfig {
         this.accessToken = accessToken;
     }
 
+    protected JiraServerBearerAuthRestConfig(
+            URL jiraUrl,
+            int timeoutSeconds,
+            ProxyInfo proxyInfo,
+            SSLContext sslContext,
+            Gson gson,
+            AuthenticationSupport authenticationSupport,
+            String accessToken
+    ) {
+        super(jiraUrl, timeoutSeconds, proxyInfo, sslContext, gson, authenticationSupport);
+        this.accessToken = accessToken;
+    }
+
     @Override
     public JiraHttpClient createJiraHttpClient(IntLogger logger) {
-        return new JiraAccessTokenHttpClient(
-            logger,
-            getGson(),
-            getTimeoutSeconds(),
-            isAlwaysTrustServerCertificate(),
-            getProxyInfo(),
-            getJiraUrl().toString(),
-            getAuthenticationSupport(),
-            accessToken
-        );
+        if (getSslContext().isPresent()) {
+            return new JiraAccessTokenHttpClient(
+                    logger,
+                    getGson(),
+                    getTimeoutSeconds(),
+                    getProxyInfo(),
+                    getSslContext().get(),
+                    getJiraUrl().toString(),
+                    getAuthenticationSupport(),
+                    accessToken
+            );
+        } else {
+            return new JiraAccessTokenHttpClient(
+                    logger,
+                    getGson(),
+                    getTimeoutSeconds(),
+                    isAlwaysTrustServerCertificate(),
+                    getProxyInfo(),
+                    getJiraUrl().toString(),
+                    getAuthenticationSupport(),
+                    accessToken
+            );
+        }
+
     }
 
     @Override

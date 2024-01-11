@@ -47,15 +47,27 @@ public class JiraServerBearerAuthRestConfigBuilder extends JiraServerRestConfigB
         } catch (MalformedURLException ignored) {
         }
 
-        return new JiraServerBearerAuthRestConfig(
-            jiraUrl,
-            getTimeoutInSeconds(),
-            getProxyInfo(),
-            isTrustCert(),
-            getGson(),
-            getAuthenticationSupport(),
-            getAccessToken()
-        );
+        if (getSslContext().isPresent()) {
+            return new JiraServerBearerAuthRestConfig(
+                    jiraUrl,
+                    getTimeoutInSeconds(),
+                    getProxyInfo(),
+                    getSslContext().get(),
+                    getGson(),
+                    getAuthenticationSupport(),
+                    getAccessToken()
+            );
+        } else {
+            return new JiraServerBearerAuthRestConfig(
+                    jiraUrl,
+                    getTimeoutInSeconds(),
+                    getProxyInfo(),
+                    isTrustCert(),
+                    getGson(),
+                    getAuthenticationSupport(),
+                    getAccessToken()
+            );
+        }
     }
 
     public String getAccessToken() {
@@ -63,7 +75,6 @@ public class JiraServerBearerAuthRestConfigBuilder extends JiraServerRestConfigB
     }
 
     public JiraServerBearerAuthRestConfigBuilder setAccessToken(String accessToken) {
-        setProperty(AUTH_PERSONAL_ACCESS_TOKEN, accessToken);
-        return this;
+        return setProperty(AUTH_PERSONAL_ACCESS_TOKEN, accessToken);
     }
 }

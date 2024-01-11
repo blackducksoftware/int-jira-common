@@ -29,19 +29,36 @@ import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
+import javax.net.ssl.SSLContext;
+
 public class JiraCredentialHttpClient extends BasicAuthHttpClient implements JiraHttpClient {
     private final String baseUrl;
 
-    public static final JiraHttpClient cloud(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
+    // Does not use SSLContext
+    public static JiraHttpClient cloud(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String authUserEmail, String apiToken) {
         return new JiraCredentialHttpClient(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), authUserEmail, apiToken);
     }
 
-    public static final JiraHttpClient server(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
+    public static JiraHttpClient server(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, String username, String password) {
         return new JiraCredentialHttpClient(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo, baseUrl, new AuthenticationSupport(), username, password);
     }
 
     public JiraCredentialHttpClient(IntLogger logger, Gson gson, int timeout, boolean alwaysTrustServerCertificate, ProxyInfo proxyInfo, String baseUrl, AuthenticationSupport authenticationSupport, String username, String password) {
         super(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo, authenticationSupport, username, password);
+        this.baseUrl = baseUrl;
+    }
+
+    // Uses SSLContext
+    public static JiraHttpClient cloud(IntLogger logger, Gson gson, int timeout, ProxyInfo proxyInfo, SSLContext sslContext, String baseUrl, String authUserEmail, String apiToken) {
+        return new JiraCredentialHttpClient(logger, gson, timeout, proxyInfo, sslContext, baseUrl, new AuthenticationSupport(), authUserEmail, apiToken);
+    }
+
+    public static JiraHttpClient server(IntLogger logger, Gson gson, int timeout, ProxyInfo proxyInfo, SSLContext sslContext, String baseUrl, String username, String password) {
+        return new JiraCredentialHttpClient(logger, gson, timeout, proxyInfo, sslContext, baseUrl, new AuthenticationSupport(), username, password);
+    }
+
+    public JiraCredentialHttpClient(IntLogger logger, Gson gson, int timeout, ProxyInfo proxyInfo, SSLContext sslContext, String baseUrl, AuthenticationSupport authenticationSupport, String username, String password) {
+        super(logger, gson, timeout, proxyInfo, sslContext, authenticationSupport, username, password);
         this.baseUrl = baseUrl;
     }
 
