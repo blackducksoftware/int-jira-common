@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,8 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.proxy.ProxyInfoBuilder;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
+import javax.net.ssl.SSLContext;
+
 public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRestConfig> {
     public static final BuilderPropertyKey URL_KEY = new BuilderPropertyKey("JIRA_URL");
     public static final BuilderPropertyKey AUTH_USER_EMAIL = new BuilderPropertyKey("JIRA_AUTH_USER_EMAIL");
@@ -47,10 +50,11 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     public static final int DEFAULT_TIMEOUT_SECONDS = 120;
 
     private final BuilderProperties builderProperties;
-    private ProxyInfo proxyInfo;
+    private ProxyInfo proxyInfo = ProxyInfo.NO_PROXY_INFO;
     private IntLogger logger = new PrintStreamIntLogger(System.out, LogLevel.INFO);
     private Gson gson = new Gson();
     private AuthenticationSupport authenticationSupport = new AuthenticationSupport();
+    private SSLContext sslContext = null;
 
     public JiraCloudRestConfigBuilder() {
         Set<BuilderPropertyKey> propertyKeys = new HashSet<>();
@@ -66,8 +70,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
         propertyKeys.add(PROXY_NTLM_WORKSTATION_KEY);
         propertyKeys.add(TRUST_CERT_KEY);
         builderProperties = new BuilderProperties(propertyKeys);
-        proxyInfo = ProxyInfo.NO_PROXY_INFO;
-        builderProperties.set(TIMEOUT_KEY, Integer.toString(JiraCloudRestConfigBuilder.DEFAULT_TIMEOUT_SECONDS));
+        setProperty(TIMEOUT_KEY, Integer.toString(JiraCloudRestConfigBuilder.DEFAULT_TIMEOUT_SECONDS));
     }
 
     @Override
@@ -79,7 +82,11 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
             // ignored exception
         }
 
-        return new JiraCloudRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), isTrustCert(), gson, authenticationSupport, getAuthUserEmail(), getApiToken());
+        if (getSslContext().isPresent()) {
+            return new JiraCloudRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), getSslContext().get(), gson, authenticationSupport, getAuthUserEmail(), getApiToken());
+        } else {
+            return new JiraCloudRestConfig(jiraUrl, getTimeoutInSeconds(), getProxyInfo(), isTrustCert(), gson, authenticationSupport, getAuthUserEmail(), getApiToken());
+        }
     }
 
     @Override
@@ -144,8 +151,12 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public void setProperty(String key, String value) {
-        String resolvedKey = resolveKey(key).getKey();
-        builderProperties.setProperty(resolvedKey, value);
+        setProperty(resolveKey(key), value);
+    }
+
+    private JiraCloudRestConfigBuilder setProperty(BuilderPropertyKey key, String value) {
+        builderProperties.set(key, value);
+        return this;
     }
 
     private BuilderPropertyKey resolveKey(String key) {
@@ -217,8 +228,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setUrl(String url) {
-        builderProperties.set(URL_KEY, url);
-        return this;
+        return setProperty(URL_KEY, url);
     }
 
     public String getAuthUserEmail() {
@@ -226,8 +236,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setAuthUserEmail(String authUserEmail) {
-        builderProperties.set(AUTH_USER_EMAIL, authUserEmail);
-        return this;
+        return setProperty(AUTH_USER_EMAIL, authUserEmail);
     }
 
     public String getApiToken() {
@@ -235,8 +244,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setApiToken(String accessToken) {
-        builderProperties.set(ACCESS_TOKEN_KEY, accessToken);
-        return this;
+        return setProperty(ACCESS_TOKEN_KEY, accessToken);
     }
 
     public int getTimeoutInSeconds() {
@@ -244,13 +252,11 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setTimeoutInSeconds(String timeout) {
-        builderProperties.set(TIMEOUT_KEY, timeout);
-        return this;
+        return setProperty(TIMEOUT_KEY, timeout);
     }
 
     public JiraCloudRestConfigBuilder setTimeoutInSeconds(int timeout) {
-        setTimeoutInSeconds(String.valueOf(timeout));
-        return this;
+        return setTimeoutInSeconds(String.valueOf(timeout));
     }
 
     public String getProxyHost() {
@@ -258,8 +264,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyHost(String proxyHost) {
-        builderProperties.set(PROXY_HOST_KEY, proxyHost);
-        return this;
+        return setProperty(PROXY_HOST_KEY, proxyHost);
     }
 
     public int getProxyPort() {
@@ -267,13 +272,11 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyPort(String proxyPort) {
-        builderProperties.set(PROXY_PORT_KEY, proxyPort);
-        return this;
+        return setProperty(PROXY_PORT_KEY, proxyPort);
     }
 
     public JiraCloudRestConfigBuilder setProxyPort(int proxyPort) {
-        setProxyPort(String.valueOf(proxyPort));
-        return this;
+        return setProxyPort(String.valueOf(proxyPort));
     }
 
     public String getProxyUsername() {
@@ -281,8 +284,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyUsername(String proxyUsername) {
-        builderProperties.set(PROXY_USERNAME_KEY, proxyUsername);
-        return this;
+        return setProperty(PROXY_USERNAME_KEY, proxyUsername);
     }
 
     public String getProxyPassword() {
@@ -290,8 +292,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyPassword(String proxyPassword) {
-        builderProperties.set(PROXY_PASSWORD_KEY, proxyPassword);
-        return this;
+        return setProperty(PROXY_PASSWORD_KEY, proxyPassword);
     }
 
     public String getProxyNtlmDomain() {
@@ -299,8 +300,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyNtlmDomain(String proxyNtlmDomain) {
-        builderProperties.set(PROXY_NTLM_DOMAIN_KEY, proxyNtlmDomain);
-        return this;
+        return setProperty(PROXY_NTLM_DOMAIN_KEY, proxyNtlmDomain);
     }
 
     public String getProxyNtlmWorkstation() {
@@ -308,8 +308,7 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setProxyNtlmWorkstation(String proxyNtlmWorkstation) {
-        builderProperties.set(PROXY_NTLM_WORKSTATION_KEY, proxyNtlmWorkstation);
-        return this;
+        return setProperty(PROXY_NTLM_WORKSTATION_KEY, proxyNtlmWorkstation);
     }
 
     public boolean isTrustCert() {
@@ -317,13 +316,21 @@ public class JiraCloudRestConfigBuilder extends IntegrationBuilder<JiraCloudRest
     }
 
     public JiraCloudRestConfigBuilder setTrustCert(String trustCert) {
-        builderProperties.set(TRUST_CERT_KEY, trustCert);
-        return this;
+        return setProperty(TRUST_CERT_KEY, trustCert);
     }
 
     public JiraCloudRestConfigBuilder setTrustCert(boolean trustCert) {
-        setTrustCert(String.valueOf(trustCert));
-        return this;
+        return setTrustCert(String.valueOf(trustCert));
     }
 
+    public Optional<SSLContext> getSslContext() {
+        return Optional.ofNullable(sslContext);
+    }
+
+    public JiraCloudRestConfigBuilder setSslContext(SSLContext sslContext) {
+        if (null != sslContext) {
+            this.sslContext = sslContext;
+        }
+        return this;
+    }
 }

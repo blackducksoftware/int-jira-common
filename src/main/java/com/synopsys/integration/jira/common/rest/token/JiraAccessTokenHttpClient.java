@@ -31,6 +31,8 @@ import com.synopsys.integration.rest.request.Request;
 import com.synopsys.integration.rest.response.Response;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 
+import javax.net.ssl.SSLContext;
+
 public class JiraAccessTokenHttpClient extends AuthenticatingIntHttpClient implements JiraHttpClient {
     private static final String AUTHORIZATION_TYPE = "Bearer";
     private final AuthenticationSupport authenticationSupport;
@@ -48,6 +50,22 @@ public class JiraAccessTokenHttpClient extends AuthenticatingIntHttpClient imple
         String accessToken
     ) {
         super(logger, gson, timeout, alwaysTrustServerCertificate, proxyInfo);
+        this.authenticationSupport = authenticationSupport;
+        this.baseUrl = baseUrl;
+        this.accessToken = accessToken;
+    }
+
+    public JiraAccessTokenHttpClient(
+            IntLogger logger,
+            Gson gson,
+            int timeout,
+            ProxyInfo proxyInfo,
+            SSLContext sslContext,
+            String baseUrl,
+            AuthenticationSupport authenticationSupport,
+            String accessToken
+    ) {
+        super(logger, gson, timeout, proxyInfo, sslContext);
         this.authenticationSupport = authenticationSupport;
         this.baseUrl = baseUrl;
         this.accessToken = accessToken;

@@ -42,16 +42,29 @@ public class JiraServerBasicAuthRestConfigBuilder extends JiraServerRestConfigBu
         } catch (MalformedURLException ignored) {
         }
 
-        return new JiraServerBasicAuthRestConfig(
-            jiraUrl,
-            getTimeoutInSeconds(),
-            getProxyInfo(),
-            isTrustCert(),
-            getGson(),
-            getAuthenticationSupport(),
-            getAuthUsername(),
-            getAuthPassword()
-        );
+        if (getSslContext().isPresent()) {
+            return new JiraServerBasicAuthRestConfig(
+                    jiraUrl,
+                    getTimeoutInSeconds(),
+                    getProxyInfo(),
+                    getSslContext().get(),
+                    getGson(),
+                    getAuthenticationSupport(),
+                    getAuthUsername(),
+                    getAuthPassword()
+            );
+        } else {
+            return new JiraServerBasicAuthRestConfig(
+                    jiraUrl,
+                    getTimeoutInSeconds(),
+                    getProxyInfo(),
+                    isTrustCert(),
+                    getGson(),
+                    getAuthenticationSupport(),
+                    getAuthUsername(),
+                    getAuthPassword()
+            );
+        }
     }
 
     @Override
@@ -70,8 +83,7 @@ public class JiraServerBasicAuthRestConfigBuilder extends JiraServerRestConfigBu
     }
 
     public JiraServerBasicAuthRestConfigBuilder setAuthUsername(String authUsername) {
-        setProperty(AUTH_USERNAME, authUsername);
-        return this;
+        return setProperty(AUTH_USERNAME, authUsername);
     }
 
     public String getAuthPassword() {
@@ -79,8 +91,7 @@ public class JiraServerBasicAuthRestConfigBuilder extends JiraServerRestConfigBu
     }
 
     public JiraServerBasicAuthRestConfigBuilder setAuthPassword(String authPassword) {
-        setProperty(AUTH_PASSWORD, authPassword);
-        return this;
+        return setProperty(AUTH_PASSWORD, authPassword);
     }
 
 }

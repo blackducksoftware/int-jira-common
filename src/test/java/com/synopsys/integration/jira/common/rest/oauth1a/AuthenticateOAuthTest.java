@@ -1,9 +1,11 @@
 package com.synopsys.integration.jira.common.rest.oauth1a;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,8 @@ import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.rest.JiraHttpClientFactory;
 import com.synopsys.integration.jira.common.rest.service.CommonServiceFactory;
 import com.synopsys.integration.jira.common.rest.service.JiraApiClient;
+
+import javax.net.ssl.SSLContext;
 
 @Tag(IntegrationsTestConstants.INTEGRATION_TEST)
 public class AuthenticateOAuthTest {
@@ -129,6 +133,26 @@ public class AuthenticateOAuthTest {
         assertProjectsFound(jiraCredentialClient);
 
         // TODO should this check cloud and Server every time?
+    }
+
+    @Test
+    public void testCreateWithSSLContext() {
+        setAccessTokenIfProvided();
+        JiraOAuthServiceFactory jiraOAuthServiceFactory = new JiraOAuthServiceFactory();
+        String jiraUrl = currentOAuthCredentials.getBaseUrl();
+        JiraOAuthService jiraOAuthService = assertDoesNotThrow(() -> jiraOAuthServiceFactory.fromJiraServerUrl(jiraUrl));
+
+        OAuthCredentialsData oAuthCredentialsData = new OAuthCredentialsData(
+                currentOAuthCredentials.getPrivateKey(),
+                currentOAuthCredentials.getConsumerKey(),
+                currentOAuthCredentials.getAccessToken()
+        );
+        OAuthParameters oAuthParameters = assertDoesNotThrow(() -> jiraOAuthService.createOAuthParameters(oAuthCredentialsData));
+
+        SSLContext sslContext = assertDoesNotThrow(SSLContext::getDefault);
+
+        JiraHttpClientFactory jiraHttpClientFactory = new JiraHttpClientFactory();
+        assertDoesNotThrow(() -> jiraHttpClientFactory.createJiraOAuthClient(jiraUrl, oAuthParameters, sslContext));
     }
 
     private void assertProjectsFound(JiraHttpClient jiraHttpClient) throws IntegrationException {

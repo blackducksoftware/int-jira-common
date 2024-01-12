@@ -8,6 +8,7 @@
 package com.synopsys.integration.jira.common.server.configuration;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import com.google.gson.Gson;
@@ -19,11 +20,14 @@ import com.synopsys.integration.rest.proxy.ProxyInfo;
 import com.synopsys.integration.rest.support.AuthenticationSupport;
 import com.synopsys.integration.util.Stringable;
 
+import javax.net.ssl.SSLContext;
+
 public abstract class JiraServerRestConfig extends Stringable implements Buildable {
     private final URL jiraUrl;
     private final int timeoutSeconds;
     private final ProxyInfo proxyInfo;
     private final boolean alwaysTrustServerCertificate;
+    private final SSLContext sslContext;
     private final Gson gson;
     private final AuthenticationSupport authenticationSupport;
 
@@ -39,6 +43,24 @@ public abstract class JiraServerRestConfig extends Stringable implements Buildab
         this.timeoutSeconds = timeoutSeconds;
         this.proxyInfo = proxyInfo;
         this.alwaysTrustServerCertificate = alwaysTrustServerCertificate;
+        this.sslContext = null;
+        this.gson = gson;
+        this.authenticationSupport = authenticationSupport;
+    }
+
+    protected JiraServerRestConfig(
+            URL jiraUrl,
+            int timeoutSeconds,
+            ProxyInfo proxyInfo,
+            SSLContext sslContext,
+            Gson gson,
+            AuthenticationSupport authenticationSupport
+    ) {
+        this.jiraUrl = jiraUrl;
+        this.timeoutSeconds = timeoutSeconds;
+        this.proxyInfo = proxyInfo;
+        this.alwaysTrustServerCertificate = false;
+        this.sslContext = sslContext;
         this.gson = gson;
         this.authenticationSupport = authenticationSupport;
     }
@@ -65,6 +87,10 @@ public abstract class JiraServerRestConfig extends Stringable implements Buildab
 
     public boolean isAlwaysTrustServerCertificate() {
         return alwaysTrustServerCertificate;
+    }
+
+    public Optional<SSLContext> getSslContext() {
+        return Optional.ofNullable(sslContext);
     }
 
     public Gson getGson() {
