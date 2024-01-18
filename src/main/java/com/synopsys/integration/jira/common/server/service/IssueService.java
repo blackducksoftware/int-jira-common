@@ -67,7 +67,7 @@ public class IssueService {
         String projectName = StringUtils.trim(requestModel.getProjectName());
         String reporter = StringUtils.trim(requestModel.getReporterUsername());
         Predicate<ProjectComponent> nameMatchPredicate = issueTypeResponseModel -> issueTypeResponseModel.getName().equalsIgnoreCase(projectName);
-        Predicate<ProjectComponent> keyMatchPredicate = issueTypeResponseModel -> issueTypeResponseModel.getName().equalsIgnoreCase(projectName);
+        Predicate<ProjectComponent> keyMatchPredicate = issueTypeResponseModel -> issueTypeResponseModel.getKey().equalsIgnoreCase(projectName);
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
