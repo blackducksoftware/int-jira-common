@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,6 +66,8 @@ public class IssueService {
         String issueTypeName = StringUtils.trim(requestModel.getIssueTypeName());
         String projectName = StringUtils.trim(requestModel.getProjectName());
         String reporter = StringUtils.trim(requestModel.getReporterUsername());
+        Predicate<ProjectComponent> nameMatchPredicate = issueTypeResponseModel -> issueTypeResponseModel.getName().equalsIgnoreCase(projectName);
+        Predicate<ProjectComponent> keyMatchPredicate = issueTypeResponseModel -> issueTypeResponseModel.getKey().equalsIgnoreCase(projectName);
 
         IssueTypeResponseModel foundIssueType = issueTypeService.getAllIssueTypes().stream()
                                                     .filter(issueType -> issueType.getName().equalsIgnoreCase(issueTypeName))
@@ -75,7 +78,7 @@ public class IssueService {
                               .orElse("");
         List<ProjectComponent> projects = projectService.getProjectsByName(projectName);
         ProjectComponent foundProject = projects.stream()
-                                            .filter(projectComponent -> projectComponent.getName().equals(projectName))
+                                            .filter(nameMatchPredicate.or(keyMatchPredicate))
                                             .findFirst()
                                             .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
 

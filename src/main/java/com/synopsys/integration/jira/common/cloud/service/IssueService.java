@@ -10,6 +10,7 @@ package com.synopsys.integration.jira.common.cloud.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -69,11 +70,12 @@ public class IssueService {
         String issueTypeName = StringUtils.trim(requestModel.getIssueTypeName());
         String projectName = StringUtils.trim(requestModel.getProjectName());
         String reporterEmail = StringUtils.trim(requestModel.getReporterEmail());
-
+        Predicate<ProjectComponent> nameMatchPredicate = projectComponent -> projectComponent.getName().equalsIgnoreCase(projectName);
+        Predicate<ProjectComponent> keyMatchPredicate = projectComponent -> projectComponent.getKey().equalsIgnoreCase(projectName);
         PageOfProjectsResponseModel pageOfProjects = projectService.getProjectsByName(projectName);
         String projectId = pageOfProjects.getProjects()
                                .stream()
-                               .filter(projectComponent -> projectComponent.getName().equals(projectName))
+                               .filter(nameMatchPredicate.or(keyMatchPredicate))
                                .findFirst()
                                .map(ProjectComponent::getId)
                                .orElseThrow(() -> new JiraPreconditionNotMetException(String.format("Project not found; project name: %s", projectName)));
