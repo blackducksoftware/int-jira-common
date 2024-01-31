@@ -2,20 +2,21 @@ package com.synopsys.integration.jira.common.rest.service;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.jira.common.rest.JiraHttpClient;
 import com.synopsys.integration.jira.common.server.JiraServerParameterizedTestIT;
 import com.synopsys.integration.jira.common.server.JiraServerServiceTestUtility;
 import com.synopsys.integration.jira.common.server.service.JiraServerServiceFactory;
+import com.synopsys.integration.log.LogLevel;
+import com.synopsys.integration.log.PrintStreamIntLogger;
 
 class PluginManagerServiceServerTestIT extends JiraServerParameterizedTestIT {
 
-    @ParameterizedTest
-    @MethodSource("getParameters")
-    void createIssueTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    @Test
+    void createIssueTest() throws IntegrationException {
+        JiraHttpClient jiraHttpClient = JiraServerServiceTestUtility.createJiraCredentialClient(new PrintStreamIntLogger(System.out, LogLevel.WARN));
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
@@ -25,9 +26,9 @@ class PluginManagerServiceServerTestIT extends JiraServerParameterizedTestIT {
         System.out.println("App is installed " + appInstalled);
     }
 
-    @ParameterizedTest
-    @MethodSource("getParameters")
-    void retrievePluginTokenJiraServerCredentialClientTest(JiraHttpClient jiraHttpClient) throws IntegrationException {
+    @Test
+    void retrievePluginTokenJiraServerCredentialClientTest() throws IntegrationException {
+        JiraHttpClient jiraHttpClient = JiraServerServiceTestUtility.createJiraCredentialClient(new PrintStreamIntLogger(System.out, LogLevel.WARN));
         JiraServerServiceTestUtility.validateConfiguration();
 
         JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
