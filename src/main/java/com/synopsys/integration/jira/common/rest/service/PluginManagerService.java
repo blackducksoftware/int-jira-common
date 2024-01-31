@@ -29,9 +29,6 @@ public class PluginManagerService {
 
     public static final String API_PATH = "/rest/plugins/1.0/";
 
-    private static final String QUERY_KEY_OS_AUTH_TYPE = "os_authType";
-    private static final String QUERY_VALUE_OS_AUTH_TYPE = "basic";
-
     private static final String MEDIA_TYPE_PREFIX = "application/vnd.atl.plugins";
     private static final String MEDIA_TYPE_SUFFIX = "+json";
     private static final String MEDIA_TYPE_DEFAULT = "application/json";
@@ -54,7 +51,6 @@ public class PluginManagerService {
     public Optional<PluginResponseModel> getInstalledApp(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
@@ -72,7 +68,6 @@ public class PluginManagerService {
     public boolean isAppInstalled(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
@@ -91,7 +86,6 @@ public class PluginManagerService {
     public InstalledAppsResponseModel getInstalledApps() throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createBaseRequestUrl());
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(httpUrl);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
 
@@ -131,7 +125,6 @@ public class PluginManagerService {
     public String retrievePluginToken() throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createBaseRequestUrl());
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(httpUrl);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
         JiraRequest request = requestBuilder.build();
