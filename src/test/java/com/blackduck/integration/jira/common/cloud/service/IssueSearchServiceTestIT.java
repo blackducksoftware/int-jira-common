@@ -89,11 +89,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
-        fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
+        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId);
+        fieldsBuilder.setSummary("Test Issue " + uniqueId);
 
         String issueType = "bug";
-        String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
+        String commentValue = "blackduck_generated_id: " + UUID.randomUUID();
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
@@ -133,11 +133,11 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
-        fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
+        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId);
+        fieldsBuilder.setSummary("Test Issue " + uniqueId);
 
         String issueType = "bug";
-        String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
+        String commentValue = "blackduck_generated_id: " + UUID.randomUUID();
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
 
@@ -146,7 +146,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
 
         IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
         issueService.addComment(firstComment);
-        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "sysnopsys_generated_id: bad value", null, null, null);
+        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "blackduck_generated_id: bad value", null, null, null);
         issueService.addComment(secondComment);
 
         IssueCommentRequestModel validComment = new IssueCommentRequestModel(createdIssue.getId(), commentValue, null, null, null);
@@ -186,10 +186,10 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         UUID uniqueId = UUID.randomUUID();
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
-        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId.toString());
-        fieldsBuilder.setSummary("Test Issue " + uniqueId.toString());
+        fieldsBuilder.setDescription("Description of the test issue: " + uniqueId);
+        fieldsBuilder.setSummary("Test Issue " + uniqueId);
 
-        String commentValue = "synopsys_generated_id: " + UUID.randomUUID().toString();
+        String commentValue = "blackduck_generated_id: " + UUID.randomUUID();
         List<EntityProperty> properties = new LinkedList<>();
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueTypeName, project.getName(), fieldsBuilder, properties);
 
@@ -198,7 +198,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
 
         IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
         issueService.addComment(firstComment);
-        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "sysnopsys_generated_id: bad value", null, null, null);
+        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "blackduck_generated_id: bad value", null, null, null);
         issueService.addComment(secondComment);
         IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
         issueService.addComment(lastComment);
