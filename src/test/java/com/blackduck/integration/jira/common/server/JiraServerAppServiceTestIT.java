@@ -21,7 +21,7 @@ import com.blackduck.integration.rest.RestConstants;
 import com.blackduck.integration.rest.exception.IntegrationRestException;
 
 public class JiraServerAppServiceTestIT extends JiraServerParameterizedTestIT {
-    private static final String APP_KEY = "com.blackduck.integration.alert";
+    private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_SERVER_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraServerApp/1.0.0/atlassian-plugin.xml";
 
     // If these tests start breaking, verify the 'Barcharts for Jira' plugin is still free and available.
