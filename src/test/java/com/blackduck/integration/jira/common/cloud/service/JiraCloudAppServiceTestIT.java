@@ -23,7 +23,7 @@ import com.blackduck.integration.rest.exception.IntegrationRestException;
 
 class JiraCloudAppServiceTestIT extends JiraCloudParameterizedTestIT {
     private static final int WAIT_TIME = 10000;
-    private static final String APP_KEY = "com.blackduck.integration.alert";
+    private static final String APP_KEY = "com.synopsys.integration.alert";
     private static final String APP_CLOUD_URI = "https://blackducksoftware.github.io/alert-issue-property-indexer/JiraCloudApp/1.0.0/atlassian-connect.json";
 
     @AfterEach
