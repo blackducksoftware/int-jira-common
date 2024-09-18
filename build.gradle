@@ -1,7 +1,7 @@
 buildscript {
     apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-repositories.gradle', to: buildscript
 
-    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-cgp-version.gradle'
+    project.ext { managedCgpVersion = '2.1.1' }
 
     ext {
         javaTargetCompatibility = 8
@@ -14,7 +14,7 @@ buildscript {
 project.ext.moduleName = 'com.blackduck.integration.int-jira-common'
 project.ext.javaUseAutoModuleName = 'true'
 
-version = '5.0.0-SNAPSHOT'
+version = '5.0.0'
 description = 'A library for using various capabilities of Jira.'
 
 apply plugin: 'com.blackduck.integration.library'
