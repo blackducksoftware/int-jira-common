@@ -61,7 +61,23 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueCreationRequestModel requestModel = new IssueCreationRequestModel(userDetails.getEmailAddress(), issueType, project.getName(), fieldsBuilder, properties);
         IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
-        IssueSearchResponseModel foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
+        IssueSearchResponseModel foundIssues = null;
+        int maxRetries = 5;
+
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+            foundIssues = issueSearchService.findIssuesByDescription(project.getKey(), issueType, uniqueIdString);
+
+            if (foundIssues != null && !foundIssues.getIssues().isEmpty()) {
+                break;
+            }
+
+            try {
+                Thread.sleep(attempt * 1000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
 
         assertEquals(1, foundIssues.getIssues().size());
         IssueResponseModel foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
