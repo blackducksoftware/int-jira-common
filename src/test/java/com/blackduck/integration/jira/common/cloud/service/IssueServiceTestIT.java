@@ -199,7 +199,18 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
         assertEquals(createdIssue.getId(), foundIssueWithComments.getId());
         assertEquals(1, foundIssueWithComments.getFields().getComment().getTotal().intValue());
-        assertEquals(uniqueId.toString(), foundIssueWithComments.getFields().getComment().getComments().get(0).getBody());
+        String commentText = foundIssueWithComments.getFields()
+                .getComment()
+                .getComments()
+                .get(0)
+                .getBody()
+                .getContent()
+                .get(0)
+                .getContent()
+                .get(0)
+                .get(AtlassianDocumentFormatModelBuilder.DOCUMENT_NODE_ATTRIBUTE_TEXT)
+                .toString();
+        assertEquals(uniqueId.toString(), commentText);
     }
 
     @ParameterizedTest

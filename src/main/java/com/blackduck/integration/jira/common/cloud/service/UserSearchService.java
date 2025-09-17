@@ -39,7 +39,7 @@ public class UserSearchService {
         if (StringUtils.isBlank(queryValue)) {
             return Collections.emptyList();
         }
-        // Atlassians V3 API has a bug in it when the email address is equal to an empty string "" it is returned as a match
+        // Atlassian's V3 API has a bug in it when the email address is equal to an empty string "" it is returned as a match
         // event though we are providing a query value.  So we need to filter the result list in memory to account for the
         // bug in the REST API.
         Predicate<UserDetailsResponseModel> emailAddressCheck = userDetailsResponseModel ->  userDetailsResponseModel.getEmailAddress() != null && userDetailsResponseModel.getEmailAddress().equals(queryValue);
