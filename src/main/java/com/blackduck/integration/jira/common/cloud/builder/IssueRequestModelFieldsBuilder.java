@@ -73,7 +73,8 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setDescription(String description) {
-        return setValue(DESCRIPTION, description);
+        DescriptionDocumentObject descriptionObject = new DescriptionDocumentObject(description);
+        return setValue(DESCRIPTION, descriptionObject);
     }
 
     public IssueRequestModelFieldsBuilder setReporterId(String reporterId) {
@@ -140,6 +141,34 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
             this.id = id;
         }
 
+    }
+
+    private class DescriptionDocumentObject {
+        private final String type;
+        private final int version;
+        private List<AtlassianDocumentContent> content;
+
+        public DescriptionDocumentObject(String description) {
+            this.type = "doc";
+            this.version = 1;
+            this.content = new ArrayList<>();
+            Map<String,Object> descriptionContent = new HashMap<>();
+            descriptionContent.put("type", "text");
+            descriptionContent.put("text", description);
+            List<Map<String, Object>> descriptionContentList = new ArrayList<>();
+            descriptionContentList.add(descriptionContent);
+            content.add(new AtlassianDocumentContent("paragraph", descriptionContentList));
+        }
+    }
+
+    private class AtlassianDocumentContent {
+        private String type;
+        private List<Map<String, Object>> content;
+
+        public AtlassianDocumentContent(String type, List<Map<String, Object>> content) {
+            this.type = type;
+            this.content = content;
+        }
     }
 
 }
