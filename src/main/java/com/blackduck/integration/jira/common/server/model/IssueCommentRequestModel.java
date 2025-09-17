@@ -5,12 +5,13 @@
  *
  * Use subject to the terms and conditions of the Black Duck Software End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
-package com.blackduck.integration.jira.common.model.request;
+package com.blackduck.integration.jira.common.server.model;
 
 import java.util.List;
 
 import com.blackduck.integration.jira.common.model.EntityProperty;
 import com.blackduck.integration.jira.common.model.components.VisibilityComponent;
+import com.blackduck.integration.jira.common.model.request.JiraRequestModel;
 
 public class IssueCommentRequestModel extends JiraRequestModel {
     private final String issueIdOrKey;

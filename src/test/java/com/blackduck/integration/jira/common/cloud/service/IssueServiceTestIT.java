@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,7 +29,7 @@ import com.blackduck.integration.jira.common.model.components.IdComponent;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
 import com.blackduck.integration.jira.common.model.components.StatusDetailsComponent;
 import com.blackduck.integration.jira.common.model.components.TransitionComponent;
-import com.blackduck.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
@@ -184,7 +186,10 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
         IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
         UUID uniqueId = UUID.randomUUID();
-        IssueCommentRequestModel issueCommentModel = new IssueCommentRequestModel(foundIssue.getId(), uniqueId.toString(), null, true, null);
+        AtlassianDocumentFormatModelBuilder documentBuilder = new AtlassianDocumentFormatModelBuilder();
+        documentBuilder.addSingleParagraphTextNode(uniqueId.toString());
+        AtlassianDocumentFormatModel body = documentBuilder.build();
+        IssueCommentRequestModel issueCommentModel = new IssueCommentRequestModel(foundIssue.getId(), body, null, true, null);
 
         issueService.addComment(issueCommentModel);
 

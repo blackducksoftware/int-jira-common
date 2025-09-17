@@ -20,11 +20,11 @@ import com.blackduck.integration.jira.common.exception.JiraPreconditionNotMetExc
 import com.blackduck.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
 import com.blackduck.integration.jira.common.model.components.StatusDetailsComponent;
-import com.blackduck.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.blackduck.integration.jira.common.server.model.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
-import com.blackduck.integration.jira.common.model.response.IssueCommentResponseModel;
+import com.blackduck.integration.jira.common.server.model.IssueCommentResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;

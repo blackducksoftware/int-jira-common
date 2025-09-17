@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -15,7 +17,7 @@ import com.blackduck.integration.jira.common.cloud.model.IssueCreationRequestMod
 import com.blackduck.integration.jira.common.cloud.model.IssueSearchResponseModel;
 import com.blackduck.integration.jira.common.model.EntityProperty;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
-import com.blackduck.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
@@ -115,7 +117,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
 
         // create an issue
         IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
-        IssueCommentRequestModel commentRequestModel = new IssueCommentRequestModel(createdIssue.getId(), commentValue, null, null, null);
+        IssueCommentRequestModel commentRequestModel = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel(commentValue), null, null, null);
         issueService.addComment(commentRequestModel);
 
         IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
@@ -160,15 +162,15 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         // create an issue
         IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
-        IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
+        IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("First comment."), null, null, null);
         issueService.addComment(firstComment);
-        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "blackduck_generated_id: bad value", null, null, null);
+        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("blackduck_generated_id: bad value"), null, null, null);
         issueService.addComment(secondComment);
 
-        IssueCommentRequestModel validComment = new IssueCommentRequestModel(createdIssue.getId(), commentValue, null, null, null);
+        IssueCommentRequestModel validComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel(commentValue), null, null, null);
         issueService.addComment(validComment);
 
-        IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
+        IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("Last comment"), null, null, null);
         issueService.addComment(lastComment);
 
         IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
@@ -212,16 +214,22 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         // create an issue
         IssueCreationResponseModel createdIssue = issueService.createIssue(requestModel);
 
-        IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), "First comment.", null, null, null);
+        IssueCommentRequestModel firstComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("First comment."), null, null, null);
         issueService.addComment(firstComment);
-        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), "blackduck_generated_id: bad value", null, null, null);
+        IssueCommentRequestModel secondComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("blackduck_generated_id: bad value"), null, null, null);
         issueService.addComment(secondComment);
-        IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), "Last comment", null, null, null);
+        IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("Last comment"), null, null, null);
         issueService.addComment(lastComment);
 
         IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueTypeName, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(0, issueFromSearchService.getIssues().size());
+    }
+
+    private AtlassianDocumentFormatModel createDocumentFormatModel(String text) {
+        AtlassianDocumentFormatModelBuilder documentBuilder = new AtlassianDocumentFormatModelBuilder();
+        documentBuilder.addSingleParagraphTextNode(text);
+        return documentBuilder.build();
     }
 }
