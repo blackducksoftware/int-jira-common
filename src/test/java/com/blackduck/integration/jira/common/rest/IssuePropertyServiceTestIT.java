@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.blackduck.integration.exception.IntegrationException;
 import com.blackduck.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
+import com.blackduck.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.blackduck.integration.jira.common.cloud.service.IssueService;
 import com.blackduck.integration.jira.common.cloud.service.JiraCloudServiceFactory;
@@ -28,7 +29,6 @@ import com.blackduck.integration.jira.common.model.response.IssuePropertyRespons
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.blackduck.integration.jira.common.rest.service.IssuePropertyService;
-import com.blackduck.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.test.TestProperties;
 import com.blackduck.integration.jira.common.test.TestPropertyKey;
 import com.google.gson.JsonObject;
