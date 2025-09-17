@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.blackduck.integration.jira.common.cloud.model.IssueResponseModel;
 import org.apache.commons.lang3.StringUtils;
 
 import com.blackduck.integration.exception.IntegrationException;
@@ -31,7 +32,6 @@ import com.blackduck.integration.jira.common.model.components.StatusDetailsCompo
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.TransitionsResponseModel;

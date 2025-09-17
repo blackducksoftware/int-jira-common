@@ -13,10 +13,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.blackduck.integration.exception.IntegrationException;
-import com.blackduck.integration.jira.common.model.components.IssueFieldsComponent;
+import com.blackduck.integration.jira.common.server.model.component.IssueFieldsComponent;
 import com.blackduck.integration.jira.common.model.response.CustomFieldCreationResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
+import com.blackduck.integration.jira.common.server.model.IssueResponseModel;
 import com.blackduck.integration.jira.common.rest.JiraHttpClient;
 import com.blackduck.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.server.model.IssueCreationRequestModel;

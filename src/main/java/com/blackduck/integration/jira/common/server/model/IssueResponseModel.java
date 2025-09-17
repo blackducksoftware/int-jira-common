@@ -5,17 +5,18 @@
  *
  * Use subject to the terms and conditions of the Black Duck Software End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
-package com.blackduck.integration.jira.common.model.response;
+package com.blackduck.integration.jira.common.server.model;
 
 import java.util.List;
 import java.util.Map;
 
 import com.blackduck.integration.jira.common.model.JiraResponseModel;
 import com.blackduck.integration.jira.common.model.components.IdComponent;
-import com.blackduck.integration.jira.common.model.components.IssueFieldsComponent;
+import com.blackduck.integration.jira.common.server.model.component.IssueFieldsComponent;
 import com.blackduck.integration.jira.common.model.components.IssueIncludedFieldsComponent;
 import com.blackduck.integration.jira.common.model.components.IssueUpdateMetadataComponent;
 import com.blackduck.integration.jira.common.model.components.OperationsComponent;
+import com.blackduck.integration.jira.common.model.response.PageOfChangelogsResponseModel;
 import com.google.gson.JsonElement;
 
 public class IssueResponseModel extends JiraResponseModel {

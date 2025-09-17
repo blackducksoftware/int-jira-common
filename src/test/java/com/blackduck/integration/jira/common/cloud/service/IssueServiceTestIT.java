@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
 import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueResponseModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,7 +33,6 @@ import com.blackduck.integration.jira.common.model.components.TransitionComponen
 import com.blackduck.integration.jira.common.cloud.model.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.TransitionsResponseModel;
 import com.blackduck.integration.jira.common.model.response.UserDetailsResponseModel;

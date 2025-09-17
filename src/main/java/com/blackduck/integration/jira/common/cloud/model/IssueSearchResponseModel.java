@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.blackduck.integration.jira.common.model.JiraPageResponseModel;
 import com.blackduck.integration.jira.common.model.components.SchemaComponent;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.google.gson.JsonElement;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {

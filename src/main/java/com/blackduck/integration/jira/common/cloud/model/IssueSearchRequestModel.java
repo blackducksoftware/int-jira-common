@@ -9,11 +9,13 @@ package com.blackduck.integration.jira.common.cloud.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.blackduck.integration.jira.common.enumeration.ExpandableTypes;
 import com.blackduck.integration.jira.common.enumeration.QueryValidationStrategy;
 import com.blackduck.integration.jira.common.model.request.JiraRequestModel;
+import org.apache.commons.lang3.StringUtils;
 
 public class IssueSearchRequestModel extends JiraRequestModel {
     public static final String ALL_FIELDS_OPTION = "*all";
@@ -22,31 +24,27 @@ public class IssueSearchRequestModel extends JiraRequestModel {
     public static final String FIELD_EXCLUSION_PREFIX = "-";
 
     private final String jql;
-    private final Integer startAt;
     private final Integer maxResults;
     private final List<String> fields;
-    private final String validateQuery;
-    private final List<String> expand;
+    private final String expand;
     private final List<String> properties;
     private final Boolean fieldsByKeys;
+    private final List<Integer> reconcileIssues;
+    private final String nextPageToken;
 
-    public IssueSearchRequestModel(String jql, Integer startAt, Integer maxResults, List<String> fields, QueryValidationStrategy validationStrategy, List<ExpandableTypes> typesToExpand, List<String> properties, Boolean fieldsByKeys) {
+    public IssueSearchRequestModel(String jql, Integer maxResults, List<String> fields, List<ExpandableTypes> typesToExpand, List<String> properties, Boolean fieldsByKeys, List<Integer> reconcileIssues, String nextPageToken) {
         this.jql = jql;
-        this.startAt = startAt;
         this.maxResults = maxResults;
         this.fields = fields;
-        this.validateQuery = initialValidationStrategy(validationStrategy);
         this.expand = initialTypesToExpand(typesToExpand);
         this.properties = properties;
         this.fieldsByKeys = fieldsByKeys;
+        this.reconcileIssues = reconcileIssues;
+        this.nextPageToken = nextPageToken;
     }
 
     public String getJql() {
         return jql;
-    }
-
-    public Integer getStartAt() {
-        return startAt;
     }
 
     public Integer getMaxResults() {
@@ -57,11 +55,7 @@ public class IssueSearchRequestModel extends JiraRequestModel {
         return fields;
     }
 
-    public String getValidateQuery() {
-        return validateQuery;
-    }
-
-    public List<String> getExpand() {
+    public String getExpand() {
         return expand;
     }
 
@@ -73,15 +67,18 @@ public class IssueSearchRequestModel extends JiraRequestModel {
         return fieldsByKeys;
     }
 
-    private String initialValidationStrategy(QueryValidationStrategy validationStrategy) {
-        return null != validationStrategy ? validationStrategy.toString() : QueryValidationStrategy.STRICT.toString();
+    public List<Integer> getReconcileIssues() {
+        return reconcileIssues;
     }
 
-    private List<String> initialTypesToExpand(List<ExpandableTypes> typesToExpand) {
+    public Optional<String> getNextPageToken() {
+        return Optional.ofNullable(nextPageToken);
+    }
+
+    private String initialTypesToExpand(List<ExpandableTypes> typesToExpand) {
         return typesToExpand
-                   .stream()
-                   .map(ExpandableTypes::toString)
-                   .collect(Collectors.toList());
+                .stream()
+                .map(ExpandableTypes::toString)
+                .collect(Collectors.joining(","));
     }
-
 }

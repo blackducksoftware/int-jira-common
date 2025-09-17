@@ -5,15 +5,18 @@
  *
  * Use subject to the terms and conditions of the Black Duck Software End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
-package com.blackduck.integration.jira.common.model.components;
+package com.blackduck.integration.jira.common.cloud.model.component;
 
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
+import com.blackduck.integration.jira.common.model.components.UserDetailsComponent;
+import com.blackduck.integration.jira.common.model.components.VisibilityComponent;
 import com.blackduck.integration.rest.component.IntRestComponent;
 
 public class CommentComponent extends IntRestComponent {
     private String self;
     private String id;
     private UserDetailsComponent author;
-    private String body;
+    private AtlassianDocumentFormatModel body;
     private UserDetailsComponent updateAuthor;
     private String created;
     private String updated;
@@ -22,7 +25,7 @@ public class CommentComponent extends IntRestComponent {
     public CommentComponent() {
     }
 
-    public CommentComponent(final String self, final String id, final UserDetailsComponent author, final String body, final UserDetailsComponent updateAuthor, final String created, final String updated,
+    public CommentComponent(final String self, final String id, final UserDetailsComponent author, final AtlassianDocumentFormatModel body, final UserDetailsComponent updateAuthor, final String created, final String updated,
         final VisibilityComponent visibility) {
         this.self = self;
         this.id = id;
@@ -46,7 +49,7 @@ public class CommentComponent extends IntRestComponent {
         return author;
     }
 
-    public String getBody() {
+    public AtlassianDocumentFormatModel getBody() {
         return body;
     }
 

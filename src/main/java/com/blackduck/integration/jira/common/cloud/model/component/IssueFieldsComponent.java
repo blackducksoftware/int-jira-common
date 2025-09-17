@@ -5,20 +5,27 @@
  *
  * Use subject to the terms and conditions of the Black Duck Software End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
-package com.blackduck.integration.jira.common.model.components;
+package com.blackduck.integration.jira.common.cloud.model.component;
 
-import java.util.List;
-
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
+import com.blackduck.integration.jira.common.model.components.IssueAttachmentComponent;
+import com.blackduck.integration.jira.common.model.components.IssueLinksComponent;
+import com.blackduck.integration.jira.common.model.components.PageOfWorklogsComponent;
+import com.blackduck.integration.jira.common.model.components.ProjectComponent;
+import com.blackduck.integration.jira.common.model.components.UserDetailsComponent;
+import com.blackduck.integration.jira.common.model.components.WatcherComponent;
 import com.blackduck.integration.rest.component.IntRestComponent;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class IssueFieldsComponent extends IntRestComponent {
     private List<IssueAttachmentComponent> attachment;
     private UserDetailsComponent assignee;
     private PageOfIssueCommentsComponent comment;
     private String summary;
-    private String description;
+    private AtlassianDocumentFormatModel description;
     private List<IssueLinksComponent> issuelinks;
     private ProjectComponent project;
     @SerializedName(value = "subtasks", alternate = "sub-tasks")
@@ -36,7 +43,7 @@ public class IssueFieldsComponent extends IntRestComponent {
         UserDetailsComponent assignee,
         PageOfIssueCommentsComponent comment,
         String summary,
-        String description,
+        AtlassianDocumentFormatModel description,
         List<IssueLinksComponent> issuelinks,
         ProjectComponent project,
         List<IssueLinksComponent> subTasks,
@@ -75,7 +82,7 @@ public class IssueFieldsComponent extends IntRestComponent {
         return summary;
     }
 
-    public String getDescription() {
+    public AtlassianDocumentFormatModel getDescription() {
         return description;
     }
 
