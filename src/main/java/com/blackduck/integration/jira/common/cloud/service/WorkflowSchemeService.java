@@ -19,7 +19,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class WorkflowSchemeService {
-    public static final String API_PATH = "/rest/api/2/workflowscheme";
+    public static final String API_PATH = "/rest/api/3/workflowscheme";
 
     private final JiraApiClient jiraCloudService;
 

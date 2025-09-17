@@ -45,7 +45,7 @@ import com.blackduck.integration.rest.service.IntJsonTransformer;
 import com.google.gson.JsonObject;
 
 public class IssueService {
-    public static final String API_PATH = "/rest/api/2/issue";
+    public static final String API_PATH = "/rest/api/3/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 

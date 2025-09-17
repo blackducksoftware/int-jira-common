@@ -21,7 +21,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class IssueSearchService {
-    public static final String API_PATH = "/rest/api/2/search";
+    public static final String API_PATH = "/rest/api/3/search/jql";
 
     private final JiraApiClient jiraCloudService;
 

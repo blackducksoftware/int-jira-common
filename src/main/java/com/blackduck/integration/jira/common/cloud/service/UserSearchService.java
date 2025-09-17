@@ -24,8 +24,8 @@ import com.blackduck.integration.rest.HttpUrl;
  * Waiting on Atlassian support to get back to us about why this is the case.
  */
 public class UserSearchService {
-    public static final String API_PATH_SEARCH = "/rest/api/2/user/search";
-    public static final String API_PATH_CURRENT = "/rest/api/2/myself";
+    public static final String API_PATH_SEARCH = "/rest/api/3/user/search";
+    public static final String API_PATH_CURRENT = "/rest/api/3/myself";
 
     private final JiraApiClient jiraCloudService;
 
