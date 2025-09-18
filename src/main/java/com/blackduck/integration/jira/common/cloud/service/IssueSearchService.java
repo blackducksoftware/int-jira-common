@@ -21,7 +21,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class IssueSearchService {
-    public static final String API_PATH = "/rest/api/2/search";
+    public static final String API_PATH = "/rest/api/3/search/jql";
 
     private final JiraApiClient jiraCloudService;
 
@@ -43,12 +43,12 @@ public class IssueSearchService {
         return queryForIssuePage(jql, null, null);
     }
 
-    public IssueSearchResponseModel queryForIssuePage(String jql, Integer startAt, Integer maxResults) throws IntegrationException {
+    public IssueSearchResponseModel queryForIssuePage(String jql, String nextPageToken, Integer maxResults) throws IntegrationException {
         List<ExpandableTypes> typesToExpand = new ArrayList<>();
         typesToExpand.addAll(Arrays.asList(ExpandableTypes.values()));
         List<String> properties = Collections.emptyList();
 
-        IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, startAt, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, QueryValidationStrategy.STRICT, typesToExpand, properties, false);
+        IssueSearchRequestModel requestModel = new IssueSearchRequestModel(jql, maxResults, IssueSearchRequestModel.ALL_FIELDS_LIST, typesToExpand, properties, false, Collections.emptyList() ,nextPageToken);
         return findIssues(requestModel);
     }
 

@@ -9,6 +9,8 @@ package com.blackduck.integration.jira.common.cloud.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,8 +26,8 @@ import com.blackduck.integration.rest.HttpUrl;
  * Waiting on Atlassian support to get back to us about why this is the case.
  */
 public class UserSearchService {
-    public static final String API_PATH_SEARCH = "/rest/api/2/user/search";
-    public static final String API_PATH_CURRENT = "/rest/api/2/myself";
+    public static final String API_PATH_SEARCH = "/rest/api/3/user/search";
+    public static final String API_PATH_CURRENT = "/rest/api/3/myself";
 
     private final JiraApiClient jiraCloudService;
 
@@ -37,13 +39,19 @@ public class UserSearchService {
         if (StringUtils.isBlank(queryValue)) {
             return Collections.emptyList();
         }
-
+        // Atlassian's V3 API has a bug in it when the email address is equal to an empty string "" it is returned as a match
+        // event though we are providing a query value.  So we need to filter the result list in memory to account for the
+        // bug in the REST API.
+        Predicate<UserDetailsResponseModel> emailAddressCheck = userDetailsResponseModel ->  userDetailsResponseModel.getEmailAddress() != null && userDetailsResponseModel.getEmailAddress().equals(queryValue);
+        Predicate<UserDetailsResponseModel> nameCheck = userDetailsResponseModel ->  userDetailsResponseModel.getName() != null && userDetailsResponseModel.getName().equals(queryValue);
         HttpUrl uri = createSearchUri();
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(uri)
                                   .addQueryParameter("query", queryValue)
                                   .build();
-        return jiraCloudService.getList(request, UserDetailsResponseModel.class);
+        return jiraCloudService.getList(request, UserDetailsResponseModel.class).stream()
+                .filter(emailAddressCheck.or(nameCheck))
+                .collect(Collectors.toList());
     }
 
     public UserDetailsResponseModel getCurrentUser() throws IntegrationException {

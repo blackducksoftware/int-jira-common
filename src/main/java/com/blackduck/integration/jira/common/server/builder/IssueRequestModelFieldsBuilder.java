@@ -16,7 +16,7 @@ import java.util.Map;
 
 import com.blackduck.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 
-public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder {
+public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder<IssueRequestModelFieldsBuilder> {
     public static final String SUMMARY = "summary";
     public static final String ISSUE_TYPE = "issuetype";
     public static final String COMPONENTS = "components";
@@ -51,16 +51,19 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return Collections.unmodifiableMap(issueFields);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setField(String key, Object value) {
         issueFields.put(key, value);
         return this;
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setSummary(String summary) {
         setField(SUMMARY, summary);
         return this;
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setIssueType(String issueTypeId) {
         return setIdField(ISSUE_TYPE, issueTypeId);
     }
@@ -69,10 +72,12 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return setIdFields(COMPONENTS, componentIds);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setProject(String projectId) {
         return setIdField(PROJECT, projectId);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setDescription(String description) {
         setField(DESCRIPTION, description);
         return this;

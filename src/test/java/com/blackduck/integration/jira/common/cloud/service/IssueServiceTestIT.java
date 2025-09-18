@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
+import com.blackduck.integration.jira.common.cloud.model.JiraCloudIssueResponseModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,10 +30,9 @@ import com.blackduck.integration.jira.common.model.components.IdComponent;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
 import com.blackduck.integration.jira.common.model.components.StatusDetailsComponent;
 import com.blackduck.integration.jira.common.model.components.TransitionComponent;
-import com.blackduck.integration.jira.common.model.request.IssueCommentRequestModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.TransitionsResponseModel;
 import com.blackduck.integration.jira.common.model.response.UserDetailsResponseModel;
@@ -53,7 +55,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
 
@@ -149,7 +151,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
                                                    .orElseThrow(() -> new IllegalStateException("Jira User not found"));
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.setAssigneeId(userDetails.getAccountId());
         Map<String, List<FieldUpdateOperationComponent>> update = new HashMap<>();
@@ -159,7 +161,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         properties.add(new EntityProperty(jiraTestPropertyKey, propertyValue));
         IssueRequestModel requestModel = new IssueRequestModel(foundIssue.getId(), null, fieldsBuilder, update, properties);
         issueService.updateIssue(requestModel);
-        IssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssueWithAssignee = issueService.getIssue(createdIssue.getId());
 
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
@@ -182,19 +184,33 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
         UUID uniqueId = UUID.randomUUID();
-        IssueCommentRequestModel issueCommentModel = new IssueCommentRequestModel(foundIssue.getId(), uniqueId.toString(), null, true, null);
+        AtlassianDocumentFormatModelBuilder documentBuilder = new AtlassianDocumentFormatModelBuilder();
+        documentBuilder.addSingleParagraphTextNode(uniqueId.toString());
+        AtlassianDocumentFormatModel body = documentBuilder.build();
+        IssueCommentRequestModel issueCommentModel = new IssueCommentRequestModel(foundIssue.getId(), body, null, true, null);
 
         issueService.addComment(issueCommentModel);
 
-        IssueResponseModel foundIssueWithComments = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssueWithComments = issueService.getIssue(createdIssue.getId());
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(createdIssue.getId(), foundIssueWithComments.getId());
         assertEquals(1, foundIssueWithComments.getFields().getComment().getTotal().intValue());
-        assertEquals(uniqueId.toString(), foundIssueWithComments.getFields().getComment().getComments().get(0).getBody());
+        String commentText = foundIssueWithComments.getFields()
+                .getComment()
+                .getComments()
+                .get(0)
+                .getBody()
+                .getContent()
+                .get(0)
+                .getContent()
+                .get(0)
+                .get(AtlassianDocumentFormatModelBuilder.DOCUMENT_NODE_ATTRIBUTE_TEXT)
+                .toString();
+        assertEquals(uniqueId.toString(), commentText);
     }
 
     @ParameterizedTest
@@ -207,7 +223,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
         String issueId = createdIssue.getId();
-        IssueResponseModel foundIssue = issueService.getIssue(issueId);
+        JiraCloudIssueResponseModel foundIssue = issueService.getIssue(issueId);
 
         StatusDetailsComponent status = issueService.getStatus(foundIssue.getId());
         // delete the issue
@@ -231,7 +247,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
 
         // create an issue
         IssueCreationResponseModel createdIssue = createIssue(serviceFactory);
-        IssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssue = issueService.getIssue(createdIssue.getId());
 
         IssueRequestModelFieldsBuilder fieldsBuilder = new IssueRequestModelFieldsBuilder();
         fieldsBuilder.setAssigneeId(userDetails.getAccountId());
@@ -248,7 +264,7 @@ class IssueServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueRequestModel transitionRequest = new IssueRequestModel(foundIssue.getId(), transitionId, fieldsBuilder, update, properties);
         issueService.transitionIssue(transitionRequest);
 
-        IssueResponseModel foundIssueWithTransition = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel foundIssueWithTransition = issueService.getIssue(createdIssue.getId());
         // delete the issue
         issueService.deleteIssue(createdIssue.getId());
 

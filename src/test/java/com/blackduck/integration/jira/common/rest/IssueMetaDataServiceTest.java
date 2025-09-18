@@ -24,7 +24,7 @@ public class IssueMetaDataServiceTest {
         IssueCreateMetadataResponseModel response = createResponse();
         Mockito.when(jiraApiClient.get(Mockito.any(), Mockito.eq(IssueCreateMetadataResponseModel.class))).thenReturn(response);
         Mockito.when(jiraApiClient.getBaseUrl()).thenReturn("https://host");
-        IssueMetaDataService service = new IssueMetaDataService(jiraApiClient);
+        IssueMetaDataService service = new IssueMetaDataService(jiraApiClient, RestApiVersion.VERSION_2);
 
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_1"));
         assertTrue(service.doesProjectContainIssueType("TEST", "VALID_TYPE_2"));

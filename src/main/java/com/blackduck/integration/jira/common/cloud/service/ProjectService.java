@@ -21,7 +21,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class ProjectService {
-    public static final String API_PATH_PROJECT = "/rest/api/2/project";
+    public static final String API_PATH_PROJECT = "/rest/api/3/project";
     public static final String API_PATH_SEARCH = API_PATH_PROJECT + "/search";
     public static final String API_PATH_VERSIONS = "/versions";
     private final JiraApiClient jiraApiClient;

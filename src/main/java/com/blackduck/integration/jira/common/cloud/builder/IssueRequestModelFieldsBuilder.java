@@ -14,9 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
 import com.blackduck.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 
-public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder {
+public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMapBuilder<IssueRequestModelFieldsBuilder> {
     public static final String SUMMARY = "summary";
     public static final String ISSUE_TYPE = "issuetype";
     public static final String COMPONENTS = "components";
@@ -51,15 +52,18 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return Collections.unmodifiableMap(issueFields);
     }
 
-    public IssueRequestModelFieldsBuilder setValue(String key, Object value) {
+    @Override
+    public IssueRequestModelFieldsBuilder setField(String key, Object value) {
         issueFields.put(key, value);
         return this;
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setSummary(String summary) {
-        return setValue(SUMMARY, summary);
+        return setField(SUMMARY, summary);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setIssueType(String issueTypeId) {
         return setIdField(ISSUE_TYPE, issueTypeId);
     }
@@ -68,12 +72,17 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return setIdFields(COMPONENTS, componentIds);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setProject(String projectId) {
         return setIdField(PROJECT, projectId);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setDescription(String description) {
-        return setValue(DESCRIPTION, description);
+        AtlassianDocumentFormatModelBuilder documentBuilder = new AtlassianDocumentFormatModelBuilder();
+        documentBuilder.addSingleParagraphTextNode(description);
+        AtlassianDocumentFormatModel descriptionObject = documentBuilder.build();
+        return setField(DESCRIPTION, descriptionObject);
     }
 
     public IssueRequestModelFieldsBuilder setReporterId(String reporterId) {
@@ -89,14 +98,14 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setLabels(Collection<String> labels) {
-        return setValue(LABELS, labels);
+        return setField(LABELS, labels);
     }
 
     public IssueRequestModelFieldsBuilder setTimeTracking(String remainingEstimate, String originalEstimate) {
         Map<String, String> timeTrackingMap = new HashMap<>();
         timeTrackingMap.put("remainingEstimate", remainingEstimate);
         timeTrackingMap.put("originalEstimate", originalEstimate);
-        return setValue(TIME_TRACKING, timeTrackingMap);
+        return setField(TIME_TRACKING, timeTrackingMap);
     }
 
     public IssueRequestModelFieldsBuilder setSecurity(String securityId) {
@@ -104,7 +113,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setEnvironment(String environment) {
-        return setValue(ENVIRONMENT, environment);
+        return setField(ENVIRONMENT, environment);
     }
 
     public IssueRequestModelFieldsBuilder setVersions(Collection<String> versionIds) {
@@ -112,7 +121,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
     }
 
     public IssueRequestModelFieldsBuilder setDueDate(String dueDate) {
-        return setValue(DUE_DATE, dueDate);
+        return setField(DUE_DATE, dueDate);
     }
 
     public IssueRequestModelFieldsBuilder setAssigneeId(String assigneeId) {
@@ -121,7 +130,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
 
     private IssueRequestModelFieldsBuilder setIdField(String key, String value) {
         ObjectWithId issueTypeObject = new ObjectWithId(value);
-        return setValue(key, issueTypeObject);
+        return setField(key, issueTypeObject);
     }
 
     private IssueRequestModelFieldsBuilder setIdFields(String key, Collection<String> values) {
@@ -130,7 +139,7 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
             .stream()
             .map(ObjectWithId::new)
             .forEach(newObjects::add);
-        return setValue(key, newObjects);
+        return setField(key, newObjects);
     }
 
     private class ObjectWithId {
@@ -141,5 +150,4 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         }
 
     }
-
 }

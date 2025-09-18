@@ -16,7 +16,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class VersionService {
-    public static final String API_PATH = "/rest/api/2/version";
+    public static final String API_PATH = "/rest/api/3/version";
 
     private final JiraApiClient jiraApiClient;
 

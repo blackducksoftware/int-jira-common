@@ -15,23 +15,23 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.blackduck.integration.jira.common.cloud.model.JiraCloudIssueResponseModel;
 import org.apache.commons.lang3.StringUtils;
 
 import com.blackduck.integration.exception.IntegrationException;
 import com.blackduck.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.cloud.model.IssueCreationRequestModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueCommentRequestModel;
+import com.blackduck.integration.jira.common.cloud.model.IssueCommentResponseModel;
 import com.blackduck.integration.jira.common.exception.JiraPreconditionNotMetException;
 import com.blackduck.integration.jira.common.model.components.FieldUpdateOperationComponent;
 import com.blackduck.integration.jira.common.model.components.IdComponent;
 import com.blackduck.integration.jira.common.model.components.IssueTypeScope;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
 import com.blackduck.integration.jira.common.model.components.StatusDetailsComponent;
-import com.blackduck.integration.jira.common.model.request.IssueCommentRequestModel;
 import com.blackduck.integration.jira.common.model.request.IssueRequestModel;
 import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
-import com.blackduck.integration.jira.common.model.response.IssueCommentResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.model.response.IssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.TransitionsResponseModel;
@@ -45,7 +45,7 @@ import com.blackduck.integration.rest.service.IntJsonTransformer;
 import com.google.gson.JsonObject;
 
 public class IssueService {
-    public static final String API_PATH = "/rest/api/2/issue";
+    public static final String API_PATH = "/rest/api/3/issue";
     public static final String API_PATH_TRANSITIONS_SUFFIX = "transitions";
     public static final String API_PATH_COMMENTS_SUFFIX = "comment";
 
@@ -151,13 +151,13 @@ public class IssueService {
         }
     }
 
-    public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
+    public JiraCloudIssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl url = createApiIssueUri(issueIdOrKey);
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(url)
                                   .addQueryParameter("properties", "*all")
                                   .build();
-        return jiraCloudService.get(request, IssueResponseModel.class);
+        return jiraCloudService.get(request, JiraCloudIssueResponseModel.class);
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
@@ -188,7 +188,7 @@ public class IssueService {
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
         HttpUrl url = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(url);
-        IssueResponseModel issueResponseModel = jiraCloudService.get(request, IssueResponseModel.class);
+        JiraCloudIssueResponseModel issueResponseModel = jiraCloudService.get(request, JiraCloudIssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();

@@ -18,7 +18,7 @@ import com.blackduck.integration.jira.common.rest.service.JiraApiClient;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class FieldService {
-    public static final String API_PATH = "/rest/api/2/field";
+    public static final String API_PATH = "/rest/api/3/field";
 
     private final JiraApiClient jiraCloudService;
 

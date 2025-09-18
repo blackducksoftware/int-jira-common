@@ -12,16 +12,18 @@ import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.response.IssueCreateMetadataResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.blackduck.integration.jira.common.model.response.ProjectIssueCreateMetadataResponseModel;
+import com.blackduck.integration.jira.common.rest.RestApiVersion;
 import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class IssueMetaDataService {
-    public static final String API_PATH = "/rest/api/2/issue/createmeta";
 
     private final JiraApiClient jiraApiClient;
+    private final RestApiVersion restApiVersion;
 
-    public IssueMetaDataService(JiraApiClient jiraApiClient) {
+    public IssueMetaDataService(JiraApiClient jiraApiClient, RestApiVersion restApiVersion) {
         this.jiraApiClient = jiraApiClient;
+        this.restApiVersion = restApiVersion;
     }
 
     public IssueCreateMetadataResponseModel getCreateMetadata() throws IntegrationException {
@@ -59,7 +61,7 @@ public class IssueMetaDataService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + "/rest/api/" + restApiVersion.getVersion() + "/issue/createmeta");
     }
 
     private HttpUrl createIssueFieldsQueryUri(String projectIdOrKey, String issueTypeId) throws IntegrationException {

@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.blackduck.integration.exception.IntegrationException;
 import com.blackduck.integration.jira.common.cloud.JiraCloudParameterizedTestIT;
+import com.blackduck.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.cloud.model.IssueCreationRequestModel;
 import com.blackduck.integration.jira.common.cloud.service.IssueService;
 import com.blackduck.integration.jira.common.cloud.service.JiraCloudServiceFactory;
@@ -28,7 +29,6 @@ import com.blackduck.integration.jira.common.model.response.IssuePropertyRespons
 import com.blackduck.integration.jira.common.model.response.PageOfProjectsResponseModel;
 import com.blackduck.integration.jira.common.model.response.UserDetailsResponseModel;
 import com.blackduck.integration.jira.common.rest.service.IssuePropertyService;
-import com.blackduck.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.test.TestProperties;
 import com.blackduck.integration.jira.common.test.TestPropertyKey;
 import com.google.gson.JsonObject;
@@ -76,9 +76,12 @@ public class IssuePropertyServiceTestIT extends JiraCloudParameterizedTestIT {
         issuePropertyService.setProperty(createdIssue.getKey(), testPropertyKey, testJsonValue);
 
         IssuePropertyKeysResponseModel propertyKeysResponse = issuePropertyService.getPropertyKeys(createdIssue.getKey());
-        Optional<IssuePropertyKeyComponent> optionalFoundKey = propertyKeysResponse.getKeys().stream().findFirst();
+        // the REST API version 3 for Jira cloud returns more than one key so filter out and find the property that
+        // matches the expected key.
+        Optional<IssuePropertyKeyComponent> optionalFoundKey = propertyKeysResponse.getKeys().stream()
+                .filter(propertyKeyComponent -> propertyKeyComponent.getKey().equals(testPropertyKey))
+                .findFirst();
         assertTrue(optionalFoundKey.isPresent());
-        assertEquals(testPropertyKey, optionalFoundKey.map(IssuePropertyKeyComponent::getKey).get());
     }
 
     @ParameterizedTest
