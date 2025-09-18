@@ -18,7 +18,6 @@ import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class IssueTypeService {
-    private static final String API_PATH = "/rest/api/2/issuetype";
 
     private final JiraApiClient jiraApiClient;
     private final RestApiVersion restApiVersion;

@@ -19,7 +19,6 @@ import com.blackduck.integration.rest.HttpUrl;
 import com.google.gson.Gson;
 
 public class IssuePropertyService {
-    public static final String API_PATH = "/rest/api/2/issue";
     public static final String API_PATH_PROPERTIES_PIECE = "/properties";
 
     private final Gson gson;

@@ -17,7 +17,6 @@ import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.rest.HttpUrl;
 
 public class IssueMetaDataService {
-    public static final String API_PATH = "/rest/api/2/issue/createmeta";
 
     private final JiraApiClient jiraApiClient;
     private final RestApiVersion restApiVersion;
