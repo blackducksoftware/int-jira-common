@@ -7,11 +7,14 @@
  */
 package com.blackduck.integration.jira.common.model.request.builder;
 
+import com.blackduck.integration.jira.common.cloud.builder.IssueRequestModelFieldsBuilder;
+
 import java.util.Map;
 
-public interface IssueRequestModelFieldsMapBuilder {
+public interface IssueRequestModelFieldsMapBuilder<T extends IssueRequestModelFieldsMapBuilder> {
     Map<String, Object> build();
 
-    IssueRequestModelFieldsMapBuilder copyFields(IssueRequestModelFieldsMapBuilder original);
+    T copyFields(IssueRequestModelFieldsMapBuilder original);
 
+    T setField(String key, Object value);
 }
