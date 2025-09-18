@@ -76,9 +76,12 @@ public class IssuePropertyServiceTestIT extends JiraCloudParameterizedTestIT {
         issuePropertyService.setProperty(createdIssue.getKey(), testPropertyKey, testJsonValue);
 
         IssuePropertyKeysResponseModel propertyKeysResponse = issuePropertyService.getPropertyKeys(createdIssue.getKey());
-        Optional<IssuePropertyKeyComponent> optionalFoundKey = propertyKeysResponse.getKeys().stream().findFirst();
+        // the REST API version 3 for Jira cloud returns more than one key so filter out and find the property that
+        // matches the expected key.
+        Optional<IssuePropertyKeyComponent> optionalFoundKey = propertyKeysResponse.getKeys().stream()
+                .filter(propertyKeyComponent -> propertyKeyComponent.getKey().equals(testPropertyKey))
+                .findFirst();
         assertTrue(optionalFoundKey.isPresent());
-        assertEquals(testPropertyKey, optionalFoundKey.map(IssuePropertyKeyComponent::getKey).get());
     }
 
     @ParameterizedTest

@@ -62,7 +62,7 @@ public class IssueMetaDataService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraApiClient.getBaseUrl() + "rest/api/" + restApiVersion.getVersion() + "/issue/createmeta");
+        return new HttpUrl(jiraApiClient.getBaseUrl() + "/rest/api/" + restApiVersion.getVersion() + "/issue/createmeta");
     }
 
     private HttpUrl createIssueFieldsQueryUri(String projectIdOrKey, String issueTypeId) throws IntegrationException {
