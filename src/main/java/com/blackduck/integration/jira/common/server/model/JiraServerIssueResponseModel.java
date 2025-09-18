@@ -33,7 +33,7 @@ public class JiraServerIssueResponseModel extends JiraResponseModel implements I
     private OperationsComponent operations;
     private IssueUpdateMetadataComponent editmeta;
     private PageOfChangelogsResponseModel changelog;
-    private JsonElement versionedRepresentations; // TODO
+    private JsonElement versionedRepresentations;
     private IssueIncludedFieldsComponent fieldsToInclude;
     private JiraServerIssueFieldsComponent fields;
 

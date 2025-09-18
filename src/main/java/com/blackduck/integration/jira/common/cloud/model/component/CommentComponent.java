@@ -25,8 +25,8 @@ public class CommentComponent extends IntRestComponent {
     public CommentComponent() {
     }
 
-    public CommentComponent(final String self, final String id, final UserDetailsComponent author, final AtlassianDocumentFormatModel body, final UserDetailsComponent updateAuthor, final String created, final String updated,
-        final VisibilityComponent visibility) {
+    public CommentComponent(String self, String id, UserDetailsComponent author, AtlassianDocumentFormatModel body, UserDetailsComponent updateAuthor, String created, String updated,
+        VisibilityComponent visibility) {
         this.self = self;
         this.id = id;
         this.author = author;

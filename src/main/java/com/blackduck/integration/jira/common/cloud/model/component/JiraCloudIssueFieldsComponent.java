@@ -31,7 +31,7 @@ public class JiraCloudIssueFieldsComponent extends IntRestComponent implements I
     private ProjectComponent project;
     @SerializedName(value = "subtasks", alternate = "sub-tasks")
     private List<IssueLinksComponent> subTasks;
-    private JsonElement timetracking; // TODO
+    private JsonElement timetracking;
     private String updated;
     private WatcherComponent watcher;
     private PageOfWorklogsComponent worklog;
