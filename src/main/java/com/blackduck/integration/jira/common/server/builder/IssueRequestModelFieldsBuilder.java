@@ -57,11 +57,13 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return this;
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setSummary(String summary) {
         setField(SUMMARY, summary);
         return this;
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setIssueType(String issueTypeId) {
         return setIdField(ISSUE_TYPE, issueTypeId);
     }
@@ -70,10 +72,12 @@ public class IssueRequestModelFieldsBuilder implements IssueRequestModelFieldsMa
         return setIdFields(COMPONENTS, componentIds);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setProject(String projectId) {
         return setIdField(PROJECT, projectId);
     }
 
+    @Override
     public IssueRequestModelFieldsBuilder setDescription(String description) {
         setField(DESCRIPTION, description);
         return this;
