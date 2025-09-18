@@ -2,6 +2,7 @@ package com.blackduck.integration.jira.common.cloud.model;
 
 import java.util.List;
 
+import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
 import com.blackduck.integration.jira.common.model.EntityProperty;
 import com.blackduck.integration.jira.common.model.components.VisibilityComponent;
 import com.blackduck.integration.jira.common.model.request.JiraRequestModel;
@@ -12,6 +13,12 @@ public class IssueCommentRequestModel extends JiraRequestModel {
     private final VisibilityComponent visibility;
     private final Boolean jsdPublic;
     private final List<EntityProperty> properties;
+
+    public static IssueCommentRequestModel commentForIssue(String issueIdOrKey, String comment) {
+        AtlassianDocumentFormatModelBuilder builder = new AtlassianDocumentFormatModelBuilder();
+        builder.addSingleParagraphTextNode(comment);
+        return new IssueCommentRequestModel(issueIdOrKey, builder.build());
+    }
 
     public IssueCommentRequestModel(final String issueIdOrKey, final AtlassianDocumentFormatModel body) {
         this(issueIdOrKey, body, null, null, null);
