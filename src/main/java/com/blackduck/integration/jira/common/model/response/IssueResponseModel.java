@@ -5,5 +5,6 @@ import com.blackduck.integration.jira.common.model.components.IssueFieldsCompone
 public interface IssueResponseModel {
     String getId();
     String getKey();
+    String getSelf();
     IssueFieldsComponent getFields();
 }
