@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.blackduck.integration.jira.common.cloud.builder.AtlassianDocumentFormatModelBuilder;
 import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
-import com.blackduck.integration.jira.common.cloud.model.IssueResponseModel;
+import com.blackduck.integration.jira.common.cloud.model.JiraCloudIssueResponseModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -82,7 +82,7 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         }
 
         assertEquals(1, foundIssues.getIssues().size());
-        IssueResponseModel foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        JiraCloudIssueResponseModel foundIssue = foundIssues.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(createdIssue.getId(), foundIssue.getId());
     }
 
@@ -120,13 +120,13 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueCommentRequestModel commentRequestModel = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel(commentValue), null, null, null);
         issueService.addComment(commentRequestModel);
 
-        IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
         IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
-        IssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        JiraCloudIssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 
@@ -173,13 +173,13 @@ public class IssueSearchServiceTestIT extends JiraCloudParameterizedTestIT {
         IssueCommentRequestModel lastComment = new IssueCommentRequestModel(createdIssue.getId(), createDocumentFormatModel("Last comment"), null, null, null);
         issueService.addComment(lastComment);
 
-        IssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
+        JiraCloudIssueResponseModel issueFromIssueService = issueService.getIssue(createdIssue.getId());
 
         IssueSearchResponseModel issueFromSearchService = issueSearchService.findIssuesByComment(project.getKey(), issueType, commentValue);
         issueService.deleteIssue(createdIssue.getId());
 
         assertEquals(1, issueFromSearchService.getIssues().size());
-        IssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
+        JiraCloudIssueResponseModel foundIssue = issueFromSearchService.getIssues().stream().findFirst().orElseThrow(() -> new IllegalStateException("Issue not found"));
         assertEquals(issueFromIssueService.getId(), foundIssue.getId());
     }
 

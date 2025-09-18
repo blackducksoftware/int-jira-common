@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.blackduck.integration.jira.common.cloud.model.IssueResponseModel;
+import com.blackduck.integration.jira.common.cloud.model.JiraCloudIssueResponseModel;
 import org.apache.commons.lang3.StringUtils;
 
 import com.blackduck.integration.exception.IntegrationException;
@@ -151,13 +151,13 @@ public class IssueService {
         }
     }
 
-    public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
+    public JiraCloudIssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl url = createApiIssueUri(issueIdOrKey);
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(url)
                                   .addQueryParameter("properties", "*all")
                                   .build();
-        return jiraCloudService.get(request, IssueResponseModel.class);
+        return jiraCloudService.get(request, JiraCloudIssueResponseModel.class);
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
@@ -188,7 +188,7 @@ public class IssueService {
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
         HttpUrl url = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(url);
-        IssueResponseModel issueResponseModel = jiraCloudService.get(request, IssueResponseModel.class);
+        JiraCloudIssueResponseModel issueResponseModel = jiraCloudService.get(request, JiraCloudIssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();

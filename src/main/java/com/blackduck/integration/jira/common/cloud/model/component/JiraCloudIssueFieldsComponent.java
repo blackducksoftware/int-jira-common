@@ -9,6 +9,7 @@ package com.blackduck.integration.jira.common.cloud.model.component;
 
 import com.blackduck.integration.jira.common.cloud.model.AtlassianDocumentFormatModel;
 import com.blackduck.integration.jira.common.model.components.IssueAttachmentComponent;
+import com.blackduck.integration.jira.common.model.components.IssueFieldsComponent;
 import com.blackduck.integration.jira.common.model.components.IssueLinksComponent;
 import com.blackduck.integration.jira.common.model.components.PageOfWorklogsComponent;
 import com.blackduck.integration.jira.common.model.components.ProjectComponent;
@@ -20,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class IssueFieldsComponent extends IntRestComponent {
+public class JiraCloudIssueFieldsComponent extends IntRestComponent implements IssueFieldsComponent {
     private List<IssueAttachmentComponent> attachment;
     private UserDetailsComponent assignee;
     private PageOfIssueCommentsComponent comment;
@@ -35,10 +36,10 @@ public class IssueFieldsComponent extends IntRestComponent {
     private WatcherComponent watcher;
     private PageOfWorklogsComponent worklog;
 
-    public IssueFieldsComponent() {
+    public JiraCloudIssueFieldsComponent() {
     }
 
-    public IssueFieldsComponent(
+    public JiraCloudIssueFieldsComponent(
         List<IssueAttachmentComponent> attachment,
         UserDetailsComponent assignee,
         PageOfIssueCommentsComponent comment,

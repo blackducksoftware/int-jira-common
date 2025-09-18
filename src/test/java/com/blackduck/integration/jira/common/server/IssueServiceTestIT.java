@@ -13,10 +13,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.blackduck.integration.exception.IntegrationException;
-import com.blackduck.integration.jira.common.server.model.component.IssueFieldsComponent;
+import com.blackduck.integration.jira.common.server.model.component.JiraServerIssueFieldsComponent;
 import com.blackduck.integration.jira.common.model.response.CustomFieldCreationResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.server.model.IssueResponseModel;
+import com.blackduck.integration.jira.common.server.model.JiraServerIssueResponseModel;
 import com.blackduck.integration.jira.common.rest.JiraHttpClient;
 import com.blackduck.integration.jira.common.server.builder.IssueRequestModelFieldsBuilder;
 import com.blackduck.integration.jira.common.server.model.IssueCreationRequestModel;
@@ -99,9 +99,9 @@ class IssueServiceTestIT extends JiraServerParameterizedTestIT {
         assertNotNull(issueCreationResponse);
         assertTrue(StringUtils.isNotBlank(issueCreationResponse.getKey()));
 
-        IssueResponseModel issue = issueService.getIssue(issueCreationResponse.getKey());
+        JiraServerIssueResponseModel issue = issueService.getIssue(issueCreationResponse.getKey());
 
-        IssueFieldsComponent fields = issue.getFields();
+        JiraServerIssueFieldsComponent fields = issue.getFields();
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(fields.getJson(), JsonObject.class);
         JsonPrimitive customValueFromResponse = jsonObject.getAsJsonPrimitive(key);

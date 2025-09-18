@@ -15,7 +15,7 @@ import com.google.gson.JsonElement;
 
 public class IssueSearchResponseModel extends JiraPageResponseModel {
     private String expand;
-    private List<IssueResponseModel> issues;
+    private List<JiraCloudIssueResponseModel> issues;
     private List<String> warningMessages;
     private JsonElement names; // TODO create a bean for this object
     private SchemaComponent schema;
@@ -23,7 +23,7 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
     public IssueSearchResponseModel() {
     }
 
-    public IssueSearchResponseModel(String expand, List<IssueResponseModel> issues, List<String> warningMessages, JsonElement names, SchemaComponent schema) {
+    public IssueSearchResponseModel(String expand, List<JiraCloudIssueResponseModel> issues, List<String> warningMessages, JsonElement names, SchemaComponent schema) {
         this.expand = expand;
         this.issues = issues;
         this.warningMessages = warningMessages;
@@ -39,11 +39,11 @@ public class IssueSearchResponseModel extends JiraPageResponseModel {
         this.expand = expand;
     }
 
-    public List<IssueResponseModel> getIssues() {
+    public List<JiraCloudIssueResponseModel> getIssues() {
         return issues;
     }
 
-    public void setIssues(List<IssueResponseModel> issues) {
+    public void setIssues(List<JiraCloudIssueResponseModel> issues) {
         this.issues = issues;
     }
 

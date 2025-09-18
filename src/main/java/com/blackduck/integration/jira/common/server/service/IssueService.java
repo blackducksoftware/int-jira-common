@@ -26,7 +26,7 @@ import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.request.builder.IssueRequestModelFieldsMapBuilder;
 import com.blackduck.integration.jira.common.server.model.IssueCommentResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueCreationResponseModel;
-import com.blackduck.integration.jira.common.server.model.IssueResponseModel;
+import com.blackduck.integration.jira.common.server.model.JiraServerIssueResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;
 import com.blackduck.integration.jira.common.model.response.TransitionsResponseModel;
 import com.blackduck.integration.jira.common.model.response.UserDetailsResponseModel;
@@ -115,13 +115,13 @@ public class IssueService {
         }
     }
 
-    public IssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
+    public JiraServerIssueResponseModel getIssue(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueUri(issueIdOrKey);
         JiraRequest request = JiraRequestFactory.createDefaultBuilder()
                                   .url(uri)
                                   .addQueryParameter("properties", "*all")
                                   .build();
-        return jiraApiClient.get(request, IssueResponseModel.class);
+        return jiraApiClient.get(request, JiraServerIssueResponseModel.class);
     }
 
     public void deleteIssue(String issueIdOrKey) throws IntegrationException {
@@ -152,7 +152,7 @@ public class IssueService {
     public StatusDetailsComponent getStatus(String issueIdOrKey) throws IntegrationException {
         HttpUrl uri = createApiIssueQueryUri(issueIdOrKey, JSON_OBJECT_STATUS);
         JiraRequest request = JiraRequestFactory.createDefaultGetRequest(uri);
-        IssueResponseModel issueResponseModel = jiraApiClient.get(request, IssueResponseModel.class);
+        JiraServerIssueResponseModel issueResponseModel = jiraApiClient.get(request, JiraServerIssueResponseModel.class);
         String json = issueResponseModel.getJson();
 
         JsonObject issueObject = issueResponseModel.getJsonElement().getAsJsonObject();
