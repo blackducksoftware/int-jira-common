@@ -13,6 +13,7 @@ import com.blackduck.integration.exception.IntegrationException;
 import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.response.IssuePropertyKeysResponseModel;
 import com.blackduck.integration.jira.common.model.response.IssuePropertyResponseModel;
+import com.blackduck.integration.jira.common.rest.RestApiVersion;
 import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.rest.HttpUrl;
 import com.google.gson.Gson;
@@ -23,10 +24,12 @@ public class IssuePropertyService {
 
     private final Gson gson;
     private final JiraApiClient jiraApiClient;
+    private final RestApiVersion restApiVersion;
 
-    public IssuePropertyService(Gson gson, JiraApiClient jiraApiClient) {
+    public IssuePropertyService(Gson gson, JiraApiClient jiraApiClient,  RestApiVersion restApiVersion) {
         this.gson = gson;
         this.jiraApiClient = jiraApiClient;
+        this.restApiVersion = restApiVersion;
     }
 
     public IssuePropertyKeysResponseModel getPropertyKeys(String issueKey) throws IntegrationException {
@@ -61,7 +64,11 @@ public class IssuePropertyService {
     }
 
     private String createApiUri(String issueKey) {
-        return jiraApiClient.getBaseUrl() + API_PATH + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
+        return jiraApiClient.getBaseUrl() + createUriPath() + "/" + issueKey + API_PATH_PROPERTIES_PIECE;
+    }
+
+    private String createUriPath() {
+        return "/rest/api/" + restApiVersion.getVersion() + "/issue";
     }
 
 }

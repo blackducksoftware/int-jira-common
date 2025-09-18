@@ -8,6 +8,7 @@
 package com.blackduck.integration.jira.common.cloud.service;
 
 import com.blackduck.integration.jira.common.rest.JiraHttpClient;
+import com.blackduck.integration.jira.common.rest.RestApiVersion;
 import com.blackduck.integration.jira.common.rest.service.CommonServiceFactory;
 import com.blackduck.integration.log.IntLogger;
 import com.google.gson.Gson;
@@ -15,7 +16,7 @@ import com.google.gson.Gson;
 public class JiraCloudServiceFactory extends CommonServiceFactory {
 
     public JiraCloudServiceFactory(IntLogger logger, JiraHttpClient httpClient, Gson gson) {
-        super(logger, httpClient, gson);
+        super(logger, httpClient, gson, RestApiVersion.VERSION_3);
     }
 
     public FieldService createFieldService() {

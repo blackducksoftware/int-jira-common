@@ -13,6 +13,7 @@ import com.blackduck.integration.exception.IntegrationException;
 import com.blackduck.integration.jira.common.model.request.IssueTypeRequestModel;
 import com.blackduck.integration.jira.common.model.request.JiraRequestFactory;
 import com.blackduck.integration.jira.common.model.response.IssueTypeResponseModel;
+import com.blackduck.integration.jira.common.rest.RestApiVersion;
 import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.rest.HttpUrl;
 
@@ -20,9 +21,11 @@ public class IssueTypeService {
     private static final String API_PATH = "/rest/api/2/issuetype";
 
     private final JiraApiClient jiraApiClient;
+    private final RestApiVersion restApiVersion;
 
-    public IssueTypeService(JiraApiClient jiraApiClient) {
+    public IssueTypeService(JiraApiClient jiraApiClient, RestApiVersion restApiVersion) {
         this.jiraApiClient = jiraApiClient;
+        this.restApiVersion = restApiVersion;
     }
 
     public List<IssueTypeResponseModel> getAllIssueTypes() throws IntegrationException {
@@ -37,7 +40,11 @@ public class IssueTypeService {
     }
 
     private HttpUrl createApiUri() throws IntegrationException {
-        return new HttpUrl(jiraApiClient.getBaseUrl() + API_PATH);
+        return new HttpUrl(jiraApiClient.getBaseUrl() + createUriPath());
+    }
+
+    private String createUriPath() {
+        return "/rest/api/" + restApiVersion.getVersion() + "/issuetype";
     }
 
 }
