@@ -39,4 +39,20 @@ class PluginManagerServiceServerTestIT {
         String pluginToken = pluginManagerService.retrievePluginToken();
         assertNotNull(pluginToken);
     }
+
+    /**
+     * By default, it is assumed when checking plugins we are using basic auth. This test validates the Jira plugin endpoint works even with a Jira Bearer Auth.
+     * @throws IntegrationException
+     */
+    @Test
+    void isAppInstalledBearerTokenAuthTest() throws IntegrationException {
+        JiraHttpClient jiraHttpClient = JiraServerServiceTestUtility.createJiraBearerAuthClient(new PrintStreamIntLogger(System.out, LogLevel.WARN));
+        JiraServerServiceTestUtility.validateConfiguration();
+
+        JiraServerServiceFactory serviceFactory = JiraServerServiceTestUtility.createServiceFactory(jiraHttpClient);
+        PluginManagerService pluginManagerService = serviceFactory.createPluginManagerService();
+
+        boolean appInstalled = pluginManagerService.isAppInstalled("com.blackduck.integration.alert");
+        System.out.println("App is installed " + appInstalled);
+    }
 }
