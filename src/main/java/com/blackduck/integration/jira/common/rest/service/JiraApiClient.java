@@ -136,6 +136,10 @@ public class JiraApiClient {
         return execute(jiraRequest).getHeaders();
     }
 
+    public JiraHttpClient getHttpClient() {
+        return httpClient;
+    }
+
     private <R extends JiraResponseModel> R execute(JiraRequest jiraRequest, Type type) throws IntegrationException {
         JiraResponse jiraResponse = httpClient.execute(jiraRequest);
         return parseResponse(jiraResponse, type);

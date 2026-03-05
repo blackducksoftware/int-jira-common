@@ -15,8 +15,10 @@ import com.blackduck.integration.jira.common.model.request.AppUploadRequestModel
 import com.blackduck.integration.jira.common.model.response.AvailableAppResponseModel;
 import com.blackduck.integration.jira.common.model.response.InstalledAppsResponseModel;
 import com.blackduck.integration.jira.common.model.response.PluginResponseModel;
+import com.blackduck.integration.jira.common.rest.JiraHttpClient;
 import com.blackduck.integration.jira.common.rest.model.JiraRequest;
 import com.blackduck.integration.jira.common.rest.model.JiraResponse;
+import com.blackduck.integration.jira.common.rest.token.JiraAccessTokenHttpClient;
 import com.blackduck.integration.rest.HttpMethod;
 import com.blackduck.integration.rest.HttpUrl;
 import com.blackduck.integration.rest.exception.IntegrationRestException;
@@ -45,16 +47,20 @@ public class PluginManagerService {
 
     private final Gson gson;
     private final JiraApiClient jiraApiClient;
+    private final JiraHttpClient jiraHttpClient;
 
     public PluginManagerService(Gson gson, JiraApiClient jiraApiClient) {
         this.gson = gson;
         this.jiraApiClient = jiraApiClient;
+        jiraHttpClient = jiraApiClient.getHttpClient();
     }
 
     public Optional<PluginResponseModel> getInstalledApp(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        if (!(jiraHttpClient instanceof JiraAccessTokenHttpClient)) {
+            requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        }
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
@@ -72,7 +78,9 @@ public class PluginManagerService {
     public boolean isAppInstalled(String appKey) throws IntegrationException {
         HttpUrl apiUri = new HttpUrl(createBaseRequestUrl() + appKey + "-key");
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(apiUri);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        if (!(jiraHttpClient instanceof JiraAccessTokenHttpClient)) {
+            requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        }
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_PLUGIN);
 
@@ -91,7 +99,9 @@ public class PluginManagerService {
     public InstalledAppsResponseModel getInstalledApps() throws IntegrationException {
         HttpUrl httpUrl = new HttpUrl(createBaseRequestUrl());
         JiraRequest.Builder requestBuilder = new JiraRequest.Builder(httpUrl);
-        requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        if (!(jiraHttpClient instanceof JiraAccessTokenHttpClient)) {
+            requestBuilder.addQueryParameter(QUERY_KEY_OS_AUTH_TYPE, QUERY_VALUE_OS_AUTH_TYPE);
+        }
         requestBuilder.method(HttpMethod.GET);
         requestBuilder.addHeader(ACCEPT_HEADER, MEDIA_TYPE_INSTALLED);
 
